@@ -1,8 +1,10 @@
 import socket
 from flask import Flask, render_template, request, jsonify
-from flask_mysqldb import MySQL
 from pythonosc import udp_client, dispatcher, osc_server
 import json
+import pymysql
+
+pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
