@@ -1,10 +1,7 @@
 import socket
 from flask import Flask, render_template, request, jsonify
-from pythonosc import udp_client, dispatcher, osc_server
 import json
-import pymysql
-
-pymysql.install_as_MySQLdb()
+import mysql.connector
 
 app = Flask(__name__)
 
@@ -20,52 +17,23 @@ except FileNotFoundError:
             "user": "root",
             "password": "",
             "database": "pixeltube_db"
-        },
-        "network": {
-            "SOURCE_NETWORK_IP": "10.0.0.0/8",
-            "DESTINATION_NETWORK_IP": "192.168.0.0/8"
         }
     }
     with open('config.json', 'w') as config_file:
         json.dump(config, config_file, indent=4)
 
-# Use MySQL configuration from the config file
-app.config['MYSQL_HOST'] = config['mysql']['host']
-app.config['MYSQL_USER'] = config['mysql']['user']
-app.config['MYSQL_PASSWORD'] = config['mysql']['password']
-app.config['MYSQL_DB'] = config['mysql']['database']
+database = config['mysql']['database']
 
-# Use network configuration from the config file
-SOURCE_NETWORK_IP = config['network']['SOURCE_NETWORK_IP']
-DESTINATION_NETWORK_IP = config['network']['DESTINATION_NETWORK_IP']
-
-mysql = MySQL(app)
-
-# Art-Net settings
-ARTNET_PORT_IN = 6454  # Standard Art-Net input port
-ARTNET_PORT_OUT = 6455  # Standard Art-Net output port
-
-# Create an Art-Net dispatcher
-artnet_dispatcher = dispatcher.Dispatcher()
-
-def forward_artnet_handler(address, *args):
-    # Create an Art-Net packet from the received OSC message
-    artnet_packet = b'Art-Net\x00' + b'\x00' * 7 + bytes(args[0], 'utf-8') + b'\x00' * 2 + b'\x00\x00'
-    
-    # Send the Art-Net packet to the destination network
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        sock.sendto(artnet_packet, (DESTINATION_NETWORK_IP, ARTNET_PORT_OUT))
-
-# Map the Art-Net handler to the OSC address
-artnet_dispatcher.map('/artnet', forward_artnet_handler)
-
-# Create an Art-Net server listening on the source network
-artnet_server = osc_server.ThreadingOSCUDPServer((SOURCE_NETWORK_IP, ARTNET_PORT_IN), artnet_dispatcher)
-artnet_server_thread = artnet_server.serve_forever()
+db = mysql.connector.connect(
+    host=config['mysql']['host'],
+    user=config['mysql']['user'],
+    password=config['mysql']['password'],
+    database=config['mysql']['database'],
+)
 
 # Function to register a tube in the database
 def register_tube(mac_address):
-    cur = mysql.connection.cursor()
+    cur = db.cursor()
     
     # Check if the tube already exists in the database
     cur.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
@@ -91,7 +59,7 @@ def register_tube_route():
 
 # Function to retrieve registered tubes from the database
 def get_tubes():
-    cur = mysql.connection.cursor()
+    cur = db.cursor()
     cur.execute("SELECT * FROM tubes")
     tubes = cur.fetchall()
     cur.close()
@@ -100,7 +68,7 @@ def get_tubes():
 @app.route('/get_assigned_params/<tube_id>', methods=['GET'])
 def get_assigned_params(tube_id):
     try:
-        cur = mysql.connection.cursor()
+        cur = db.cursor()
         cur.execute("SELECT universe, dmx_address FROM tubes WHERE mac_address = %s", (tube_id,))
         result = cur.fetchone()
         cur.close()
