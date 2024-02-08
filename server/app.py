@@ -46,8 +46,6 @@ def register_tube(mac_address):
         # Tube is new, insert into the database
         cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address, lamp_power) VALUES (%s, %s, %s, %s)",
                     (mac_address, 0, 1, 0))  # Universe 0, DMX Address 1, Lamp Power Off (False)
-        mysql.connection.commit()
-
     cur.close()
 
 # Registration system route
