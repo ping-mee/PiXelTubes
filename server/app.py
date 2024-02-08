@@ -65,10 +65,6 @@ def register_tube_route():
     register_tube(mac_address)
     return jsonify({'success': True, 'message': 'Tube registered successfully.'})
 
-# Your other routes and functions for toggling and retrieving tube information
-
-# ... (your registration system code)
-
 # Function to retrieve registered tubes from the database
 def get_tubes():
     cur = mysql.connection.cursor()
@@ -77,16 +73,30 @@ def get_tubes():
     cur.close()
     return tubes
 
+@app.route('/get_assigned_params/<tube_id>', methods=['GET'])
+def get_assigned_params(tube_id):
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT universe, dmx_address FROM tubes WHERE mac_address = %s", (tube_id,))
+        result = cur.fetchone()
+        cur.close()
+
+        if result:
+            universe, dmx_address = result
+            return jsonify({'success': True, 'universe': universe, 'dmx_address': dmx_address})
+        else:
+            return jsonify({'success': False, 'message': 'Tube not found in the database'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Error: {e}'})
+
 # Index route for the web interface
 @app.route('/')
 def index():
     tubes = get_tubes()
     return render_template('index.html', tubes=tubes)
 
-# ... (your registration system code)
-
 def main():
-    app.run(host='127.0.0.1', port=5000)
+    app.run(host='0.0.0.0', port=5000)
 
 if __name__ == "__main__":
     main()

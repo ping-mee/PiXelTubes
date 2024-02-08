@@ -3,68 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS from local folder -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>PiXelTube Master</title>
+    <title>PiXelTube Web Interface</title>
+    <!-- Include Bootstrap CSS (assuming you've downloaded it locally) -->
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>PiXelTube Master</h1>
-        <table class="table table-bordered mt-3">
-            <thead>
-                <tr>
-                    <th>Tube ID</th>
-                    <th>IP Address</th>
-                    <th>Universe</th>
-                    <th>Address</th>
-                    <th>Toggle</th>
-                    <th>Settings</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tube in tubes %}
-                    <tr>
-                        <td>{{ tube[1] }}</td>
-                        <td>{{ tube[2] }}</td>
-                        <td>{{ tube[3] }}</td>
-                        <td>{{ tube[4] }}</td>
-                        <td>
-                            <label class="switch">
-                                <input type="checkbox" {% if tube[5] %}checked{% endif %} onchange="toggleTube('{{ tube[1] }}')">
-                                <span class="slider"></span>
-                            </label>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" onclick="openSettings('{{ tube[1] }}')">Settings</button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <button class="btn btn-success" onclick="toggleAll()">Toggle All</button>
+
+<div class="container mt-5">
+    <h1 class="mb-4">PiXelTube Web Interface</h1>
+
+    <!-- Tube List Table -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Tube ID</th>
+            <th scope="col">Universe</th>
+            <th scope="col">DMX Address</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="tubeList">
+        <!-- Tube information will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <!-- Tube Settings Modal -->
+    <div class="modal fade" id="tubeSettingsModal" tabindex="-1" role="dialog" aria-labelledby="tubeSettingsModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tubeSettingsModalLabel">Tube Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tubeSettingsForm">
+                        <div class="form-group">
+                            <label for="universeInput">Universe:</label>
+                            <input type="number" class="form-control" id="universeInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dmxAddressInput">DMX Address:</label>
+                            <input type="number" class="form-control" id="dmxAddressInput" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Bootstrap JS from local folder -->
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- Your custom script -->
-    <script>
-        function toggleTube(tubeId) {
-            fetch(`/toggle_tube/${tubeId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => console.log(data));
+</div>
+
+<!-- Include Bootstrap JS and jQuery (assuming you've downloaded them locally) -->
+<script src="/static/jquery.min.js"></script>
+<script src="/static/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Function to populate the tube list
+        function populateTubeList() {
+            $.ajax({
+                url: '/get_tube_list',
+                method: 'GET',
+                success: function (data) {
+                    $('#tubeList').empty();
+                    for (const tube of data.tubes) {
+                        $('#tubeList').append(`
+                            <tr>
+                                <td>${tube.mac_address}</td>
+                                <td>${tube.universe}</td>
+                                <td>${tube.dmx_address}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="openTubeSettingsModal('${tube.mac_address}')">Settings</button>
+                                </td>
+                            </tr>
+                        `);
+                    }
+                }
+            });
         }
 
-        function toggleAll() {
-            fetch('/toggle_all', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => console.log(data));
-        }
+        // Function to open the tube settings modal
+        window.openTubeSettingsModal = function (tubeId) {
+            $('#tubeSettingsModal').modal('show');
+            // Set the modal title
+            $('#tubeSettingsModalLabel').text(`Tube Settings - ${tubeId}`);
 
-        function openSettings(tubeId) {
-            // Implement your settings functionality here
-            alert(`Open settings for Tube ${tubeId}`);
-        }
-    </script>
+            // Populate the form with current settings
+            $.ajax({
+                url: `/get_assigned_params/${tubeId}`,
+                method: 'GET',
+                success: function (data) {
+                    $('#universeInput').val(data.universe);
+                    $('#dmxAddressInput').val(data.dmx_address);
+                }
+            });
+
+            // Submit form on save button click
+            $('#tubeSettingsForm').off('submit').on('submit', function (event) {
+                event.preventDefault();
+                const newUniverse = $('#universeInput').val();
+                const newDmxAddress = $('#dmxAddressInput').val();
+
+                // Update tube settings
+                $.ajax({
+                    url: `/update_tube_settings/${tubeId}`,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({universe: newUniverse, dmx_address: newDmxAddress}),
+                    success: function () {
+                        // Close modal and refresh tube list
+                        $('#tubeSettingsModal').modal('hide');
+                        populateTubeList();
+                    }
+                });
+            });
+        };
+
+        // Initial population of the tube list
+        populateTubeList();
+    });
+</script>
 </body>
 </html>
