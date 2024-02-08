@@ -2,24 +2,46 @@ import socket
 from flask import Flask, render_template, request, jsonify
 from flask_mysqldb import MySQL
 from pythonosc import udp_client, dispatcher, osc_server
+import json
 
 app = Flask(__name__)
 
-# MySQL configurations
-app.config['MYSQL_HOST'] = 'localhost'  # Change to your MySQL host
-app.config['MYSQL_USER'] = 'your_username'  # Change to your MySQL username
-app.config['MYSQL_PASSWORD'] = 'your_password'  # Change to your MySQL password
-app.config['MYSQL_DB'] = 'your_database'  # Change to your MySQL database name
+# Read configuration from config.json
+try:
+    with open('config.json', 'r') as config_file:
+        config = json.load(config_file)
+except FileNotFoundError:
+    # Create config.json with default values if it doesn't exist
+    config = {
+        "mysql": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "database": "pixeltube_db"
+        },
+        "network": {
+            "SOURCE_NETWORK_IP": "10.0.0.0/8",
+            "DESTINATION_NETWORK_IP": "192.168.0.0/8"
+        }
+    }
+    with open('config.json', 'w') as config_file:
+        json.dump(config, config_file, indent=4)
+
+# Use MySQL configuration from the config file
+app.config['MYSQL_HOST'] = config['mysql']['host']
+app.config['MYSQL_USER'] = config['mysql']['user']
+app.config['MYSQL_PASSWORD'] = config['mysql']['password']
+app.config['MYSQL_DB'] = config['mysql']['database']
+
+# Use network configuration from the config file
+SOURCE_NETWORK_IP = config['network']['SOURCE_NETWORK_IP']
+DESTINATION_NETWORK_IP = config['network']['DESTINATION_NETWORK_IP']
 
 mysql = MySQL(app)
 
 # Art-Net settings
 ARTNET_PORT_IN = 6454  # Standard Art-Net input port
 ARTNET_PORT_OUT = 6455  # Standard Art-Net output port
-
-# IP addresses of the source and destination networks
-SOURCE_NETWORK_IP = '10.0.0.1'
-DESTINATION_NETWORK_IP = '192.168.0.1'
 
 # Create an Art-Net dispatcher
 artnet_dispatcher = dispatcher.Dispatcher()
