@@ -1,4 +1,6 @@
 Flask==2.3.2
-mysql_connector_repackaged==0.3.1
+MySQL-python==1.2.5
 neopixel==0.0.1
-requests==2.31.0
+python_osc==1.8.3
+Requests==2.31.0
+wifi==0.3.8
