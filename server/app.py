@@ -1,7 +1,7 @@
 import socket
 from flask import Flask, render_template, request, jsonify
 import json
-import mysql.connector
+import MySQLdb
 
 app = Flask(__name__)
 
@@ -24,7 +24,7 @@ except FileNotFoundError:
 
 database = config['mysql']['database']
 
-db = mysql.connector.connect(
+db = MySQLdb.connect(
     host=config['mysql']['host'],
     user=config['mysql']['user'],
     password=config['mysql']['password'],
