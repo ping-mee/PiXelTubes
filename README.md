@@ -23,4 +23,3 @@ sudo apt install python3-flask-mysqldb -y
 sudo apt install python3-osc -y
 sudo apt install python3-rpi-ws281x python3-adafruit-circuitpython-neopixel -y
 sudo apt install python3-wifi -y
-sudo apt install python3-pymysql -y
