@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS from local folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>PiXelTube Master</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>PiXelTube Master</h1>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Tube ID</th>
+                    <th>IP Address</th>
+                    <th>Universe</th>
+                    <th>Address</th>
+                    <th>Toggle</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tube in tubes %}
+                    <tr>
+                        <td>{{ tube[1] }}</td>
+                        <td>{{ tube[2] }}</td>
+                        <td>{{ tube[3] }}</td>
+                        <td>{{ tube[4] }}</td>
+                        <td>
+                            <label class="switch">
+                                <input type="checkbox" {% if tube[5] %}checked{% endif %} onchange="toggleTube('{{ tube[1] }}')">
+                                <span class="slider"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="openSettings('{{ tube[1] }}')">Settings</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn btn-success" onclick="toggleAll()">Toggle All</button>
+    </div>
+
+    <!-- Bootstrap JS from local folder -->
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Your custom script -->
+    <script>
+        function toggleTube(tubeId) {
+            fetch(`/toggle_tube/${tubeId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log(data));
+        }
+
+        function toggleAll() {
+            fetch('/toggle_all', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log(data));
+        }
+
+        function openSettings(tubeId) {
+            // Implement your settings functionality here
+            alert(`Open settings for Tube ${tubeId}`);
+        }
+    </script>
+</body>
+</html>
