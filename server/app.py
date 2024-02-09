@@ -56,15 +56,6 @@ def register_tube_route():
     return jsonify({'success': True, 'message': 'Tube registered successfully.'})
 
 # Function to retrieve registered tubes from the database
-@app.route('/get_tube_list', methods=['GET'])
-def get_tube_list():
-    cur = db.cursor()
-    cur.execute("SELECT * FROM tubes")
-    tubes = cur.fetchall()
-    cur.close()
-    return tubes
-
-# Function to retrieve registered tubes from the database
 def get_tubes():
     cur = db.cursor()
     cur.execute("SELECT * FROM tubes")

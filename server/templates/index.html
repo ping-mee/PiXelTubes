@@ -60,69 +60,43 @@
 <script src="{{ url_for('static', filename='jquery.min.js')}}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script>
-    $(document).ready(function () {
-        // Function to populate the tube list
-        function populateTubeList() {
-            $.ajax({
-                url: "{{ url_for('get_tube_list')}}",
-                method: 'GET',
-                success: function (data) {
-                    $('#tubeList').empty();
-                    for (const tube of data.tubes) {
-                        $('#tubeList').append(`
-                            <tr>
-                                <td>${tube.mac_address}</td>
-                                <td>${tube.universe}</td>
-                                <td>${tube.dmx_address}</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" onclick="openTubeSettingsModal('${tube.mac_address}')">Settings</button>
-                                </td>
-                            </tr>
-                        `);
-                    }
-                }
-            });
-        }
+    // Function to handle tube toggle switch changes
+    function handleTubeToggle(tubeId) {
+        // Replace this with your actual logic to handle the toggle switch change
+        console.log(`Tube ${tubeId} toggle switched`);
+    }
 
-        // Function to open the tube settings modal
-        window.openTubeSettingsModal = function (tubeId) {
-            $('#tubeSettingsModal').modal('show');
-            // Set the modal title
-            $('#tubeSettingsModalLabel').text(`Tube Settings - ${tubeId}`);
+    // Function to handle master toggle switch change
+    function handleMasterToggle() {
+        // Replace this with your actual logic to handle the master toggle switch change
+        console.log('Master toggle switched');
+    }
 
-            // Populate the form with current settings
-            $.ajax({
-                url: `/get_assigned_params/${tubeId}`,
-                method: 'GET',
-                success: function (data) {
-                    $('#universeInput').val(data.universe);
-                    $('#dmxAddressInput').val(data.dmx_address);
-                }
-            });
+    // Function to handle settings modal open
+    function openSettingsModal(tubeId) {
+        // Replace this with your actual logic to open the settings modal for the specified tube
+        console.log(`Opening settings modal for Tube ${tubeId}`);
+    }
 
-            // Submit form on save button click
-            $('#tubeSettingsForm').off('submit').on('submit', function (event) {
-                event.preventDefault();
-                const newUniverse = $('#universeInput').val();
-                const newDmxAddress = $('#dmxAddressInput').val();
+    // Assign event listeners to the toggle switches
+    document.addEventListener('DOMContentLoaded', function () {
+        // Replace 'toggleTube1', 'toggleTube2', etc., with the actual IDs of your toggle switches
+        document.getElementById('toggleTube1').addEventListener('change', function () {
+            handleTubeToggle(1);
+        });
 
-                // Update tube settings
-                $.ajax({
-                    url: `/update_tube_settings/${tubeId}`,
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({universe: newUniverse, dmx_address: newDmxAddress}),
-                    success: function () {
-                        // Close modal and refresh tube list
-                        $('#tubeSettingsModal').modal('hide');
-                        populateTubeList();
-                    }
-                });
-            });
-        };
+        // Add more event listeners for additional toggle switches
 
-        // Initial population of the tube list
-        populateTubeList();
+        // Assign event listener for the master toggle switch
+        document.getElementById('masterToggle').addEventListener('change', handleMasterToggle);
+
+        // Assign event listeners for settings buttons to open respective modals
+        // Replace 'settingsModalTube1', 'settingsModalTube2', etc., with the actual IDs of your modal buttons
+        document.getElementById('settingsModalTube1').addEventListener('click', function () {
+            openSettingsModal(1);
+        });
+
+        // Add more event listeners for additional settings buttons
     });
 </script>
 </body>
