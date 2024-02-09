@@ -64,6 +64,14 @@ def get_tube_list():
     cur.close()
     return tubes
 
+# Function to retrieve registered tubes from the database
+def get_tubes():
+    cur = db.cursor()
+    cur.execute("SELECT * FROM tubes")
+    tubes = cur.fetchall()
+    cur.close()
+    return tubes
+
 @app.route('/get_assigned_params/<tube_id>', methods=['GET'])
 def get_assigned_params(tube_id):
     try:
