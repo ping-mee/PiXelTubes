@@ -64,7 +64,7 @@
         // Function to populate the tube list
         function populateTubeList() {
             $.ajax({
-                url: "{{ url_for('', filename='/get_tube_list')}}",
+                url: "{{ url_for('/get_tube_list', filename='')}}",
                 method: 'GET',
                 success: function (data) {
                     $('#tubeList').empty();
