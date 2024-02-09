@@ -1,7 +1,6 @@
-import socket
 import os
 import wifi
-from pythonosc import udp_client
+from stupidArtnet import *
 from neopixel import *
 import threading
 import requests
@@ -22,6 +21,9 @@ LED_COUNT = 60
 strip = Adafruit_NeoPixel(LED_COUNT, LED_STRIP_PIN, 800000, 10, False)
 strip.begin()
 
+def test_callback(data):
+	print(data)
+
 def register_tube():
     # Register or reauthenticate the tube with the server
     try:
@@ -41,40 +43,19 @@ def is_connected_to_wifi():
     except wifi.exceptions.InterfaceError:
         return False
 
-def listen_to_artnet(universe, dmx_address):
-    # Set up Art-Net client
-    client = udp_client.SimpleUDPClient(SERVER_IP, SERVER_PORT)
+def listen_to_artnet(universe, dmx_address, strip, pixelCount):
+    try:
+        artnet = StupidArtnetServer(universe=universe, callback_function=test_callback)
+        u_listener = artnet.register_listener(universe)
+        while True:
+            data = artnet.get_buffer(listener_id=u_listener)
+            if len(data) > 0:
+                print(data)
+                for i in range(pixelCount):
+                    strip[i] = (data[(3 * i) + 0 + dmx_address], data[(3 * i) + 1 + dmx_address], data[(3 * i) + 2 + dmx_address])
 
-    # Listen to Art-Net messages
-    while True:
-        try:
-            # Receive Art-Net message
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-                sock.bind(('0.0.0.0', 6454))  # Listen on all interfaces
-                data, addr = sock.recvfrom(1024)
-
-            # Process Art-Net message
-            universe_id = int.from_bytes(data[14:15], byteorder='big')
-            dmx_start_address = int.from_bytes(data[15:17], byteorder='big')
-
-            if universe_id == universe and dmx_start_address <= dmx_address <= dmx_start_address + 2 * LED_COUNT:
-                # Extract RGB values from Art-Net packet
-                r = data[17]
-                g = data[18]
-                b = data[19]
-
-                # Map DMX address to LED index
-                led_index = (dmx_address - dmx_start_address) // 3
-
-                # Update LED strip
-                strip.setPixelColor(led_index, Color(r, g, b))
-                strip.show()
-
-                # Send confirmation to the server
-                client.send_message('/acknowledge', {'tube_id': wlan_mac_address, 'led_index': led_index})
-
-        except Exception as e:
-            print(f"Error: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def get_assigned_params():
     try:
