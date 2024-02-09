@@ -79,12 +79,6 @@ def get_assigned_params(tube_id):
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error: {e}'})
 
-# Index route for the web interface
-@app.route('/')
-def index():
-    tubes = get_tubes()
-    return render_template('index.html', tubes=tubes)
-
 def main():
     app.run(host='0.0.0.0', port=5000)
 
