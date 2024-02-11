@@ -1,6 +1,6 @@
 # PiXelTubes
 
-##### A little introduction :)
+### A little introduction :)
 
 PiXelTubes is a little fun project for me. **(CURRENTLY WORK IN PROGRESS)**
 
@@ -13,7 +13,7 @@ BTW excuse the very "creative" name, but every Raspberry Pi project has to have 
 For this project you will need a soldering iron and atleast a bit of knowledge on how to solder because you will have to solder the strip to the Raspberry Pi Zero.
 
 
-##### Before we start with what you need to build your own PiXelTube system here are some ideas on how to integrate those PiXelTubes.
+### Before we start with what you need to build your own PiXelTube system here are some ideas on how to integrate those PiXelTubes.
 
 For the beginners or "newbies" to lighting you can use free solutions like QLC+ for a small setup. Only problem with QLC+ is that pixel control is a bit complex.
 
@@ -32,14 +32,14 @@ For the professionals out there, most of you will already know how to pixel cont
   * Touchdesigner
 
 
-##### The fixture profiles for various solutions:
+### The fixture profiles for various solutions:
 
 * grandMA3 GDTF: **work in progress**
 * grandMA2/dot2: **work in progress**
 * Resolume Arena: **work in progrss**
 
 
-##### What you need on the hardware side:
+### What you need on the hardware side:
 
 * As a master server I am using a Raspberry Pi 4 B 4GB. You can probably use somthing smaller, but I haven't tested that right now.
 * MicroSD card (16gb recommended)
