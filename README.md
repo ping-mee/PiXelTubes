@@ -14,6 +14,9 @@ For this project you will need a soldering iron and atleast a bit of knowledge o
 
 
 
+
+
+
 ### Before we start with what you need to build your own PiXelTube system here are some ideas on how to integrate those PiXelTubes.
 
 For the beginners or "newbies" to lighting you can use free solutions like QLC+ for a small setup. Only problem with QLC+ is that pixel control is a bit complex.
