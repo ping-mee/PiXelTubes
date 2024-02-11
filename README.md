@@ -20,15 +20,15 @@ If you want to be a bit more professional but don't want to pay any money you ca
 
 For the professionals out there, most of you will already know how to pixel control/map such fixtures but here is a list of the software I would recommend:
 
-* MADRIX (Made specificly for pixel mapping/control.)
-* Resolume Arena (Originally made for visual playback but you can output DMX to such pixel fixtures and map you visuals to them.)
-* grandMA3 (If you already spend all your money on that sweet little onPC node it is still a good solution. I mean the selection grid is a good way to map the pixels as subfixtures)
-* grandMA2 (I personally havn't used grandMA2 because I started with grandMA3 but I think it would also be possible to map the pixels in some do-able way.)
+* [MADRIX](https://madrix.com) (Made specificly for pixel mapping/control.)
+* [Resolume Arena](https://resolume.com) (Originally made for visual playback but you can output DMX to such pixel fixtures and map you visuals to them.)
+* [grandMA3](https://malighting.com/grandma3/) (If you already spend all your money on that sweet little onPC node it is still a good solution. I mean the selection grid is a good way to map the pixels as subfixtures)
+* [grandMA2](https://malighting.com/product-archive/products/grandma2/) (I personally havn't used grandMA2 because I started with grandMA3 but I think it would also be possible to map the pixels in some do-able way.)
 * Software I only heard of but that also should work:
-  * ENTTEC LED MAPPER (ELM)
-  * PIXXEM
-  * MadMapper
-  * Touchdesigner
+  * [ENTTEC LED MAPPER](https://enttec.com/product/dmx-lighting-control-software/pixel-mapping-software/) (ELM)
+  * [PIXXEM](https://chromateq.com/pixxem/)
+  * [MadMapper](https://madmapper.com)
+  * [Touchdesigner](https://derivative.ca)
 
 ### The fixture profiles for various solutions:
 
@@ -81,10 +81,11 @@ For the professionals out there, most of you will already know how to pixel cont
 ```
 sudo apt install python3 python3-pip git python3-flask python3-flask-mysqldb python3-adafruit-circuitpython-neopixel python3-wifi apache2 php mariadb-server mariadb-client -y
 
-sudo mysql -u root -pCREATE DATABASE IF NOT EXISTS pixeltube_db;
+sudo mysql -u root -p
 
 # Enter the password you set for the pi
 
+CREATE DATABASE IF NOT EXISTS pixeltube_db;
 USE pixeltube_db;
 CREATE TABLE IF NOT EXISTS tubes (
 id INT AUTO_INCREMENT PRIMARY KEY,
