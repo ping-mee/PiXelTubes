@@ -18,7 +18,7 @@ For this project you will need a soldering iron and atleast a bit of knowledge o
 
 For the beginners or "newbies" to lighting you can use free solutions like QLC+ for a small setup. Only problem with QLC+ is that pixel control is a bit complex.
 
-If you want to be a bit more professional but don't want to pay any money you can use MA Lighting dot2. Still pixel control is a bit of a hassle but if you get it running it is awsome. There are some good online courses out there for the software. It is kind of semi-professional, so you have to get a bit more into the rabbit hole.
+If you want to be a bit more professional but don't want to pay any money you can use MA Lighting dot2. Still pixel control is a bit of a hassle but if you get it running it is awesome. There are some good online courses out there for the software. It is kind of semi-professional, so you have to get a bit more into the rabbit hole.
 
 For the professionals out there, most of you will already know how to pixel control/map such fixtures but here is a list of the software I would recommend:
 
