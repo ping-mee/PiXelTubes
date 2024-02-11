@@ -12,14 +12,6 @@ BTW excuse the very "creative" name, but every Raspberry Pi project has to have 
 
 For this project you will need a soldering iron and atleast a bit of knowledge on how to solder because you will have to solder the strip to the Raspberry Pi Zero.
 
-
-
-
-
-
-
-
-
 ### Before we start with what you need to build your own PiXelTube system here are some ideas on how to integrate those PiXelTubes.
 
 For the beginners or "newbies" to lighting you can use free solutions like QLC+ for a small setup. Only problem with QLC+ is that pixel control is a bit complex.
@@ -38,13 +30,11 @@ For the professionals out there, most of you will already know how to pixel cont
   * MadMapper
   * Touchdesigner
 
-
 ### The fixture profiles for various solutions:
 
 * grandMA3 GDTF: **work in progress**
 * grandMA2/dot2: **work in progress**
 * Resolume Arena: **work in progrss**
-
 
 ### What you need on the hardware side:
 
@@ -56,11 +46,27 @@ For the professionals out there, most of you will already know how to pixel cont
 * For the tubes I am using:
   * WS2812B LED strip (1 meter, 30 LEDs) (I don't put a link here because I bought them off of eBay and maybe the seller doesn't sell them in the future. Just google "WS2812B LED strip 30 leds 1m". On eBay they are most of the time even cheaper then on chinese sites.)
   * Raspberry Pi Zero W
+  * Another MicroSD card (minimum 8GB)
   * Small powerbank (idk just look for something that fits your usage and online time)
   * Raspberry Pi Zero Case (I have the official one)
   * Some wire for soldering the strip
   * And you need a defusor tube for the strip (I am still looking for one so if I find one I am going to also put a link here)
 
+## Now the software installation part:
+
+### PiXelTube Master (PXM) for me it's is a Raspberry Pi 4 as I already mentioned:
+
+* Download the Raspberry Pi Imager [here](https://www.raspberrypi.com/software/).
+* Plug the MicroSD card for your PXM into your computer.
+* Click "Choose model" > "No filtering".
+* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS Lite (64-bit)
+* Click "Select SD card" and select the SD card you want to install the OS to. **Be carefull** if you acidentially select the wrong drive (e.g. your important USB drive with goverment confidential document on) **all data on it will be earesed**** because it will be formated in order to install the OS.
+* Click "Next" > "Edit settings"
+* Input a hostname (e.g. "pxm"), a username and password (pxm and a password that you can remember or that you've written down somewhere) and **don't** set-up a wifi, because the software is using the wifi module.
+* Go to the tab "Services" > "Enable SSH".
+* Now click on "Save" > "Yes" > "Yes" and now you can sit back and wait while the imager is installing the operating system on the MicroSD card
+* When the imager is done, plug in the MicroSD card into the Raspberry Pi via the MicroSD slot.
+*
 
 sudo apt install python3 python3-pip git python3-flask python3-flask-mysqldb python3-adafruit-circuitpython-neopixel python3-wifi apache2 php mariadb-server mariadb-client -y
 
