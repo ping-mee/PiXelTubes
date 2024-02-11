@@ -14,6 +14,8 @@ For this project you will need a soldering iron and atleast a bit of knowledge o
 
 ### Before we start with what you need to build your own PiXelTube system here are some ideas on how to integrate those PiXelTubes.
 
+**DISCLAIMER:** I am not sponsored by an company/software I am mentioning. These are just recommendations ;)
+
 For the beginners or "newbies" to lighting you can use free solutions like QLC+ for a small setup. Only problem with QLC+ is that pixel control is a bit complex.
 
 If you want to be a bit more professional but don't want to pay any money you can use MA Lighting dot2. Still pixel control is a bit of a hassle but if you get it running it is awsome. There are some good online courses out there for the software. It is kind of semi-professional, so you have to get a bit more into the rabbit hole.
