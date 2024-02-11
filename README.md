@@ -59,19 +59,32 @@ For the professionals out there, most of you will already know how to pixel cont
 * Download the Raspberry Pi Imager [here](https://www.raspberrypi.com/software/).
 * Plug the MicroSD card for your PXM into your computer.
 * Click "Choose model" > "No filtering".
-* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS Lite (64-bit)
+* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS Lite (64-bit).
 * Click "Select SD card" and select the SD card you want to install the OS to. **Be carefull** if you acidentially select the wrong drive (e.g. your important USB drive with goverment confidential document on) **all data on it will be earesed**** because it will be formated in order to install the OS.
-* Click "Next" > "Edit settings"
+* Click "Next" > "Edit settings".
 * Input a hostname (e.g. "pxm"), a username and password (pxm and a password that you can remember or that you've written down somewhere) and **don't** set-up a wifi, because the software is using the wifi module.
 * Go to the tab "Services" > "Enable SSH".
-* Now click on "Save" > "Yes" > "Yes" and now you can sit back and wait while the imager is installing the operating system on the MicroSD card
+* Now click on "Save" > "Yes" > "Yes" and now you can sit back and wait while the imager is installing the operating system on the MicroSD card.
 * When the imager is done, plug in the MicroSD card into the Raspberry Pi via the MicroSD slot.
-*
+* Before plugging in the powersupply connect the Pi via a Ethernet cable router.
+* Now plug in the power and go to the webpage of your router. From there go into the list of all devices that are online. This is router/manufacturer specific, so if you don't know how to do it take a look in the manual for the router online or as in the manual that was in the box with the router.
+* After 30 seconds to 2 minutes you should see your Pi with the hostname you gave it.
+* The Pi should have an IP address. Copy it or write it down.
+* Now open a terminal on your computer.
+  * Windows: Press the windows key on your keyboard and type the word "cmd" and hit enter.
+  * MAC: Press "command"+"space" and type "terminal" and hit enter.
+  * Linux: Hey, I know that you as a linux user already know how to do this, so I don't need to explain how to do this ;)
+* Now in the terminal type the following command: `ssh <username you set for the pi>@<ip address of the pi>`
+* A promt should appear to enter a password. Just enter the password you set for the PI.
+* Now comes the fun part of just copy pasta ;)
 
+```
 sudo apt install python3 python3-pip git python3-flask python3-flask-mysqldb python3-adafruit-circuitpython-neopixel python3-wifi apache2 php mariadb-server mariadb-client -y
 
-sudo mysql -u root -p
-CREATE DATABASE IF NOT EXISTS pixeltube_db;
+sudo mysql -u root -pCREATE DATABASE IF NOT EXISTS pixeltube_db;
+
+# Enter the password you set for the pi
+
 USE pixeltube_db;
 CREATE TABLE IF NOT EXISTS tubes (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -85,3 +98,4 @@ grant all privileges on pixeltube_db . * to 'pxm'@'localhost';
 flush privileges;
 
 sudo systemctl restart apache2
+```
