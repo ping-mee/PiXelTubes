@@ -125,7 +125,7 @@ def mqtt_publisher(universe):
             if dmx_values is not None:
                 for channel, value in enumerate(dmx_values):
                     # Create MQTT topic based on the universe and channel
-                    topic = f"/{universe}/{channel}"
+                    topic = f"{universe}/{channel}"
                     
                     # Publish the DMX value to the MQTT topic
                     mqtt_client.publish(topic, value)
