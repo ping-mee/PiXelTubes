@@ -1,4 +1,3 @@
-import socket
 from flask import Flask, render_template, request, jsonify
 import json
 import MySQLdb
@@ -31,6 +30,14 @@ db = MySQLdb.connect(
     database=config['mysql']['database'],
 )
 
+# Function to retrieve registered tubes from the database
+def get_tubes():
+    cur = db.cursor()
+    cur.execute("SELECT * FROM tubes")
+    tubes = cur.fetchall()
+    cur.close()
+    return tubes
+
 # Function to register a tube in the database
 def register_tube(mac_address):
     cur = db.cursor()
@@ -55,19 +62,12 @@ def register_tube_route():
     register_tube(mac_address)
     return jsonify({'success': True, 'message': 'Tube registered successfully.'})
 
-# Function to retrieve registered tubes from the database
-def get_tubes():
-    cur = db.cursor()
-    cur.execute("SELECT * FROM tubes")
-    tubes = cur.fetchall()
-    cur.close()
-    return tubes
 
-@app.route('/get_assigned_params/<tube_id>', methods=['GET'])
-def get_assigned_params(tube_id):
+@app.route('/get_assigned_params/<tube_unique_id>', methods=['GET'])
+def get_assigned_params(tube_unique_id):
     try:
         cur = db.cursor()
-        cur.execute("SELECT universe, dmx_address FROM tubes WHERE mac_address = %s", (tube_id,))
+        cur.execute("SELECT universe, dmx_address FROM tubes WHERE mac_address = %s", (tube_unique_id,))
         result = cur.fetchone()
         cur.close()
 
