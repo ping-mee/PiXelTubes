@@ -150,7 +150,6 @@ sudo systemctl start dnsmasq
 
 Configure the AP itself:
 
-
 Edit the config:
 
 ```
@@ -187,23 +186,14 @@ DAEMON_CONF="/etc/hostapd/hostapd.conf"
 
 Exit and save.
 
-
-
-
-
 Now set your Wifi country code for the interface:
 
 `sudo raspi-config` > "Localisation Options" > "WLAN Country" > Select your country code by pressing Enter > "Ok" > "Finish"
 
-
-
 Now enable and start all required services and restart:
 
 ```
-sudo systemctl unmask hostapd
-sudo systemctl enable hostapd
-sudo systemctl start hostapd
-sudo reboot
+span
 ```
 
 ### Setup the MySQL database:
@@ -228,8 +218,6 @@ flush privileges;
 
 sudo systemctl restart apache2
 ```
-
-<style>#mermaid-1707698043143{font-family:"trebuchet ms",verdana,arial;font-size:16px;fill:#ccc;}#mermaid-1707698043143 .error-icon{fill:#a44141;}#mermaid-1707698043143 .error-text{fill:#ddd;stroke:#ddd;}#mermaid-1707698043143 .edge-thickness-normal{stroke-width:2px;}#mermaid-1707698043143 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1707698043143 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1707698043143 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1707698043143 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1707698043143 .marker{fill:lightgrey;}#mermaid-1707698043143 .marker.cross{stroke:lightgrey;}#mermaid-1707698043143 svg{font-family:"trebuchet ms",verdana,arial;font-size:16px;}#mermaid-1707698043143 .label{font-family:"trebuchet ms",verdana,arial;color:#ccc;}#mermaid-1707698043143 .label text{fill:#ccc;}#mermaid-1707698043143 .node rect,#mermaid-1707698043143 .node circle,#mermaid-1707698043143 .node ellipse,#mermaid-1707698043143 .node polygon,#mermaid-1707698043143 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mermaid-1707698043143 .node .label{text-align:center;}#mermaid-1707698043143 .node.clickable{cursor:pointer;}#mermaid-1707698043143 .arrowheadPath{fill:lightgrey;}#mermaid-1707698043143 .edgePath .path{stroke:lightgrey;stroke-width:1.5px;}#mermaid-1707698043143 .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-1707698043143 .edgeLabel{background-color:hsl(0,0%,34.4117647059%);text-align:center;}#mermaid-1707698043143 .edgeLabel rect{opacity:0.5;background-color:hsl(0,0%,34.4117647059%);fill:hsl(0,0%,34.4117647059%);}#mermaid-1707698043143 .cluster rect{fill:hsl(180,1.5873015873%,28.3529411765%);stroke:rgba(255,255,255,0.25);stroke-width:1px;}#mermaid-1707698043143 .cluster text{fill:#F9FFFE;}#mermaid-1707698043143 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial;font-size:12px;background:hsl(20,1.5873015873%,12.3529411765%);border:1px solid rgba(255,255,255,0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1707698043143:root{--mermaid-font-family:sans-serif;}#mermaid-1707698043143:root{--mermaid-alt-font-family:sans-serif;}#mermaid-1707698043143 flowchart{fill:apa;}</style>
 
 ### Setup Open Lighting Archetecture as the ArtNET sACN middle man:
 
