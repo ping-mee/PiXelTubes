@@ -128,7 +128,7 @@ def mqtt_publisher(universe):
                     topic = f"/{universe}/{channel}"
                     
                     # Publish the DMX value to the MQTT topic
-                    mqtt_client.publish(topic, payload=value, qos=0, retain=False)
+                    mqtt_client.publish(topic, value)
                     print(str(universe+" "+channel+" "+value))
 
     except Exception as e:
