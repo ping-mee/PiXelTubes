@@ -98,15 +98,15 @@ def get_eth0_ip():
         print(f"Error getting eth0 IP: {e}")
         return None
     
-def on_connect(client, rc, flags):
-        if rc == 0:
+def on_connect(client, userdata, flags, reason_code, properties):
+        if reason_code == 0:
             print("Connected to MQTT Broker!")
         else:
-            print("Failed to connect, return code %d\n", rc)
+            print("Failed to connect, return code %d\n", str(reason_code))
 
 def connect_mqtt():
     # Set Connecting Client ID
-    client = mqtt.Client("mqtt_client_id")
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
     # client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect("localhost", 1883)
