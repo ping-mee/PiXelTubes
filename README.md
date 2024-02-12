@@ -188,12 +188,13 @@ DAEMON_CONF="/etc/hostapd/hostapd.conf"
 ```
 Exit and save.
 
-Now enable and start all required services:
+Now enable and start all required services and restart:
 
 ```
 sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
 sudo systemctl start hostapd
+sudo reboot
 ```
 ### Setup the MySQL database:
 
