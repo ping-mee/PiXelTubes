@@ -94,6 +94,7 @@ def loopCheckSettingUpdates():
             universe, dmx_address = get_assigned_params()
         except Exception as e:
             print(f"Error: {e}")
+        time.sleep(2)
 
 def loopUpdatePixels():
     while True:
