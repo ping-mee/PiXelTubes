@@ -7,6 +7,8 @@ from stupidArtnet import StupidArtnet
 
 app = Flask(__name__)
 
+wlan_mac_address = ':'.join(['{:02x}'.format((int(os.popen(f'cat /sys/class/net/wlan0/address').read().split(':'))[i]),) for i in range(6)])
+
 # Read configuration from config.json
 try:
     with open('config.json', 'r') as config_file:
@@ -38,7 +40,7 @@ db = MySQLdb.connect(
 
 universe_count = config['artnet']['universe_count']
 
-mqttc = mqtt.Client("localhost", 1883, 60)
+mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 # Function to register a tube in the database
 def register_tube(mac_address):
@@ -84,12 +86,23 @@ def get_assigned_params(tube_unique_id):
 def flask_api():
     app.run(host='0.0.0.0', port=5000)
 
-def mqtt_publisher(universe):
-    try:
-        # Connect to the MQTT broker
-        mqtt_client = mqtt.Client()
-        mqtt_client.connect("localhost", 1883, 60)
 
+def connect_mqtt():
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect to MQTT broker, return code %d\n", rc)
+
+    client = mqtt.Client(mqtt_client_id)
+    client.on_connect = on_connect()
+    client.connect("localhost", 1883)
+    return client
+
+
+def mqtt_publisher(universe):
+    mqtt_client = connect_mqtt()
+    try:
         # Create a new Art-Net listener
         artnet = StupidArtnet()
         artnet.start(universe=universe)
@@ -100,7 +113,7 @@ def mqtt_publisher(universe):
             if dmx_values is not None:
                 for channel, value in enumerate(dmx_values):
                     # Create MQTT topic based on the universe and channel
-                    topic = f"/{universe}/{channel + 1}"
+                    topic = f"/{universe}/{channel}"
                     
                     # Publish the DMX value to the MQTT topic
                     mqtt_client.publish(topic, payload=value, qos=0, retain=False)
@@ -109,7 +122,7 @@ def mqtt_publisher(universe):
         print(f"Error in universe {universe}: {e}")
 
 def start_mqtt_publishers(universe_count):
-    used_universes = universe_count
+    used_universes = universe_count - 1
 
     # Create and start a thread for each universe
     threads = [threading.Thread(target=mqtt_publisher, args=(universe,)) for universe in used_universes]
