@@ -84,6 +84,12 @@ For the professionals out there, most of you will already know how to pixel cont
 
 ```
 sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill -y
+pip3 install Flask
+pip3 install adafruit_circuitpython_neopixel
+pip3 install MySQL-python
+pip3 install Requests
+pip3 install stupidArtnet
+pip3 install wifi
 ```
 
 ### Setup the wifi access point:
