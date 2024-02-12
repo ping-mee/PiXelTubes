@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 import json
 import MySQLdb
+import paho.mqtt.client as mqtt
+import threading
 
 app = Flask(__name__)
 
@@ -29,6 +31,8 @@ db = MySQLdb.connect(
     password=config['mysql']['password'],
     database=config['mysql']['database'],
 )
+
+mqttc = mqtt.Client("localhost", 1883, 60)
 
 # Function to retrieve registered tubes from the database
 def get_tubes():
@@ -79,8 +83,12 @@ def get_assigned_params(tube_unique_id):
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error: {e}'})
 
-def main():
+def flask_api():
     app.run(host='0.0.0.0', port=5000)
 
+def mqtt_publisher(mqtt):
+
+
 if __name__ == "__main__":
-    main()
+    mqtt_publisher(mqtt)
+    flask_api()

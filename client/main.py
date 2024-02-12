@@ -6,6 +6,7 @@ import requests
 import json
 import time
 from threading import Thread
+import paho.mqtt.client as mqtt
 
 # Replace with your server's IP address and port
 SERVER_IP = '192.168.0.1'  # Change to the actual IP of the PiXelTube Master

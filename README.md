@@ -83,7 +83,7 @@ For the professionals out there, most of you will already know how to pixel cont
 ### Commands to install all the required packages:
 
 ```
-sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill -y
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill mosquitto mosquitto-clients -y
 sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 pip3 install Flask
 pip3 install adafruit_circuitpython_neopixel
@@ -235,6 +235,29 @@ exit;
 
 sudo systemctl restart apache2
 ```
+
+### Setup a MQTT broker for the communication between the master and the tubes:
+
+Enable the service
+
+`sudo systemctl enable mosquitto.service`
+
+Now we are going to enable remote access to the broker.
+
+Edit the config file
+
+`sudo nano /etc/mosquitto/mosquitto.conf`
+
+Paste the following two lines in the config file:
+
+```
+listener 1883
+allow_anonymous true
+```
+
+Now save and exit and restart the services:
+
+`sudo systemctl restart mosquitto`
 
 ### Clone the project to your Pi
 
