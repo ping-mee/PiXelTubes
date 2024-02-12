@@ -10,7 +10,7 @@ import netifaces
 
 app = Flask(__name__)
 
-wlan_mac_address = get_mac_address(interface="wlan0")
+wlan_mac_address = str(get_mac_address(interface="wlan0"))
 
 # Read configuration from config.json
 try:
