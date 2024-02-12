@@ -118,7 +118,7 @@ def mqtt_publisher(universe):
     try:
         # Create a new Art-Net listener
         artnet = StupidArtnet(target_ip=get_eth0_ip(), universe=universe)
-        artnet.start(universe=universe)
+        artnet.start()
 
         while True:
             dmx_values = artnet.listen()
