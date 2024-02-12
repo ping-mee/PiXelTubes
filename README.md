@@ -61,7 +61,7 @@ For the professionals out there, most of you will already know how to pixel cont
 * Download the Raspberry Pi Imager [here](https://www.raspberrypi.com/software/).
 * Plug the MicroSD card for your PXM into your computer.
 * Click "Choose model" > "No filtering".
-* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS Lite (64-bit).
+* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS (Legacy, 64-bit) Lite.
 * Click "Select SD card" and select the SD card you want to install the OS to. **Be carefull** if you acidentially select the wrong drive (e.g. your important USB drive with goverment confidential document on) **all data on it will be earesed**** because it will be formated in order to install the OS.
 * Click "Next" > "Edit settings".
 * Input a hostname (e.g. "pxm"), a username and password (pxm and a password that you can remember or that you've written down somewhere) and **don't** set-up a wifi, because the software is using the wifi module.
@@ -84,12 +84,13 @@ For the professionals out there, most of you will already know how to pixel cont
 
 ```
 sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill -y
+sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 pip3 install Flask
 pip3 install adafruit_circuitpython_neopixel
-pip3 install MySQL-python
 pip3 install Requests
 pip3 install stupidArtnet
 pip3 install wifi
+sudo apt install python3-mysqldb -y
 ```
 
 ### Setup the wifi access point:
@@ -103,8 +104,6 @@ Stop the access point (ap) services and unlokc wlan0:
 ```
 sudo systemctl stop dnsmasq
 sudo systemctl stop hostapd
-
-ifdown wlan0
 rfkill unblock wlan
 ```
 
@@ -197,6 +196,7 @@ Now set your Wifi country code for the interface:
 `sudo raspi-config` > "Localisation Options" > "WLAN Country" > Select your country code by pressing Enter > "Ok" > "Finish"
 
 Now enable and start all required services and restart:
+
 ```
 sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
