@@ -3,7 +3,7 @@ import json
 import MySQLdb
 import paho.mqtt.client as mqtt
 import threading
-from stupidArtnet import StupidArtnet
+import sacn
 import os
 from getmac import get_mac_address
 import netifaces
@@ -114,15 +114,19 @@ def connect_mqtt():
 
 
 def mqtt_publisher(universe):
+    universe = universe-1
     mqtt_client = connect_mqtt()
     try:
-        # Create a new Art-Net listener
-        artnet = StupidArtnet(target_ip=get_eth0_ip(), universe=universe)
-        artnet.start()
+        receiver = sacn.sACNreceiver(bind_address=get_eth0_ip())
+        receiver.start()
 
+        @receiver.listen_on('universe', universe=universe)  # listens on universe 1
+        def sacn_callback(packet):  # packet type: sacn.DataPacket
+            print(packet.dmxData)
+            global dmx_values
+            dmx_values = packet.dmxData
+        receiver.join_multicast()
         while True:
-            dmx_values = artnet.listen()
-            print(str(dmx_values))
             if dmx_values is not None:
                 for channel, value in enumerate(dmx_values):
                     # Create MQTT topic based on the universe and channel
@@ -136,7 +140,7 @@ def mqtt_publisher(universe):
         print(f"Error in universe {universe}: {e}")
 
 def start_mqtt_publishers(universe_count):
-    used_universes = universe_count - 1
+    used_universes = universe_count
     print("universe count: "+str(used_universes))
     universes_to_publish = list(range(1, used_universes + 1))
     # Create and start a thread for each universe
