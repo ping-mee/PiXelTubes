@@ -121,7 +121,7 @@ def mqtt_publisher(universe):
 
         while True:
             dmx_values = artnet.listen()
-
+            print(str(dmx_values))
             if dmx_values is not None:
                 for channel, value in enumerate(dmx_values):
                     # Create MQTT topic based on the universe and channel
@@ -136,6 +136,7 @@ def mqtt_publisher(universe):
 
 def start_mqtt_publishers(universe_count):
     used_universes = universe_count - 1
+    print("universe count: "+str(used_universes))
     universes_to_publish = list(range(1, used_universes + 1))
     # Create and start a thread for each universe
     threads = [threading.Thread(target=mqtt_publisher, args=(universe,)) for universe in universes_to_publish]
@@ -148,7 +149,7 @@ def start_mqtt_publishers(universe_count):
 
 if __name__ == "__main__":
     start_mqtt_publishers(universe_count)
-    flask_thread = threading.Thread(target=flask_api())
-    flask_thread.start()
-    flask_thread.join()
+    # flask_thread = threading.Thread(target=flask_api())
+    # flask_thread.start()
+    # flask_thread.join()
     
