@@ -83,7 +83,7 @@ For the professionals out there, most of you will already know how to pixel cont
 ### Commands to install all the required packages:
 
 ```
-sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill
 ```
 
 ### Setup the wifi access point:
@@ -120,7 +120,7 @@ This ^ gives the Raspberry Pi on the Wifi interface the IP 192.168.0.1
 
 Tip: If you can't connect over ethernet to the Pi or you want to give it a static ip on the ethernet interface later, just connect to the wifi and you can acccess it via this ip on ssh and all the webinterfaces.
 
-Exit and save nano by pressing [Cntrl]+[O] then [Enter] and then [Cntrl]+[x]. Keep this in mind for later.
+Exit and save nano by pressing [Ctrl]+[O] then [Enter] and then [Ctrl]+[x]. Keep this in mind for later.
 
 Configure DHCP:
 
@@ -140,7 +140,7 @@ dhcp-range=192.168.0.2,192.168.0.254,255.255.255.0,24h
 
 Now exit nano again. Do you remember how? If not here is how you do it ;)
 
-Exit and save nano by pressing [Cntrl]+[O] then [Enter] and then [Cntrl]+[x].
+Exit and save nano by pressing [Ctrl]+[O] then [Enter] and then [Ctrl]+[x].
 
 Now start the DHCP service:
 
