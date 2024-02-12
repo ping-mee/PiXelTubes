@@ -213,7 +213,7 @@ sudo mysql -u root -p
 
 # At the password prompt, just hit enter. We are going to change the root password in a second
 
-alter user root identified by 'a password you write down or remember';
+alter user root@localhost identified by 'a password you write down or remember';
 
 CREATE DATABASE IF NOT EXISTS pixeltube_db;
 USE pixeltube_db;
@@ -236,7 +236,28 @@ exit;
 sudo systemctl restart apache2
 ```
 
-### Setup Open Lighting Archetecture as the ArtNET sACN middle man:
+### Setup Open Lighting Archetecture as the ArtNET/sACN middle man:
+
+Edit:
+
+`sudo nano /etc/ola/ola-artnet.conf`
+
+```
+always_broadcast = false
+enabled = true
+ip = eth0
+long_name = PiXelTube Master
+net = 0
+output_ports = 4
+short_name = PiXelTube Master
+subnet = 0
+use_limited_broadcast = false
+use_loopback = false
+```
+
+Save and exit.
+
+
 
 You can access the Pi's OLA webinterface via the following address:
 
