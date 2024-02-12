@@ -106,7 +106,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
 
 def connect_mqtt():
     # Set Connecting Client ID
-    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     # client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect("localhost", 1883)
