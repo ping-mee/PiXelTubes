@@ -121,12 +121,14 @@ def mqtt_publisher(universe):
         print(str(get_eth0_ip()))
         receiver.start()
 
-        @receiver.listen_on('universe', universe=universe)  # listens on universe 1
+        @receiver.listen_on('universe', universe=universe)
+        @receiver.register_listener('universe', universe=universe)
         def callback(packet):  # packet type: sacn.DataPacket
             print(packet.dmxData)
             global dmx_values
             dmx_values = packet.dmxData
         receiver.join_multicast(universe)
+
         while True:
             if dmx_values is not None:
                 for channel, value in enumerate(dmx_values):
