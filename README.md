@@ -162,14 +162,7 @@ Past this:
 ```
 country_code=DE
 interface=wlan0
-ssid=PiXelTube Master
-channel=9
-auth_algs=1
-wpa=2
-wpa_passphrase=change_me
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP CCMP
-rsn_pairwise=CCMP
+ssid=PiXelTube
 ```
 
 ATTENTION: for the country_code set your own and also change the wpa_passphrase to a password you remember or wrote down. This password is important for later. With this every tube can connect to the AP.
