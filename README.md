@@ -80,9 +80,124 @@ For the professionals out there, most of you will already know how to pixel cont
 * A promt should appear to enter a password. Just enter the password you set for the PI.
 * Now comes the fun part of just copy pasta ;)
 
-```
-sudo apt install python3 python3-pip git python3-flask python3-flask-mysqldb python3-adafruit-circuitpython-neopixel python3-wifi apache2 php mariadb-server mariadb-client -y
+### Commands to install all the required packages:
 
+```
+sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd -y
+
+pip3 install flask-mysqldb -y
+pip3 install adafruit-circuitpython-neopixel -y
+pip3 install wifi -y
+```
+
+
+### Setup the wifi access point:
+
+This is required for the tubes to connect to the master server. The tubes will connect over wifi to the master server to receive their configurations and their ArtNET.
+
+Copy and paste the following commands:
+
+Stop the access point (ap) services:
+
+```
+sudo systemctl stop dnsmasq
+sudo systemctl stop hostapd
+```
+
+Set static IP for wifi interface:
+
+```
+sudo nano /etc/dhcpcd.conf
+```
+
+Past this into the text editor (nano):
+
+```
+interface wlan0
+    static ip_address=192.168.0.1/24
+    nohook wpa_supplicant
+```
+
+This ^ gives the Raspberry Pi on the Wifi interface the IP 192.168.0.1
+
+Tip: If you can't connect over ethernet to the Pi or you want to give it a static ip on the ethernet interface later, just connect to the wifi and you can acccess it via this ip on ssh and all the webinterfaces.
+
+
+Exit and save nano by pressing [Cntrl]+[O] then [Enter] and then [Cntrl]+[x]. Keep this in mind for later.
+
+
+Configure DHCP:
+
+Edit the DHCP config:
+
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+sudo nano /etc/dnsmasq.conf
+Again, past this into nano:
+
+```
+interface=wlan0
+dhcp-range=192.168.0.2,192.168.0.254,255.255.255.0,24h
+```
+Now exit nano again. Do you remember how? If not here is how you do it ;)
+
+Exit and save nano by pressing [Cntrl]+[O] then [Enter] and then [Cntrl]+[x].
+
+
+Now start the DHCP service:
+
+```
+sudo systemctl start dnsmasq
+```
+
+Configure the AP itself:
+
+Edit the config:
+
+```
+sudo nano /etc/hostapd/hostapd.conf
+```
+Past this:
+
+```
+country_code=DE
+interface=wlan0
+ssid=PiXelTube Master
+channel=9
+auth_algs=1
+wpa=2
+wpa_passphrase=change_me
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP CCMP
+rsn_pairwise=CCMP
+```
+
+ATTENTION: for the country_code set your own and also change the wpa_passphrase to a password you remember or wrote down. This password is important for later. With this every tube can connect to the AP.
+
+
+Exit and save.
+
+Now edit the hostapd file:
+
+```
+sudo nano /etc/default/hostapd
+```
+And past this:
+
+```
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+```
+Exit and save.
+
+Now enable and start all required services:
+
+```
+sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+sudo systemctl start hostapd
+```
+### Setup the MySQL database:
+
+```
 sudo mysql -u root -p
 
 # Enter the password you set for the pi
@@ -102,3 +217,15 @@ flush privileges;
 
 sudo systemctl restart apache2
 ```
+<style>#mermaid-1707698043143{font-family:"trebuchet ms",verdana,arial;font-size:16px;fill:#ccc;}#mermaid-1707698043143 .error-icon{fill:#a44141;}#mermaid-1707698043143 .error-text{fill:#ddd;stroke:#ddd;}#mermaid-1707698043143 .edge-thickness-normal{stroke-width:2px;}#mermaid-1707698043143 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1707698043143 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1707698043143 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1707698043143 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1707698043143 .marker{fill:lightgrey;}#mermaid-1707698043143 .marker.cross{stroke:lightgrey;}#mermaid-1707698043143 svg{font-family:"trebuchet ms",verdana,arial;font-size:16px;}#mermaid-1707698043143 .label{font-family:"trebuchet ms",verdana,arial;color:#ccc;}#mermaid-1707698043143 .label text{fill:#ccc;}#mermaid-1707698043143 .node rect,#mermaid-1707698043143 .node circle,#mermaid-1707698043143 .node ellipse,#mermaid-1707698043143 .node polygon,#mermaid-1707698043143 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mermaid-1707698043143 .node .label{text-align:center;}#mermaid-1707698043143 .node.clickable{cursor:pointer;}#mermaid-1707698043143 .arrowheadPath{fill:lightgrey;}#mermaid-1707698043143 .edgePath .path{stroke:lightgrey;stroke-width:1.5px;}#mermaid-1707698043143 .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-1707698043143 .edgeLabel{background-color:hsl(0,0%,34.4117647059%);text-align:center;}#mermaid-1707698043143 .edgeLabel rect{opacity:0.5;background-color:hsl(0,0%,34.4117647059%);fill:hsl(0,0%,34.4117647059%);}#mermaid-1707698043143 .cluster rect{fill:hsl(180,1.5873015873%,28.3529411765%);stroke:rgba(255,255,255,0.25);stroke-width:1px;}#mermaid-1707698043143 .cluster text{fill:#F9FFFE;}#mermaid-1707698043143 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial;font-size:12px;background:hsl(20,1.5873015873%,12.3529411765%);border:1px solid rgba(255,255,255,0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1707698043143:root{--mermaid-font-family:sans-serif;}#mermaid-1707698043143:root{--mermaid-alt-font-family:sans-serif;}#mermaid-1707698043143 flowchart{fill:apa;}</style>
+
+### Setup Open Lighting Archetecture as the ArtNET sACN middle man:
+
+You can access the Pi's OLA webinterface via the following address:
+
+`http://<ip_of_the_pi>:9090/`
+
+* From there click add universe > set universe ID > set universe name.
+* Select Artnet input with the IP address from the ethernet port and as Artnet output the address from the wifi access point.
+
+Repeat this process for every universe you are going to use for your tubes. As an addition to Artnet you can also use sACN (E1.31) as an input.
