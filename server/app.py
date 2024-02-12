@@ -117,7 +117,7 @@ def mqtt_publisher(universe):
     mqtt_client = connect_mqtt()
     try:
         # Create a new Art-Net listener
-        artnet = StupidArtnet(target_ip=get_eth0_ip())
+        artnet = StupidArtnet(target_ip=get_eth0_ip(), universe=universe)
         artnet.start(universe=universe)
 
         while True:
