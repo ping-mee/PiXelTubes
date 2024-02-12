@@ -90,6 +90,7 @@ pip3 install Requests
 pip3 install stupidArtnet
 pip3 install wifi
 pip3 install paho-mqtt
+pip3 install get-mac
 ```
 
 ### Setup the wifi access point:

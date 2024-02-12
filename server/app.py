@@ -5,11 +5,11 @@ import paho.mqtt.client as mqtt
 import threading
 from stupidArtnet import StupidArtnet
 import os
-from uuid import getnode as get_mac
+from getmac import get_mac_address
 
 app = Flask(__name__)
 
-wlan_mac_address = get_mac(interface="wlan0")
+wlan_mac_address = get_mac_address(interface="wlan0")
 
 # Read configuration from config.json
 try:
