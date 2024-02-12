@@ -113,7 +113,7 @@ Set static IP for wifi interface:
 sudo nano /etc/dhcpcd.conf
 ```
 
-Past this into the text editor (nano):
+Past this into the text editor (nano) at the very end of the file:
 
 ```
 interface wlan0
@@ -171,6 +171,9 @@ channel=13
 auth_algs=1
 wpa=2
 wpa_passphrase=change_me
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+macaddr_acl=0
 ```
 
 ATTENTION: for the country_code set your own and also change the wpa_passphrase to a password you remember or wrote down. This password is important for later. With this every tube can connect to the AP.
@@ -208,7 +211,9 @@ sudo systemctl start hostapd
 ```
 sudo mysql -u root -p
 
-# Enter the password you set for the pi
+# At the password prompt, just hit enter. We are going to change the root password in a second
+
+alter user root identified by 'a password you write down or remember';
 
 CREATE DATABASE IF NOT EXISTS pixeltube_db;
 USE pixeltube_db;
@@ -219,9 +224,14 @@ universe INT NOT NULL,
 dmx_address INT NOT NULL,
 CONSTRAINT mac_address_format CHECK (LENGTH(mac_address) = 17 AND mac_address REGEXP '([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})')
 );
+
 create user 'pxm'@'localhost' IDENTIFIED by 'pixel';
+
 grant all privileges on pixeltube_db . * to 'pxm'@'localhost';
+
 flush privileges;
+
+exit;
 
 sudo systemctl restart apache2
 ```

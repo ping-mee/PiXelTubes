@@ -13,8 +13,8 @@ except FileNotFoundError:
     config = {
         "mysql": {
             "host": "localhost",
-            "user": "root",
-            "password": "",
+            "user": "pxm",
+            "password": "pixel",
             "database": "pixeltube_db"
         }
     }
