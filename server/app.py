@@ -119,6 +119,7 @@ def mqtt_publisher(universe):
                     
                     # Publish the DMX value to the MQTT topic
                     mqtt_client.publish(topic, payload=value, qos=0, retain=False)
+                    print(str(universe+" "+channel+" "+value))
 
     except Exception as e:
         print(f"Error in universe {universe}: {e}")
