@@ -3,6 +3,7 @@ import json
 import MySQLdb
 import paho.mqtt.client as mqtt
 import threading
+from stupidArtnet import StupidArtnet
 
 app = Flask(__name__)
 
@@ -18,6 +19,9 @@ except FileNotFoundError:
             "user": "pxm",
             "password": "pixel",
             "database": "pixeltube_db"
+        },
+        "artnet": {
+            "universe_count": 1
         }
     }
     with open('config.json', 'w') as config_file:
@@ -32,15 +36,9 @@ db = MySQLdb.connect(
     database=config['mysql']['database'],
 )
 
-mqttc = mqtt.Client("localhost", 1883, 60)
+universe_count = config['artnet']['universe_count']
 
-# Function to retrieve registered tubes from the database
-def get_tubes():
-    cur = db.cursor()
-    cur.execute("SELECT * FROM tubes")
-    tubes = cur.fetchall()
-    cur.close()
-    return tubes
+mqttc = mqtt.Client("localhost", 1883, 60)
 
 # Function to register a tube in the database
 def register_tube(mac_address):
@@ -86,9 +84,42 @@ def get_assigned_params(tube_unique_id):
 def flask_api():
     app.run(host='0.0.0.0', port=5000)
 
-def mqtt_publisher(mqtt):
+def mqtt_publisher(universe):
+    try:
+        # Connect to the MQTT broker
+        mqtt_client = mqtt.Client()
+        mqtt_client.connect("localhost", 1883, 60)
 
+        # Create a new Art-Net listener
+        artnet = StupidArtnet()
+        artnet.start(universe=universe)
+
+        while True:
+            dmx_values = artnet.listen()
+
+            if dmx_values is not None:
+                for channel, value in enumerate(dmx_values):
+                    # Create MQTT topic based on the universe and channel
+                    topic = f"/{universe}/{channel + 1}"
+                    
+                    # Publish the DMX value to the MQTT topic
+                    mqtt_client.publish(topic, payload=value, qos=0, retain=False)
+
+    except Exception as e:
+        print(f"Error in universe {universe}: {e}")
+
+def start_mqtt_publishers(universe_count):
+    used_universes = universe_count
+
+    # Create and start a thread for each universe
+    threads = [threading.Thread(target=mqtt_publisher, args=(universe,)) for universe in used_universes]
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
 
 if __name__ == "__main__":
-    mqtt_publisher(mqtt)
+    start_mqtt_publishers(universe_count)
     flask_api()
