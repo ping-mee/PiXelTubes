@@ -108,7 +108,7 @@ def connect_mqtt():
 
     client = mqtt.Client(mqtt_client_id)
     client.on_connect = on_connect()
-    client.connect("localhost", 1883)
+    client.connect("localhost", 1883, 60)
     return client
 
 
