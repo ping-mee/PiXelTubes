@@ -6,6 +6,7 @@ import threading
 from stupidArtnet import StupidArtnet
 import os
 from getmac import get_mac_address
+import netifaces
 
 app = Flask(__name__)
 
@@ -88,6 +89,15 @@ def get_assigned_params(tube_unique_id):
 def flask_api():
     app.run(host='0.0.0.0', port=5000)
 
+def get_eth0_ip():
+    try:
+        # Get the IP address of the eth0 interface
+        eth0_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+        return eth0_ip
+    except (KeyError, IndexError, OSError) as e:
+        print(f"Error getting eth0 IP: {e}")
+        return None
+
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
@@ -106,7 +116,7 @@ def mqtt_publisher(universe):
     mqtt_client = connect_mqtt()
     try:
         # Create a new Art-Net listener
-        artnet = StupidArtnet()
+        artnet = StupidArtnet(bind=get_eth0_ip())
         artnet.start(universe=universe)
 
         while True:
