@@ -85,9 +85,9 @@ For the professionals out there, most of you will already know how to pixel cont
 ```
 sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd -y
 
-pip3 install flask-mysqldb -y
-pip3 install adafruit-circuitpython-neopixel -y
-pip3 install wifi -y
+pip3 install flask-mysqldb
+pip3 install adafruit-circuitpython-neopixel
+pip3 install wifi
 ```
 
 
