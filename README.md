@@ -151,6 +151,7 @@ sudo systemctl start dnsmasq
 
 Configure the AP itself:
 
+
 Edit the config:
 
 ```
@@ -186,6 +187,16 @@ DAEMON_CONF="/etc/hostapd/hostapd.conf"
 ```
 
 Exit and save.
+
+
+
+
+
+Now set your Wifi country code for the interface:
+
+`sudo raspi-config` > "Localisation Options" > "WLAN Country" > Select your country code by pressing Enter > "Ok" > "Finish"
+
+
 
 Now enable and start all required services and restart:
 
