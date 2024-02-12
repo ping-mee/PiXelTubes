@@ -118,10 +118,11 @@ def mqtt_publisher(universe):
     mqtt_client = connect_mqtt()
     try:
         receiver = sacn.sACNreceiver(bind_address=get_eth0_ip())
+        print(str(get_eth0_ip()))
         receiver.start()
 
         @receiver.listen_on('universe', universe=universe)  # listens on universe 1
-        def sacn_callback(packet):  # packet type: sacn.DataPacket
+        def callback(packet):  # packet type: sacn.DataPacket
             print(packet.dmxData)
             global dmx_values
             dmx_values = packet.dmxData
