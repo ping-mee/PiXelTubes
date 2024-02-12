@@ -83,7 +83,7 @@ For the professionals out there, most of you will already know how to pixel cont
 ### Commands to install all the required packages:
 
 ```
-sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill -y
 ```
 
 ### Setup the wifi access point:
