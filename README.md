@@ -236,34 +236,12 @@ exit;
 sudo systemctl restart apache2
 ```
 
-### Setup Open Lighting Archetecture as the ArtNET/sACN middle man:
+### Clone the project to your Pi
 
-Edit:
+You can just clone the project itself into your home directory.
 
-`sudo nano /etc/ola/ola-artnet.conf`
+`cd ~ && git clone https://github.com/ping-mee/PiXelTubes`
 
-```
-always_broadcast = false
-enabled = true
-ip = eth0
-long_name = PiXelTube Master
-net = 0
-output_ports = 4
-short_name = PiXelTube Master
-subnet = 0
-use_limited_broadcast = false
-use_loopback = false
-```
+Then just change directory into the server folder.
 
-Save and exit.
-
-
-
-You can access the Pi's OLA webinterface via the following address:
-
-`http://<ip_of_the_pi>:9090/`
-
-* From there click add universe > set universe ID > set universe name.
-* Select Artnet input with the IP address from the ethernet port and as Artnet output the address from the wifi access point.
-
-Repeat this process for every universe you are going to use for your tubes. As an addition to Artnet you can also use sACN (E1.31) as an input.
+`cd PiXelTubes/server`

@@ -1,6 +1,6 @@
 import os
 import wifi
-from stupidArtnet import *
+from sacn import sACNlistener
 from neopixel import *
 import requests
 import json
@@ -72,17 +72,27 @@ def update_led_strip(dmx_values, dmx_address, strip, LED_PER_PIXEL):
     # Update the LED strip
     strip.show()
 
-def listen_to_artnet(universe, dmx_address, strip, LED_PER_PIXEL):
+def listen_to_sacn(universe, dmx_address, strip, LEDS_PER_PIXEL):
     try:
-        artnet = StupidArtnet()
-        artnet.start(universe=universe)
+        # Create a new sACN listener
+        listener = sACNlistener()
+
+        # Configure the listener to listen to the specified universe
+        listener.register_listener(universe)
+
+        # Start the listener
+        listener.start()
 
         while True:
-            dmx_values = artnet.listen()
+            # Get the latest data from the specified universe
+            packet = listener[universe].listen()
 
-            if dmx_values is not None:
-                update_led_strip(dmx_values, dmx_address, strip, LED_PER_PIXEL)
+            if packet is not None:
+                # Extract DMX values from the sACN packet
+                dmx_values = packet.dmx_frame
 
+                # Update the LED strip based on the received DMX values
+                update_led_strip(dmx_values, dmx_address, strip, LEDS_PER_PIXEL)
     except Exception as e:
         print(f"Error: {e}")
 
