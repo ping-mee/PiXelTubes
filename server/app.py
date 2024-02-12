@@ -107,8 +107,8 @@ def connect_mqtt():
             print("Failed to connect to MQTT broker, return code %d\n", rc)
 
     client = mqtt.Client(mqtt_client_id)
-    client.on_connect = on_connect()
-    client.connect("localhost", 1883, 60)
+    client.on_connect = on_connect
+    client.connect("localhost", 1883)
     return client
 
 
