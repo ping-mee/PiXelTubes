@@ -105,7 +105,7 @@ def connect_mqtt():
         else:
             print("Failed to connect, return code %d\n", rc)
     # Set Connecting Client ID
-    client = mqtt.Client(mqtt_client_id)
+    client = mqtt.Client("mqtt_client_id")
     # client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect("localhost", 1883)
