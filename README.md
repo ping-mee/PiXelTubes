@@ -16,7 +16,7 @@ For this project you will need a soldering iron and atleast a bit of knowledge o
 
 **DISCLAIMER:** I am not sponsored by an company/software I am mentioning. These are just recommendations ;)
 
-For the beginners or "newbies" to lighting you can use free solutions like QLC+ for a small setup. Only problem with QLC+ is that pixel control is a bit complex.
+For the beginners or "newbies" in the lighting niche you can use free solutions like QLC+ for a small setup. The only problem with QLC+ is that pixel control is a bit complex.
 
 If you want to be a bit more professional but don't want to pay any money you can use MA Lighting dot2. Still pixel control is a bit of a hassle but if you get it running it is awesome. There are some good online courses out there for the software. It is kind of semi-professional, so you have to get a bit more into the rabbit hole.
 
@@ -83,11 +83,7 @@ For the professionals out there, most of you will already know how to pixel cont
 ### Commands to install all the required packages:
 
 ```
-sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd -y
-
-pip3 install flask-mysqldb
-pip3 install adafruit-circuitpython-neopixel
-pip3 install wifi
+sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill
 ```
 
 ### Setup the wifi access point:
@@ -96,11 +92,14 @@ This is required for the tubes to connect to the master server. The tubes will c
 
 Copy and paste the following commands:
 
-Stop the access point (ap) services:
+Stop the access point (ap) services and unlokc wlan0:
 
 ```
 sudo systemctl stop dnsmasq
 sudo systemctl stop hostapd
+
+ifdown wlan0
+rfkill unblock wlan
 ```
 
 Set static IP for wifi interface:
@@ -164,7 +163,7 @@ Past this:
 country_code=DE
 interface=wlan0
 ssid=PiXelTube
-channel=acs_survey
+channel=13
 auth_algs=1
 wpa=2
 wpa_passphrase=change_me
