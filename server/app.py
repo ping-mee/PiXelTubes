@@ -125,7 +125,7 @@ def mqtt_publisher(universe):
             print(packet.dmxData)
             global dmx_values
             dmx_values = packet.dmxData
-        receiver.join_multicast()
+        receiver.join_multicast(universe)
         while True:
             if dmx_values is not None:
                 for channel, value in enumerate(dmx_values):
