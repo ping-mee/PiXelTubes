@@ -191,9 +191,10 @@ Now set your Wifi country code for the interface:
 `sudo raspi-config` > "Localisation Options" > "WLAN Country" > Select your country code by pressing Enter > "Ok" > "Finish"
 
 Now enable and start all required services and restart:
-
 ```
-span
+sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+sudo systemctl start hostapd
 ```
 
 ### Setup the MySQL database:
