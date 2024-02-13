@@ -2,6 +2,7 @@ import time
 import sys
 import python_artnet as Artnet
 import os
+from getmac import get_mac_address
 
 def get_eth0_ip():
     try:
@@ -15,6 +16,9 @@ def get_eth0_ip():
 # def get_eth0_ip():
 #     return "10.0.0.4"
 
+mac_address = str(get_mac_address(interface="eth0"))
+mac_address_array = mac_address.split(":")
+
 # What DMX channels we want to listen to
 dmxChannels = 512
 
@@ -25,7 +29,7 @@ artnetUniverse = 0
 ### Art-Net Setup ###
 # Sets debug in Art-Net module.
 # Creates Artnet socket on the selected IP and Port
-artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
+artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30, MAC=mac_address_array, SWVER="1", OEMCODE=42069)
 
 tuple_ip = (str(get_eth0_ip()), 6454)
 while True:
