@@ -20,7 +20,7 @@ dmxChannels = 512
 
 ### ArtNet Config ###
 artnetBindIp = get_eth0_ip()
-artnetUniverse = 0
+artnetUniverse = 1
 
 ### Art-Net Setup ###
 # Sets debug in Art-Net module.
