@@ -127,7 +127,7 @@ def mqtt_publisher(universe):
             dmx_values = packet.dmxData
         
         receiver.join_multicast(universe)
-        receiver.register_listener(universe, on_dmx_frame)
+        receiver.register_listener(universe=universe, func=on_dmx_frame)
 
         while True:
             if dmx_values is not None:
