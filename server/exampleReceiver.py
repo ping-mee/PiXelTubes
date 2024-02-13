@@ -27,6 +27,7 @@ artnetUniverse = 0
 # Creates Artnet socket on the selected IP and Port
 artNet = Artnet.Artnet(DEBUG = True)
 
+artNet.art_pol_reply(get_eth0_ip())
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
