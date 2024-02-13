@@ -92,11 +92,11 @@ def flask_api():
 def get_eth0_ip():
     try:
         # Get the IP address of the eth0 interface
-        eth0_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
-        return str(eth0_ip)
+        eth0_ip = str(os.system("ip -4 -o addr show eth0 | awk '{print $4}' | cut -d '/' -f 1 "))
+        return eth0_ip
     except (KeyError, IndexError, OSError) as e:
         print(f"Error getting eth0 IP: {e}")
-        return None
+        exit
     
 def on_connect(client, userdata, flags, reason_code, properties):
         if reason_code == 0:
@@ -114,23 +114,31 @@ def connect_mqtt():
 
 
 def mqtt_publisher(universe, artnet_receiver):
-    universe = universe-1
+    artnetUniverse = universe-1
     mqtt_client = connect_mqtt()
+    artnetBindIp = "192.168.0.1"
+    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30, MAC=mac_address_array)
+    tuple_ip = (str(get_eth0_ip()), 6454)
+    artNet.art_pol_reply(tuple_ip)
     try:
         while True:
-            artnetPacket = artnet_receiver.readPacket()
             try:
-                if artnetPacket is not None and artnetPacket.data is not None:
-                    if artnetPacket.universe == universe:
-                        dmxPacket = artnetPacket.data
-                        if dmxPacket is not None:
-                            for i in len(512):
-                                # # Create MQTT topic based on the universe and channel
-                                # topic = f"{universe}/{channel}"
-                                
-                                # # Publish the DMX value to the MQTT topic
-                                # mqtt_client.publish(topic, value)
-                                print(dmxPacket[i-1], end=" ")
+                # Gets whatever the last Art-Net packet we received is
+                artNetPacket = artNet.readPacket()
+                # Make sure we actually *have* a packet
+                if artNetPacket is not None and artNetPacket.data is not None:
+                    # Checks to see if the current packet is for the specified DMX Universe
+                    if artNetPacket.universe == artnetUniverse:
+                        # Then print out the data from each channel
+                        print("Received data: ", end="")
+                        channel = 1
+                        for value in artNetPacket.data:
+                            # Create MQTT topic based on the universe and channel
+                            topic = f"{str(artNetPacket.universe)}/{str(channel)}"
+                            
+                            # Publish the DMX value to the MQTT topic
+                            mqtt_client.publish(topic, str(value))
+                            channel + 1
             except KeyboardInterrupt:
                 break
     except Exception as e:
@@ -141,7 +149,7 @@ def start_mqtt_publishers(universe_count):
     print("universe count: "+str(used_universes))
     universes_to_publish = list(range(1, used_universes + 1))
 
-    artnet_receiver = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster - "+str(get_mac_address), REFRESH = 60)
+    artnet_receiver = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster - "+str(get_mac_address))
     print(str(get_eth0_ip()))
     print(2)
     # Create and start a thread for each universe
