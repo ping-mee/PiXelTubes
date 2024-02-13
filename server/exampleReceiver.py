@@ -19,7 +19,7 @@ dmxChannels = [1,2,3,4,5,6]
 
 ### ArtNet Config ###
 print(str(get_eth0_ip()))
-artnetBindIp = "10.0.0.0"
+artnetBindIp = "0.0.0.0"
 artnetUniverse = 0
 
 ### Art-Net Setup ###
