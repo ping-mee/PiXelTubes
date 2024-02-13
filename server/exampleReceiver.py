@@ -27,7 +27,7 @@ artnetUniverse = 0
 # Creates Artnet socket on the selected IP and Port
 artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", REFRESH = 60)
 
-tuple_ip = tuple(str(get_eth0_ip()).split("."))
+tuple_ip = tuple(int(str(get_eth0_ip()).split(".")))
 
 print(tuple_ip)
 
