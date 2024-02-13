@@ -121,11 +121,10 @@ def mqtt_publisher(universe, artnetPacket):
             print(str(artnetPacket))
             if artnetPacket is not None and artnetPacket.data is not None:
                 if artnetPacket.universe == universe:
-                    dmx_values = artnetPacket.data
-                    if dmx_values is not None:
-                        dmxPacket = artnetPacket.data
+                    dmxPacket = artnetPacket.data
+                    if dmxPacket is not None:
                         print(str(dmxPacket))
-                        # for i in dmx_values:
+                        # for i in dmxPacket:
                         #     # # Create MQTT topic based on the universe and channel
                         #     # topic = f"{universe}/{channel}"
                             
