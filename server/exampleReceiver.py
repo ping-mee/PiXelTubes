@@ -29,7 +29,7 @@ artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelT
 
 tuple_ip = tuple(str(get_eth0_ip()).split(".")[:-1])
 
-artNet.art_pol_reply(tuple_ip, 6454)
+artNet.art_pol_reply(tuple_ip)
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
