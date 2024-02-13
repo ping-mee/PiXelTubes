@@ -143,15 +143,19 @@ def start_mqtt_publishers(universe_count):
     artnet_receiver = Artnet.Artnet(DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster - "+str(get_mac_address), REFRESH = 60)
     print(str(get_eth0_ip()))
     artnetPacket = artnet_receiver.readPacket()
+    print(2)
     # Create and start a thread for each universe
     for universe in universes_to_publish:
         threads = [threading.Thread(target=mqtt_publisher, args=(universe, artnetPacket))]
+        print(3)
 
     for thread in threads:
         thread.start()
+        print(4)
 
     for thread in threads:
         thread.join()
+        print(5)
 
 if __name__ == "__main__":
     start_mqtt_publishers(universe_count)
