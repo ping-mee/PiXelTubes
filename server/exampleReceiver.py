@@ -18,6 +18,7 @@ debug = True
 dmxChannels = [1,2,3,4,5,6]
 
 ### ArtNet Config ###
+print(str(get_eth0_ip()))
 artnetBindIp = str(get_eth0_ip)
 artnetUniverse = 0
 
