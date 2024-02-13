@@ -119,6 +119,7 @@ def mqtt_publisher(universe, artnetPacket):
     try:
         dmx_values = artnetPacket.data
         while True:
+            print(str(artnetPacket))
             if artnetPacket is not None and artnetPacket.data is not None:
                 if artnetPacket.universe == universe:
                     if dmx_values is not None:
