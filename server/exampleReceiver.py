@@ -30,7 +30,6 @@ artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelT
 tuple_ip = (str(get_eth0_ip()), 6454)
 while True:
     try:
-        artNet.art_pol_reply(tuple_ip)
         # Gets whatever the last Art-Net packet we received is
         artNetPacket = artNet.readPacket()
         # Make sure we actually *have* a packet
@@ -52,8 +51,6 @@ while True:
                 
                 # Print a newline so things look nice :)
                 print("")
-                
-        time.sleep(0.1)
         
     except KeyboardInterrupt:
         break
