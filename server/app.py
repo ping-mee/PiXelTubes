@@ -121,13 +121,13 @@ def mqtt_publisher(universe):
         print(str(get_eth0_ip()))
         receiver.start()
 
-        def callback(packet):  # packet type: sacn.DataPacket
+        def on_dmx_frame(packet, universe, channel_data):  # packet type: sacn.DataPacket
             print(packet.dmxData)
             global dmx_values
             dmx_values = packet.dmxData
+        
         receiver.join_multicast(universe)
-        receiver.listen_on('universe', universe=universe)
-        receiver.register_listener('universe', universe=universe, callback=callback)
+        receiver.register_listener(universe, on_dmx_frame)
 
         while True:
             if dmx_values is not None:
