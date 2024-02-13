@@ -30,8 +30,7 @@ artNet = Artnet.Artnet(DEBUG = True)
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
-        artNetPacket = artNet.artnet_packet_to_array()
-        print(str(artNetPacket))
+        artNetPacket = artNet.readPacket()
         # Make sure we actually *have* a packet
         if artNetPacket is not None and artNetPacket.data is not None:
             # Checks to see if the current packet is for the specified DMX Universe
