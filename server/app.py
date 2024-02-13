@@ -122,7 +122,7 @@ def mqtt_publisher(universe):
         receiver.start()
 
         @receiver.listen_on('universe', universe=universe)
-        @receiver.register_listener('universe', universe=universe)
+        @receiver.register_listener('universe', universe=universe, callback=callback)
         def callback(packet):  # packet type: sacn.DataPacket
             print(packet.dmxData)
             global dmx_values
