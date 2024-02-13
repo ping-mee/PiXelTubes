@@ -51,8 +51,6 @@ while True:
                 
                 # Print a newline so things look nice :)
                 print("")
-        else:
-            print("Artnet packet was None. I hate everything, I hate my life, myself and my coding skills. What am I doing. I don't know... BTW, fuck Artnet for being such a shitty protocol.")
         
     except KeyboardInterrupt:
         break
