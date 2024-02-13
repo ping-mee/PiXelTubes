@@ -18,7 +18,7 @@ def get_eth0_ip():
 debug = True
 
 # What DMX channels we want to listen to
-dmxChannels = [1,2,3,4,5,6]
+dmxChannels = 512
 
 ### ArtNet Config ###
 artnetBindIp = get_eth0_ip()
@@ -48,7 +48,7 @@ while True:
                 
                 # Then print out the data from each channel
                 print("Received data: ", end="")
-                for i in dmxChannels:
+                for i in len(dmxChannels):
                     # Lists in python start at 0, so to access a specific DMX channel you have to subtract one
                     print(dmxPacket[i-1], end=" ")
                 
