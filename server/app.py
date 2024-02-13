@@ -112,7 +112,7 @@ def connect_mqtt():
     return client
 
 
-def mqtt_publisher(universe, artnet_receiver):
+def mqtt_publisher(universe):
     artnetUniverse = universe-1
     mqtt_client = connect_mqtt()
     artnetBindIp = "192.168.0.1"
