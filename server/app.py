@@ -113,11 +113,12 @@ def connect_mqtt():
     return client
 
 
-def mqtt_publisher(universe, artnetPacket):
+def mqtt_publisher(universe, artnet_receiver):
     universe = universe-1
     mqtt_client = connect_mqtt()
     try:
         while True:
+            artnetPacket = artnet_receiver.readPacket()
             try:
                 if artnetPacket is not None and artnetPacket.data is not None:
                     if artnetPacket.universe == universe:
@@ -142,11 +143,10 @@ def start_mqtt_publishers(universe_count):
 
     artnet_receiver = Artnet.Artnet(DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster - "+str(get_mac_address), REFRESH = 60)
     print(str(get_eth0_ip()))
-    artnetPacket = artnet_receiver.readPacket()
     print(2)
     # Create and start a thread for each universe
     for universe in universes_to_publish:
-        threads = [threading.Thread(target=mqtt_publisher, args=(universe, artnetPacket))]
+        threads = [threading.Thread(target=mqtt_publisher, args=(universe, artnet_receiver))]
         print(3)
 
     for thread in threads:
