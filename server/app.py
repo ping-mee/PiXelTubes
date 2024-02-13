@@ -6,7 +6,6 @@ import threading
 import python_artnet as Artnet
 import os
 from getmac import get_mac_address
-import netifaces
 
 app = Flask(__name__)
 
@@ -148,13 +147,10 @@ def start_mqtt_publishers(universe_count):
     used_universes = universe_count
     print("universe count: "+str(used_universes))
     universes_to_publish = list(range(1, used_universes + 1))
-
-    artnet_receiver = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster - "+str(get_mac_address))
-    print(str(get_eth0_ip()))
     print(2)
     # Create and start a thread for each universe
     for universe in universes_to_publish:
-        threads = [threading.Thread(target=mqtt_publisher, args=(universe, artnet_receiver))]
+        threads = [threading.Thread(target=mqtt_publisher, args=(universe,))]
         print(3)
 
     for thread in threads:
