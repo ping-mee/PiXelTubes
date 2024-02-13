@@ -119,16 +119,17 @@ def mqtt_publisher(universe, artnetPacket):
     try:
         dmx_values = artnetPacket.data
         while True:
-            if artnetPacket.universe == universe:
-                if dmx_values is not None:
-                    dmxPacket = artnetPacket.data
-                    for i in dmx_values:
-                        # # Create MQTT topic based on the universe and channel
-                        # topic = f"{universe}/{channel}"
-                        
-                        # # Publish the DMX value to the MQTT topic
-                        # mqtt_client.publish(topic, value)
-                        print(dmxPacket[i-1], end=" ")
+            if artnetPacket is not None and artnetPacket.data is not None:
+                if artnetPacket.universe == universe:
+                    if dmx_values is not None:
+                        dmxPacket = artnetPacket.data
+                        for i in dmx_values:
+                            # # Create MQTT topic based on the universe and channel
+                            # topic = f"{universe}/{channel}"
+                            
+                            # # Publish the DMX value to the MQTT topic
+                            # mqtt_client.publish(topic, value)
+                            print(dmxPacket[i-1], end=" ")
 
     except Exception as e:
         print(f"Error in universe {universe}: {e}")
