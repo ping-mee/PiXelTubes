@@ -29,6 +29,8 @@ artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelT
 
 tuple_ip = tuple(str(get_eth0_ip()).split(".")[:-1])+(6454,)
 
+print(tuple_ip)
+
 artNet.art_pol_reply(tuple_ip)
 while True:
     try:
