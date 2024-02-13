@@ -27,7 +27,7 @@ artnetUniverse = 0
 # Creates Artnet socket on the selected IP and Port
 artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", REFRESH = 60)
 
-artNet.art_pol_reply(get_eth0_ip())
+artNet.art_pol_reply((10,0,0,228))
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
