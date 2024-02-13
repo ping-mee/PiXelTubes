@@ -33,12 +33,12 @@ while True:
         artNet.art_pol_reply(tuple_ip)
         # Gets whatever the last Art-Net packet we received is
         artNetPacket = artNet.readPacket()
-        print("Packet: "+str(artNetPacket))
-        print("Universe: "+str(artNetPacket.universe))
-        print("Data: "+str(artNetPacket.data))
-        print(" ")
         # Make sure we actually *have* a packet
         if artNetPacket is not None and artNetPacket.data is not None:
+            print("Packet: "+str(artNetPacket))
+            print("Universe: "+str(artNetPacket.universe))
+            print("Data: "+str(artNetPacket.data))
+            print(" ")
             # Checks to see if the current packet is for the specified DMX Universe
             if artNetPacket.universe == artnetUniverse:
                 # Stores the packet data array
