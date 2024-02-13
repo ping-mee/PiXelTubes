@@ -117,11 +117,11 @@ def mqtt_publisher(universe, artnetPacket):
     universe = universe-1
     mqtt_client = connect_mqtt()
     try:
-        dmx_values = artnetPacket.data
         while True:
             print(str(artnetPacket))
             if artnetPacket is not None and artnetPacket.data is not None:
                 if artnetPacket.universe == universe:
+                    dmx_values = artnetPacket.data
                     if dmx_values is not None:
                         dmxPacket = artnetPacket.data
                         for i in dmx_values:
