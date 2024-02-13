@@ -32,6 +32,7 @@ artNet = Artnet.Artnet(BINDIP = artnetBindIp, SYSIP=artnetBindIp, DEBUG = True, 
 tuple_ip = (str(get_eth0_ip()), 6454)
 while True:
     try:
+        artNet.art_pol_reply(tuple_ip)
         # Gets whatever the last Art-Net packet we received is
         artNetPacket = artNet.readPacket()
         print("Packet: "+str(artNetPacket))
