@@ -128,16 +128,18 @@ def mqtt_publisher(universe):
                 if artNetPacket is not None and artNetPacket.data is not None:
                     # Checks to see if the current packet is for the specified DMX Universe
                     if artNetPacket.universe == artnetUniverse:
-                        # Then print out the data from each channel
-                        print("Received data: ", end="")
-                        channel = 1
-                        for value in artNetPacket.data:
-                            # Create MQTT topic based on the universe and channel
-                            topic = f"{str(artNetPacket.universe)}/{str(channel)}"
+                        dmxPacket = artNetPacket.data
+                        # channel = 1
+                        # for value in artNetPacket.data:
+                        #     # Create MQTT topic based on the universe and channel
+                        #     topic = f"{str(artNetPacket.universe)}/{str(channel)}"
                             
-                            # Publish the DMX value to the MQTT topic
-                            mqtt_client.publish(topic, str(value))
-                            channel + 1
+                        #     # Publish the DMX value to the MQTT topic
+                        #     mqtt_client.publish(topic, str(value))
+                        #     channel + 1
+                        for i in range(512):
+                            # Lists in python start at 0, 
+                            print(dmxPacket[i-1], end=" ")
             except KeyboardInterrupt:
                 break
     except Exception as e:
