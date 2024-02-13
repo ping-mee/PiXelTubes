@@ -7,7 +7,7 @@ def get_eth0_ip():
     try:
         # Get the IP address of the eth0 interface
         eth0_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
-        return str(eth0_ip)
+        return eth0_ip
     except (KeyError, IndexError, OSError) as e:
         print(f"Error getting eth0 IP: {e}")
         return None
@@ -18,7 +18,7 @@ debug = True
 dmxChannels = [1,2,3,4,5,6]
 
 ### ArtNet Config ###
-print(get_eth0_ip())
+print(str(get_eth0_ip()))
 artnetBindIp = get_eth0_ip()
 artnetUniverse = 0
 
