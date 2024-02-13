@@ -117,7 +117,7 @@ def mqtt_publisher(universe, artnet_receiver):
     artnetUniverse = universe-1
     mqtt_client = connect_mqtt()
     artnetBindIp = "192.168.0.1"
-    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30, MAC=mac_address_array)
+    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
     tuple_ip = (str(get_eth0_ip()), 6454)
     artNet.art_pol_reply(tuple_ip)
     try:
