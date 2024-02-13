@@ -1,16 +1,19 @@
 import time
 import sys
 import python_artnet as Artnet
-import netifaces
+import os
 
 def get_eth0_ip():
     try:
         # Get the IP address of the eth0 interface
-        eth0_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+        eth0_ip = os.system("ip -4 -o addr show eth0 | awk '{print $4}' | cut -d '/' -f 1 ")
         return eth0_ip
     except (KeyError, IndexError, OSError) as e:
         print(f"Error getting eth0 IP: {e}")
-        return None
+        exit
+
+# def get_eth0_ip():
+#     return "10.0.0.4"
 
 debug = True
 
@@ -24,7 +27,7 @@ artnetUniverse = 0
 ### Art-Net Setup ###
 # Sets debug in Art-Net module.
 # Creates Artnet socket on the selected IP and Port
-artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), SYSIP=get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+artNet = Artnet.Artnet(BINDIP = artnetBindIp, SYSIP=artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
 
 tuple_ip = (str(get_eth0_ip()), 6454)
 while True:
