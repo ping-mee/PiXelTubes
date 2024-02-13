@@ -29,7 +29,7 @@ artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelT
 
 # tuple_ip = tuple(int(el) for el in str(get_eth0_ip()).split("."))
 
-tuple_ip = ("10","0","0","4")
+tuple_ip = ("10","0","0","101")
 
 print(tuple_ip)
 
