@@ -28,10 +28,9 @@ artnetUniverse = 0
 artNet = Artnet.Artnet(BINDIP = get_eth0_ip(), DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", REFRESH = 60)
 
 tuple_ip = (str(get_eth0_ip()), 6454)
-
-artNet.art_pol_reply(tuple_ip)
 while True:
     try:
+        artNet.art_pol_reply(tuple_ip)
         # Gets whatever the last Art-Net packet we received is
         artNetPacket = artNet.readPacket()
         # Make sure we actually *have* a packet
