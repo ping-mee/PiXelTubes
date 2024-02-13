@@ -15,8 +15,6 @@ def get_eth0_ip():
 # def get_eth0_ip():
 #     return "10.0.0.150"
 
-debug = True
-
 # What DMX channels we want to listen to
 dmxChannels = 512
 
@@ -27,7 +25,7 @@ artnetUniverse = 0
 ### Art-Net Setup ###
 # Sets debug in Art-Net module.
 # Creates Artnet socket on the selected IP and Port
-artNet = Artnet.Artnet(BINDIP = artnetBindIp, SYSIP=artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+artNet = Artnet.Artnet(BINDIP = artnetBindIp, SYSIP=artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
 
 tuple_ip = (str(get_eth0_ip()), 6454)
 while True:
