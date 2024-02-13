@@ -31,7 +31,7 @@ tuple_ip = tuple(int(el) for el in str(get_eth0_ip()).split("."))
 
 print(tuple_ip)
 
-# artNet.art_pol_reply(tuple_ip)
+artNet.art_pol_reply(tuple_ip)
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
