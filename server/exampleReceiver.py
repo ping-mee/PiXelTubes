@@ -3,17 +3,17 @@ import sys
 import python_artnet as Artnet
 import os
 
-def get_eth0_ip():
-    try:
-        # Get the IP address of the eth0 interface
-        eth0_ip = str(os.system("ip -4 -o addr show eth0 | awk '{print $4}' | cut -d '/' -f 1 "))
-        return eth0_ip
-    except (KeyError, IndexError, OSError) as e:
-        print(f"Error getting eth0 IP: {e}")
-        exit
-
 # def get_eth0_ip():
-#     return "10.0.0.4"
+#     try:
+#         # Get the IP address of the eth0 interface
+#         eth0_ip = str(os.system("ip -4 -o addr show eth0 | awk '{print $4}' | cut -d '/' -f 1 "))
+#         return eth0_ip
+#     except (KeyError, IndexError, OSError) as e:
+#         print(f"Error getting eth0 IP: {e}")
+#         exit
+
+def get_eth0_ip():
+    return "10.0.0.150"
 
 debug = True
 
