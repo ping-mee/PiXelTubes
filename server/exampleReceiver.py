@@ -46,7 +46,7 @@ while True:
                 
                 # Then print out the data from each channel
                 print("Received data: ", end="")
-                for i in len(dmxChannels):
+                for i in range(dmxChannels):
                     # Lists in python start at 0, so to access a specific DMX channel you have to subtract one
                     print(dmxPacket[i-1], end=" ")
                 
