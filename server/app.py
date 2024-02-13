@@ -3,7 +3,7 @@ import json
 import MySQLdb
 import paho.mqtt.client as mqtt
 import threading
-import sacn
+import python_artnet as Artnet
 import os
 from getmac import get_mac_address
 import netifaces
@@ -93,7 +93,7 @@ def get_eth0_ip():
     try:
         # Get the IP address of the eth0 interface
         eth0_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
-        return eth0_ip
+        return str(eth0_ip)
     except (KeyError, IndexError, OSError) as e:
         print(f"Error getting eth0 IP: {e}")
         return None
@@ -113,31 +113,22 @@ def connect_mqtt():
     return client
 
 
-def mqtt_publisher(universe):
+def mqtt_publisher(universe, artnetPacket):
     universe = universe-1
     mqtt_client = connect_mqtt()
     try:
-        receiver = sacn.sACNreceiver(bind_address=get_eth0_ip())
-        print(str(get_eth0_ip()))
-        receiver.start()
-
-        def on_dmx_frame(packet, universe, channel_data):  # packet type: sacn.DataPacket
-            print(packet.dmxData)
-            global dmx_values
-            dmx_values = packet.dmxData
-        
-        receiver.join_multicast(universe)
-        receiver.register_listener(universe=universe, func=on_dmx_frame)
-
+        dmx_values = artnetPacket.data
         while True:
-            if dmx_values is not None:
-                for channel, value in enumerate(dmx_values):
-                    # Create MQTT topic based on the universe and channel
-                    topic = f"{universe}/{channel}"
-                    
-                    # Publish the DMX value to the MQTT topic
-                    mqtt_client.publish(topic, value)
-                    print(str(universe+" "+channel+" "+value))
+            if artnetPacket.universe == universe:
+                if dmx_values is not None:
+                    dmxPacket = artnetPacket.data
+                    for i in dmx_values:
+                        # # Create MQTT topic based on the universe and channel
+                        # topic = f"{universe}/{channel}"
+                        
+                        # # Publish the DMX value to the MQTT topic
+                        # mqtt_client.publish(topic, value)
+                        print(dmxPacket[i-1], end=" ")
 
     except Exception as e:
         print(f"Error in universe {universe}: {e}")

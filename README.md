@@ -87,7 +87,7 @@ sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pi
 pip3 install Flask
 pip3 install adafruit_circuitpython_neopixel
 pip3 install Requests
-pip3 install sacn
+pip3 install python-artnet
 pip3 install wifi
 pip3 install paho-mqtt
 pip3 install get-mac
