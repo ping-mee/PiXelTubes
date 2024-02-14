@@ -111,9 +111,12 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-
-def mqtt_publisher(artnetUniverse):
-    print("Thread for universe: "+str(artnetUniverse))
+def start_mqtt_publishers(universe_count):
+    used_universes = universe_count
+    print("universe count: "+str(used_universes))
+    universe_list = list(range(1, used_universes + 1))
+    # Create and start a thread for each universe
+    print(str(universe_list))
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
@@ -127,7 +130,7 @@ def mqtt_publisher(artnetUniverse):
                 # Make sure we actually *have* a packet
                 if artNetPacket is not None and artNetPacket.data is not None:
                     # Checks to see if the current packet is for the specified DMX Universe
-                    if artNetPacket.universe == artnetUniverse:
+                    if artNetPacket.universe in universe_list:
                         dmxPacket = artNetPacket.data
                         # channel = 1
                         # for value in artNetPacket.data:
@@ -142,27 +145,11 @@ def mqtt_publisher(artnetUniverse):
                             print(dmxPacket[i-1], end=" ")
 
                 else:
-                    print("No data found in packet for universe: "+str(artnetUniverse))
+                    print("No data found in packet for universes: "+str(universe_list))
             except KeyboardInterrupt:
                 break
     except Exception as e:
-        print(f"Error in universe {artnetUniverse}: {e}")
-
-def start_mqtt_publishers(universe_count):
-    used_universes = universe_count
-    print("universe count: "+str(used_universes))
-    universes_to_publish = list(range(1, used_universes + 1))
-    # Create and start a thread for each universe
-    print(str(universes_to_publish))
-    for universe in universes_to_publish:
-        print(str(universe))
-        threads = [threading.Thread(target=mqtt_publisher, args=(universe,))]
-
-    for thread in threads:
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+        print(f"Error in universes {universe_list}: {e}")
 
 if __name__ == "__main__":
     start_mqtt_publishers(universe_count)
