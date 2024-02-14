@@ -114,7 +114,7 @@ def connect_mqtt():
 def start_mqtt_publishers(universe_count):
     used_universes = universe_count
     print("universe count: "+str(used_universes))
-    universe_list = list(range(1, used_universes + 1))
+    universe_list = list(range(0, used_universes))
     # Create and start a thread for each universe
     print(str(universe_list))
     mqtt_client = connect_mqtt()
