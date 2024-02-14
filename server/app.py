@@ -139,11 +139,11 @@ def start_mqtt_publishers(universe_count):
                         break
                             
             except Exception as e:
-                print(f"Error in universes {universe_list}: {e}")
+                print(e)
             except KeyboardInterrupt:
                 break
     except Exception as e:
-        print(f"Error in universes {universe_list}: {e}")
+        print(e)
 
 if __name__ == "__main__":
     start_mqtt_publishers(universe_count)
