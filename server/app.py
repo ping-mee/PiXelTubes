@@ -113,7 +113,7 @@ def start_mqtt_publishers(universe_count):
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
-    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     tuple_ip = (str(get_eth0_ip()), 6454)
     artNet.art_pol_reply(tuple_ip)
     try:
