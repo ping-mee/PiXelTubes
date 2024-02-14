@@ -24,9 +24,6 @@ except FileNotFoundError:
             "password": "pixel",
             "database": "pixeltube_db"
         },
-        "artnet": {
-            "universe_count": 1
-        }
     }
     with open('config.json', 'w') as config_file:
         json.dump(config, config_file, indent=4)
