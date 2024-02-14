@@ -142,7 +142,7 @@ def mqtt_publisher(artnetUniverse):
             except KeyboardInterrupt:
                 break
     except Exception as e:
-        print(f"Error in universe {universe}: {e}")
+        print(f"Error in universe {artnetUniverse}: {e}")
 
 def start_mqtt_publishers(universe_count):
     used_universes = universe_count
