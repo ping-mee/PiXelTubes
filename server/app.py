@@ -140,8 +140,6 @@ def mqtt_publisher(artnetUniverse):
                         for i in range(512):
                             # Lists in python start at 0, 
                             print(dmxPacket[i-1], end=" ")
-                    else:
-                        print("Packet universe isn't the universe that was given. Given universe: "+str(artnetUniverse))
 
                 else:
                     print("No data found in packet for universe: "+str(artnetUniverse))
