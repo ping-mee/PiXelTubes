@@ -126,17 +126,15 @@ def start_mqtt_publishers(universe_count):
                     #Checks to see if the current packet is for the specified DMX Universe
                     dmxPacket = artNetPacket.data
                     print(str(dmxPacket))
-                    try:
-                        for i in range(512):
+                    for i in range(512):
+                        try:
                             # Create MQTT topic based on the universe and channel
                             topic = f"{str(artNetPacket.universe)}/{str(i)}"
                             
                             # Publish the DMX value to the MQTT topic
                             mqtt_client.publish(topic, str(dmxPacket[i-1]))
-                    except Exception as e:
-                        print(f"Error in universes {str(artNetPacket.universe)}: {e}")
-                    except KeyboardInterrupt:
-                        break
+                        except KeyboardInterrupt:
+                            break
                             
             except Exception as e:
                 print(e)
