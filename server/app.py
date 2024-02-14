@@ -140,6 +140,11 @@ def mqtt_publisher(artnetUniverse):
                         for i in range(512):
                             # Lists in python start at 0, 
                             print(dmxPacket[i-1], end=" ")
+                    else:
+                        print("Packet universe isn't the universe that was given. Given universe: "+str(artnetUniverse))
+
+                else:
+                    print("No data found in packet for universe: "+artnetUniverse)
             except KeyboardInterrupt:
                 break
     except Exception as e:
@@ -148,9 +153,9 @@ def mqtt_publisher(artnetUniverse):
 def start_mqtt_publishers(universe_count):
     used_universes = universe_count
     print("universe count: "+str(used_universes))
-    # universes_to_publish = list(range(1, used_universes + 1))
+    universes_to_publish = list(range(1, used_universes + 1))
     # Create and start a thread for each universe
-    for universe in range(1):
+    for universe in range(universes_to_publish):
         threads = [threading.Thread(target=mqtt_publisher, args=(universe,))]
 
     for thread in threads:
