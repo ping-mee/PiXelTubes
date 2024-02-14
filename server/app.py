@@ -113,6 +113,7 @@ def connect_mqtt():
 
 
 def mqtt_publisher(artnetUniverse):
+    print("Thread for universe: "+str(artnetUniverse))
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
