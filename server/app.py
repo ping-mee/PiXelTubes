@@ -126,21 +126,18 @@ def start_mqtt_publishers(universe_count):
                 if artNetPacket is not None and artNetPacket.data is not None:
                     #Checks to see if the current packet is for the specified DMX Universe
                     dmxPacket = artNetPacket.data
-                    # for i in range(512):
-                    #     print(str(i))
-                    #     print(str(artNetPacket.universe))
-                    #     try:
-                    #         # Create MQTT topic based on the universe and channel
-                    #         topic = f"{str(artNetPacket.universe)}/{str(i)}"
+                    for i in range(512):
+                        print(str(i))
+                        print(str(artNetPacket.universe))
+                        try:
+                            # Create MQTT topic based on the universe and channel
+                            topic = f"{str(artNetPacket.universe)}/{str(i)}"
                             
-                    #         # Publish the DMX value to the MQTT topic
-                    #         mqtt_client.publish(topic, str(dmxPacket[i-1]))
-                    #     except KeyboardInterrupt:
-                    #         break
-                    #     time.sleep(float(0.0001))
-
-                    print(str(artNetPacket.universe))
-                    time.sleep(0.01)
+                            # Publish the DMX value to the MQTT topic
+                            mqtt_client.publish(topic, str(dmxPacket[i-1]))
+                        except KeyboardInterrupt:
+                            break
+                    time.sleep(0.001)
                             
             except Exception as e:
                 print(e)
