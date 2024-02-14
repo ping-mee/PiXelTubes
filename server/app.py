@@ -112,8 +112,7 @@ def connect_mqtt():
     return client
 
 
-def mqtt_publisher(universe):
-    artnetUniverse = universe-1
+def mqtt_publisher(artnetUniverse):
     mqtt_client = connect_mqtt()
     artnetBindIp = "192.168.0.1"
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
@@ -149,19 +148,15 @@ def start_mqtt_publishers(universe_count):
     used_universes = universe_count
     print("universe count: "+str(used_universes))
     universes_to_publish = list(range(1, used_universes + 1))
-    print(2)
     # Create and start a thread for each universe
     for universe in universes_to_publish:
         threads = [threading.Thread(target=mqtt_publisher, args=(universe,))]
-        print(3)
 
     for thread in threads:
         thread.start()
-        print(4)
 
     for thread in threads:
         thread.join()
-        print(5)
 
 if __name__ == "__main__":
     start_mqtt_publishers(universe_count)
