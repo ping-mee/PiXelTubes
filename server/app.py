@@ -6,6 +6,7 @@ import threading
 import python_artnet as Artnet
 import os
 from getmac import get_mac_address
+import time
 
 app = Flask(__name__)
 
@@ -136,6 +137,7 @@ def start_mqtt_publishers(universe_count):
                             mqtt_client.publish(topic, str(dmxPacket[i-1]))
                         except KeyboardInterrupt:
                             break
+                        time.sleep(float(0.0001))
                             
             except Exception as e:
                 print(e)
