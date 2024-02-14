@@ -38,8 +38,6 @@ db = MySQLdb.connect(
     database=config['mysql']['database'],
 )
 
-universe_count = config['artnet']['universe_count']
-
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 # Function to register a tube in the database
@@ -109,7 +107,7 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def start_mqtt_publishers(universe_count):
+def start_mqtt_publishers():
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
@@ -119,7 +117,6 @@ def start_mqtt_publishers(universe_count):
     try:
         while True:
             try:
-                # for universe in range(universe_count):
                 # Gets whatever the last Art-Net packet we received is
                 artNetPacket = artNet.readPacket()
                 # Make sure we actually *have* a packet
@@ -136,9 +133,7 @@ def start_mqtt_publishers(universe_count):
                             # Publish the DMX value to the MQTT topic
                             mqtt_client.publish(topic, str(dmxPacket[i-1]))
                         except KeyboardInterrupt:
-                            break
-                    time.sleep(0.001)
-                            
+                            break                            
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
@@ -147,7 +142,7 @@ def start_mqtt_publishers(universe_count):
         print(e)
 
 if __name__ == "__main__":
-    start_mqtt_publishers(universe_count)
+    start_mqtt_publishers()
     # flask_thread = threading.Thread(target=flask_api())
     # flask_thread.start()
     # flask_thread.join()
