@@ -112,7 +112,7 @@ def connect_mqtt():
     return client
 
 def start_mqtt_publishers(universe_count):
-    universe_list = list(range(-1, universe_count))
+    universe_list = list(range(universe_count))
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
