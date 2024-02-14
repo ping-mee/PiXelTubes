@@ -124,7 +124,7 @@ def start_mqtt_publishers(universe_count):
         while True:
             try:
                 # for universe in range(universe_count):
-                universe = universe - 1
+                # universe = universe - 1
                 # Gets whatever the last Art-Net packet we received is
                 artNetPacket = artNet.readPacket()
                 # Make sure we actually *have* a packet
