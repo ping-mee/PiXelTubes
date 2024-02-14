@@ -38,23 +38,9 @@ while True:
         artNetPacket = artNet.readPacket()
         # Make sure we actually *have* a packet
         if artNetPacket is not None and artNetPacket.data is not None:
-            print("Packet: "+str(artNetPacket))
             print("Universe: "+str(artNetPacket.universe))
-            print("Data: "+str(artNetPacket.data))
-            print(" ")
-            # Checks to see if the current packet is for the specified DMX Universe
-            if artNetPacket.universe == artnetUniverse:
-                # Stores the packet data array
-                dmxPacket = artNetPacket.data
-                
-                # Then print out the data from each channel
-                print("Received data: ", end="")
-                for i in range(dmxChannels):
-                    # Lists in python start at 0, so to access a specific DMX channel you have to subtract one
-                    print(dmxPacket[i-1], end=" ")
-                
-                # Print a newline so things look nice :)
-                print("")
+            # Stores the packet data array
+            dmxPacket = artNetPacket.data
         
     except KeyboardInterrupt:
         break
