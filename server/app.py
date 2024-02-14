@@ -113,13 +113,11 @@ def connect_mqtt():
 
 def start_mqtt_publishers(universe_count):
     used_universes = universe_count
-    print("universe count: "+str(used_universes))
     universe_list = list(range(0, used_universes))
     # Create and start a thread for each universe
-    print(str(universe_list))
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
-    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
+    artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30)
     tuple_ip = (str(get_eth0_ip()), 6454)
     artNet.art_pol_reply(tuple_ip)
     try:
@@ -131,6 +129,7 @@ def start_mqtt_publishers(universe_count):
                 if artNetPacket is not None and artNetPacket.data is not None:
                     #Checks to see if the current packet is for the specified DMX Universe
                     if artNetPacket.universe in universe_list:
+                        print(artNetPacket.universe)
                         dmxPacket = artNetPacket.data
                         for i in range(512):
                             # Create MQTT topic based on the universe and channel
