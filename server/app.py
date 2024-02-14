@@ -131,6 +131,7 @@ def start_mqtt_publishers(universe_count):
                 # Make sure we actually *have* a packet
                 if artNetPacket is not None and artNetPacket.data is not None:
                     print(2)
+                    print(artNetPacket.universe)
                     # Checks to see if the current packet is for the specified DMX Universe
                     if artNetPacket.universe in universe_list:
                         print(3)
