@@ -144,6 +144,8 @@ def start_mqtt_publishers(universe_count):
                             # Lists in python start at 0, 
                             print(dmxPacket[i-1], end=" ")
                             
+            except Exception as e:
+                print(f"Error in universes {universe_list}: {e}")
             except KeyboardInterrupt:
                 break
     except Exception as e:
