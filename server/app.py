@@ -130,7 +130,7 @@ def start_mqtt_publishers(universe_count):
                     if artNetPacket is not None and artNetPacket.data is not None:
                         #Checks to see if the current packet is for the specified DMX Universe
                         if artNetPacket.universe == universe:
-                            # print(artNetPacket.universe)
+                            print(artNetPacket.universe)
                             dmxPacket = artNetPacket.data
                             try:
                                 for i in range(512):
