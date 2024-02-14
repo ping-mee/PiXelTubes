@@ -153,7 +153,7 @@ def mqtt_publisher(artnetUniverse):
 def start_mqtt_publishers(universe_count):
     used_universes = universe_count
     print("universe count: "+str(used_universes))
-    universes_to_publish = list(range(1, used_universes + 1))
+    universes_to_publish = range(1, used_universes + 1)
     # Create and start a thread for each universe
     for universe in range(universes_to_publish):
         threads = [threading.Thread(target=mqtt_publisher, args=(universe,))]
