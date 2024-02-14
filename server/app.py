@@ -127,6 +127,7 @@ def start_mqtt_publishers(universe_count):
                     dmxPacket = artNetPacket.data
                     for i in range(512):
                         print(str(i))
+                        print(str(artNetPacket.universe))
                         try:
                             # Create MQTT topic based on the universe and channel
                             topic = f"{str(artNetPacket.universe)}/{str(i)}"
