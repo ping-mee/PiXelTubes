@@ -156,8 +156,8 @@ def start_mqtt_publishers(universe_count):
     universes_to_publish = list(range(1, used_universes + 1))
     # Create and start a thread for each universe
     print(str(universes_to_publish))
-    for universe in range(universes_to_publish):
-        print(universe)
+    for universe in universes_to_publish:
+        print(str(universe))
         threads = [threading.Thread(target=mqtt_publisher, args=(int(universe),))]
 
     for thread in threads:
