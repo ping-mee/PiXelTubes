@@ -144,7 +144,7 @@ def mqtt_publisher(artnetUniverse):
                         print("Packet universe isn't the universe that was given. Given universe: "+str(artnetUniverse))
 
                 else:
-                    print("No data found in packet for universe: "+artnetUniverse)
+                    print("No data found in packet for universe: "+str(artnetUniverse))
             except KeyboardInterrupt:
                 break
     except Exception as e:
