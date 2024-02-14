@@ -127,28 +127,26 @@ def start_mqtt_publishers(universe_count):
             try:
                 # Gets whatever the last Art-Net packet we received is
                 artNetPacket = artNet.readPacket()
-                print(1)
                 # Make sure we actually *have* a packet
                 if artNetPacket is not None and artNetPacket.data is not None:
-                    print(2)
                     print(artNetPacket.universe)
                     # Checks to see if the current packet is for the specified DMX Universe
-                    if artNetPacket.universe in universe_list:
-                        print(3)
-                        dmxPacket = artNetPacket.data
-                        print(4)
-                        # channel = 1
-                        # for value in artNetPacket.data:
-                        #     # Create MQTT topic based on the universe and channel
-                        #     topic = f"{str(artNetPacket.universe)}/{str(channel)}"
+                    # if artNetPacket.universe in universe_list:
+                    #     print(3)
+                    #     dmxPacket = artNetPacket.data
+                    #     print(4)
+                    #     # channel = 1
+                    #     # for value in artNetPacket.data:
+                    #     #     # Create MQTT topic based on the universe and channel
+                    #     #     topic = f"{str(artNetPacket.universe)}/{str(channel)}"
                             
-                        #     # Publish the DMX value to the MQTT topic
-                        #     mqtt_client.publish(topic, str(value))
-                        #     channel + 1
-                        for i in range(512):
-                            # Lists in python start at 0, 
-                            print(dmxPacket[i-1], end=" ")
-                            print(5)
+                    #     #     # Publish the DMX value to the MQTT topic
+                    #     #     mqtt_client.publish(topic, str(value))
+                    #     #     channel + 1
+                    #     for i in range(512):
+                    #         # Lists in python start at 0, 
+                    #         print(dmxPacket[i-1], end=" ")
+                    #         print(5)
                             
             except Exception as e:
                 print(f"Error in universes {universe_list}: {e}")
