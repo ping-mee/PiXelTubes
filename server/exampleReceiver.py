@@ -29,7 +29,7 @@ artnetUniverse = 0
 ### Art-Net Setup ###
 # Sets debug in Art-Net module.
 # Creates Artnet socket on the selected IP and Port
-artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454, REFRESH=30, MAC=mac_address_array)
+artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
 tuple_ip = (str(get_eth0_ip()), 6454)
 artNet.art_pol_reply(tuple_ip)
 while True:
