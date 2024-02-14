@@ -143,9 +143,7 @@ def start_mqtt_publishers(universe_count):
                         for i in range(512):
                             # Lists in python start at 0, 
                             print(dmxPacket[i-1], end=" ")
-
-                else:
-                    print("No data found in packet for universes: "+str(universe_list))
+                            
             except KeyboardInterrupt:
                 break
     except Exception as e:
