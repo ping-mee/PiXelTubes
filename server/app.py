@@ -123,21 +123,27 @@ def start_mqtt_publishers(universe_count):
     try:
         while True:
             try:
-                # Gets whatever the last Art-Net packet we received is
-                artNetPacket = artNet.readPacket()
-                # Make sure we actually *have* a packet
-                if artNetPacket is not None and artNetPacket.data is not None:
-                    #Checks to see if the current packet is for the specified DMX Universe
-                    if artNetPacket.universe in universe_list:
-                        print(artNetPacket.universe)
-                        dmxPacket = artNetPacket.data
-                        for i in range(512):
-                            # Create MQTT topic based on the universe and channel
-                            topic = f"{str(artNetPacket.universe)}/{str(i)}"
-                            
-                            # Publish the DMX value to the MQTT topic
-                            mqtt_client.publish(topic, str(dmxPacket[i-1]))
-                            
+                for universe in universe_list:
+                    # Gets whatever the last Art-Net packet we received is
+                    artNetPacket = artNet.readPacket()
+                    # Make sure we actually *have* a packet
+                    if artNetPacket is not None and artNetPacket.data is not None:
+                        #Checks to see if the current packet is for the specified DMX Universe
+                        if artNetPacket.universe == universe:
+                            print(artNetPacket.universe)
+                            dmxPacket = artNetPacket.data
+                            try:
+                                for i in range(512):
+                                    # Create MQTT topic based on the universe and channel
+                                    topic = f"{str(artNetPacket.universe)}/{str(i)}"
+                                    
+                                    # Publish the DMX value to the MQTT topic
+                                    mqtt_client.publish(topic, str(dmxPacket[i-1]))
+                            except Exception as e:
+                                print(f"Error in universes {universe_list}: {e}")
+                            except KeyboardInterrupt:
+                                break
+                                
             except Exception as e:
                 print(f"Error in universes {universe_list}: {e}")
             except KeyboardInterrupt:
