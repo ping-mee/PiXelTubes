@@ -20,8 +20,7 @@ artnetBindIp = get_eth0_ip()
 # Creates Artnet socket on the selected IP and Port
 artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
 tuple_ip = (str(get_eth0_ip()), 6454)
-artNet.art_pol_reply(tuple_ip)
-artNetPacket = artNet.readPacket()
+# artNet.art_pol_reply(tuple_ip)
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
