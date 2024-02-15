@@ -113,8 +113,6 @@ def start_mqtt_publishers():
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
-    tuple_ip = (str(get_eth0_ip()), 6454)
-    artNet.art_pol_reply(tuple_ip)
     try:
         while True:
             try:
