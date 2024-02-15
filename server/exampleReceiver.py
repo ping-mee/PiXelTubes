@@ -15,8 +15,8 @@ def get_eth0_ip():
 debug = False
 
 ### ArtNet Config ###
-artnetBindIp = str(get_eth0_ip())
-# artnetBindIp = "10.0.0.4"
+# artnetBindIp = str(get_eth0_ip())
+artnetBindIp = "10.0.0.4"
 artnetUniverse = 0
 
 ### Art-Net Setup ###
