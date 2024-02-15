@@ -7,6 +7,7 @@ import python_artnet as Artnet
 import os
 from getmac import get_mac_address
 import time
+import sys
 
 app = Flask(__name__)
 
@@ -137,7 +138,8 @@ def start_mqtt_publishers():
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
-                break
+                artNet.close()
+                sys.exit()
     except Exception as e:
         print(e)
 

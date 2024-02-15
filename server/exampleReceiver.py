@@ -23,18 +23,18 @@ tuple_ip = (str(get_eth0_ip()), 6454)
 artNet.art_pol_reply(tuple_ip)
 artNetPacket = artNet.readPacket()
 print(type(artNetPacket.universe))
-# while True:
-#     try:
-#         # Gets whatever the last Art-Net packet we received is
-#         artNetPacket = artNet.readPacket()
-#         # Make sure we actually *have* a packet
-#         if artNetPacket is not None and artNetPacket.data is not None:
-#             print("Universe: "+str(artNetPacket.universe))
-#             # Stores the packet data array
-#             dmxPacket = artNetPacket.data
+while True:
+    try:
+        # Gets whatever the last Art-Net packet we received is
+        artNetPacket = artNet.readPacket()
+        # Make sure we actually *have* a packet
+        if artNetPacket is not None and artNetPacket.data is not None:
+            print("Universe: "+str(artNetPacket.universe))
+            # Stores the packet data array
+            dmxPacket = artNetPacket.data
         
-#     except KeyboardInterrupt:
-#         break
+    except KeyboardInterrupt:
+        break
 
 # Close the various connections cleanly so nothing explodes :)
 artNet.close()
