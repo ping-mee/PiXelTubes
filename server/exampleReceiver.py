@@ -2,7 +2,6 @@ import time
 import sys
 import python_artnet as Artnet
 import os
-from getmac import get_mac_address
 
 def get_eth0_ip():
     try:
@@ -13,18 +12,8 @@ def get_eth0_ip():
         print(f"Error getting eth0 IP: {e}")
         exit
 
-# def get_eth0_ip():
-#     return "10.0.0.4"
-
-mac_address = str(get_mac_address(interface="eth0"))
-mac_address_array = mac_address.split(":")
-
-# What DMX channels we want to listen to
-dmxChannels = 512
-
 ### ArtNet Config ###
 artnetBindIp = get_eth0_ip()
-artnetUniverse = 0
 
 ### Art-Net Setup ###
 # Sets debug in Art-Net module.
