@@ -130,9 +130,7 @@ def start_mqtt_publishers():
                             # Publish the DMX value to the MQTT topic
                             mqtt_client.publish(topic, str(dmxPacket[i-1]))
                         except KeyboardInterrupt:
-                            break
-
-                time.sleep(0.001)                  
+                            break               
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
