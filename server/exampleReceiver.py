@@ -29,9 +29,12 @@ while True:
         artNetPacket = artNet.readPacket()
         # Make sure we actually *have* a packet
         if artNetPacket is not None and artNetPacket.data is not None:
-            print("Universe: "+str(artNetPacket.universe))
+            if artNetPacket.universe == 0:
+                print("YES")
+            else:
+                print("Universe: "+str(artNetPacket.universe))
             # Stores the packet data array
-            dmxPacket = artNetPacket.data
+            # dmxPacket = artNetPacket.data
         
     except KeyboardInterrupt:
         break
