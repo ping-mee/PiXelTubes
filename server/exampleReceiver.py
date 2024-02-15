@@ -12,7 +12,7 @@ def get_eth0_ip():
         print(f"Error getting eth0 IP: {e}")
         exit
 
-artnetBindIP = str(get_eth0_ip)
+artnetBindIP = "10.0.0.150"
 
 artnet = Artnet.Artnet(BINDIP = artnetBindIP, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
 
