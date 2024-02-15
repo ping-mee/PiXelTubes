@@ -3,8 +3,6 @@ import sys
 import python_artnet as Artnet
 import os
 
-artnet = Artnet.Artnet()
-
 def get_eth0_ip():
     try:
         # Get the IP address of the eth0 interface
@@ -14,10 +12,11 @@ def get_eth0_ip():
         print(f"Error getting eth0 IP: {e}")
         exit
 
+artnet = Artnet.Artnet(BINDIP=get_eth0_ip)
+
 while True:
     try:
-        
-        artNetPacket = artnet.readPacket(BINDIP=get_eth0_ip)
+        artNetPacket = artnet.readPacket()
         if artNetPacket is not None and artNetPacket.data is not None:
             if artNetPacket.universe == 0:
                 print("Universe was the specified universe: "+str(artNetPacket.universe))
