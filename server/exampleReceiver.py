@@ -12,20 +12,36 @@ def get_eth0_ip():
         print(f"Error getting eth0 IP: {e}")
         exit
 
-artnetBindIP = "10.0.0.228"
+debug = True
 
-artnet = Artnet.Artnet(BINDIP = artnetBindIP, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+### ArtNet Config ###
+artnetBindIp = str(get_eth0_ip())
+artnetUniverse = 0
+
+### Art-Net Setup ###
+# Sets debug in Art-Net module.
+# Creates Artnet socket on the selected IP and Port
+artNet = Artnet.Artnet(artnetBindIp, DEBUG=debug)
 
 while True:
     try:
-        artNetPacket = artnet.readPacket()
+        # Gets whatever the last Art-Net packet we received is
+        artNetPacket = artNet.readPacket()
+        # Make sure we actually *have* a packet
         if artNetPacket is not None and artNetPacket.data is not None:
-            if artNetPacket.universe == 0:
-                print("Universe was the specified universe: "+str(artNetPacket.universe))
+            # Checks to see if the current packet is for the specified DMX Universe
+            if artNetPacket.universe == artnetUniverse:
+                print("Received specified universe: "+str(artNetPacket.universe))
+                
+                # Print a newline so things look nice :)
             else:
-                print("Universe was not the specified: "+str(artNetPacket.universe))
-            # Stores the packet data array
+                print("Did not receive specified universe. The received universe was universe: "+str(artNetPacket.universe))
+                
+        time.sleep(0.1)
+        
     except KeyboardInterrupt:
-        artnet.close()
         break
-    time.sleep(0.01)
+
+# Close the various connections cleanly so nothing explodes :)
+artNet.close()
+sys.exit()
