@@ -132,7 +132,7 @@ def start_mqtt_publishers():
                         except KeyboardInterrupt:
                             break
 
-                time.sleep(0.0001)                  
+                time.sleep(0.001)                  
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
