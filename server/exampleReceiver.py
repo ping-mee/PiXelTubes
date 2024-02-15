@@ -12,10 +12,11 @@ def get_eth0_ip():
         print(f"Error getting eth0 IP: {e}")
         exit
 
-debug = True
+debug = False
 
 ### ArtNet Config ###
 artnetBindIp = str(get_eth0_ip())
+# artnetBindIp = "10.0.0.4"
 artnetUniverse = 0
 
 ### Art-Net Setup ###
@@ -36,8 +37,6 @@ while True:
                 # Print a newline so things look nice :)
             else:
                 print("Did not receive specified universe. The received universe was universe: "+str(artNetPacket.universe))
-                
-        time.sleep(0.1)
         
     except KeyboardInterrupt:
         break
