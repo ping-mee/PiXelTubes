@@ -1,6 +1,5 @@
 import os
 import wifi
-from sacn import sACNlistener
 from neopixel import *
 import requests
 import json
@@ -60,41 +59,21 @@ def is_connected_to_wifi():
     except wifi.exceptions.InterfaceError:
         return False
     
-def update_led_strip(dmx_values, dmx_address, strip, LED_PER_PIXEL):
+def update_led_strip(r, g, b, dmx_address, strip, LED_PER_PIXEL):
     for i in range(LED_COUNT):
         pixel_index = i // LEDS_PER_PIXEL
         dmx_index = dmx_address + (pixel_index * 3)
-
-        r = dmx_values[dmx_index]
-        g = dmx_values[dmx_index + 1]
-        b = dmx_values[dmx_index + 2]
 
         strip.setPixelColor(i, Color(r, g, b))
 
     # Update the LED strip
     strip.show()
 
-def listen_to_sacn(universe, dmx_address, strip, LEDS_PER_PIXEL):
+def mqtt_listner(universe, dmx_address, strip, LEDS_PER_PIXEL):
     try:
-        # Create a new sACN listener
-        listener = sACNlistener()
-
-        # Configure the listener to listen to the specified universe
-        listener.register_listener(universe)
-
-        # Start the listener
-        listener.start()
-
         while True:
-            # Get the latest data from the specified universe
-            packet = listener[universe].listen()
-
-            if packet is not None:
-                # Extract DMX values from the sACN packet
-                dmx_values = packet.dmx_frame
-
-                # Update the LED strip based on the received DMX values
-                update_led_strip(dmx_values, dmx_address, strip, LEDS_PER_PIXEL)
+                
+                update_led_strip(values, dmx_address, strip, LEDS_PER_PIXEL)
     except Exception as e:
         print(f"Error: {e}")
 
@@ -108,14 +87,6 @@ def loopCheckSettingUpdates():
             print(f"Error: {e}")
         time.sleep(2)
 
-def loopUpdatePixels():
-    while True:
-        try:
-            listen_to_artnet(universe, dmx_address, strip, LEDS_PER_PIXEL)
-        except Exception as e:
-            print(f"Error: {e}")
-
-
 if __name__ == "__main__":
     # Connect to Wi-Fi
     if is_connected_to_wifi():
@@ -125,10 +96,9 @@ if __name__ == "__main__":
         global universe
         global dmx_address
         universe, dmx_address = get_assigned_params()
-        listen_to_artnet(universe, dmx_address, strip, LEDS_PER_PIXEL)
 
         settingsUpdateThread = Thread(target=loopCheckSettingUpdates, args=())
-        pixelUpdateThread = Thread(target=loopUpdatePixels, args=())
+        pixelUpdateThread = Thread(target=mqtt_listner, args=(universe, dmx_address, strip, LEDS_PER_PIXEL))
 
         settingsUpdateThread.start()
         pixelUpdateThread.start()
