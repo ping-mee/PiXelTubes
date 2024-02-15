@@ -22,7 +22,6 @@ artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = False, SHORTNAME = "PiXelT
 tuple_ip = (str(get_eth0_ip()), 6454)
 artNet.art_pol_reply(tuple_ip)
 artNetPacket = artNet.readPacket()
-print(artNetPacket)
 while True:
     try:
         # Gets whatever the last Art-Net packet we received is
