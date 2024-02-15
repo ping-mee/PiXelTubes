@@ -83,7 +83,7 @@ def get_assigned_params(tube_unique_id):
         return jsonify({'success': False, 'message': f'Error: {e}'})
 
 def flask_api():
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='192.168.0.1', port=5000)
 
 def get_eth0_ip():
     try:
@@ -124,15 +124,14 @@ def start_mqtt_publishers():
                     dmxPacket = artNetPacket.data
                     for i in range(512):
                         try:
-                            print(str(i))
-                            print(str(artNetPacket.universe))
                             # Create MQTT topic based on the universe and channel
                             topic = f"{str(artNetPacket.universe)}/{str(i)}"
                             
                             # Publish the DMX value to the MQTT topic
                             mqtt_client.publish(topic, str(dmxPacket[i-1]))
                         except KeyboardInterrupt:
-                            break                            
+                            break    
+                time.sleep(0.01)                        
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
