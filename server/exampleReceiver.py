@@ -24,8 +24,7 @@ while True:
                 print("Universe was the specified universe: "+str(artNetPacket.universe))
             else:
                 print("Universe was not the specified: "+str(artNetPacket.universe))
-        else:
-            print("Packet was none")
+            # Stores the packet data array
     except KeyboardInterrupt:
         artnet.close()
         break
