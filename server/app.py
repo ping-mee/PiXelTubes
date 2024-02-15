@@ -120,15 +120,14 @@ def start_mqtt_publishers():
             try:
                 # Gets whatever the last Art-Net packet we received is
                 artNetPacket = artNet.readPacket()
-                print(artNetPacket.length)
                 # Make sure we actually *have* a packet
                 if artNetPacket is not None and artNetPacket.data is not None:
                     #Checks to see if the current packet is for the specified DMX Universe
                     dmxPacket = artNetPacket.data
                     for i in range(512):
-                        print(str(i))
-                        print(str(artNetPacket.universe))
                         try:
+                            print(str(i))
+                            print(str(artNetPacket.universe))
                             # Create MQTT topic based on the universe and channel
                             topic = f"{str(artNetPacket.universe)}/{str(i)}"
                             
