@@ -119,7 +119,7 @@ def start_mqtt_publishers():
                 # Gets whatever the last Art-Net packet we received is
                 artNetPacket = artNet.readPacket()
                 # Make sure we actually *have* a packet
-                if artNetPacket is not None and artNetPacket.data is not None:
+                if artNetPacket is not None:
                     #Checks to see if the current packet is for the specified DMX Universe
                     dmxPacket = artNetPacket.data
                     for i in range(512):
