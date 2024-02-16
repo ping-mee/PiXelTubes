@@ -8,6 +8,7 @@ import os
 from getmac import get_mac_address
 import time
 import sys
+from multiprocessing import Process
 
 app = Flask(__name__)
 
@@ -140,7 +141,7 @@ def start_mqtt_publishers():
         print(e)
 
 if __name__ == "__main__":
-    flask_thread = threading.Thread(target=flask_api())
+    flask_thread = Process(target=flask_api)
     flask_thread.start()
-    publisher_thread = threading.Thread(target=start_mqtt_publishers())
+    publisher_thread = Process(target=start_mqtt_publishers)
     publisher_thread.start()
