@@ -7,6 +7,7 @@ import time
 from threading import Thread
 import paho.mqtt.client as mqtt
 from getmac import get_mac_address
+import board
 
 # Replace with your server's IP address and port
 SERVER_IP = '192.168.0.1'  # Change to the actual IP of the PiXelTube Master
@@ -16,7 +17,7 @@ SERVER_PORT = 5000  # Change to the port your Flask app is running on
 wlan_mac_address = str(get_mac_address(interface="wlan0"))
 
 # Replace with the GPIO pin connected to the data input of the WS2812B LED strip
-LED_STRIP_PIN = 18
+LED_STRIP_PIN = board.D18
 global LED_COUNT
 LED_COUNT = 30
 global LEDS_PER_PIXEL
