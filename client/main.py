@@ -83,7 +83,7 @@ def loopCheckSettingUpdates():
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
-    if is_connected_to_wifi():
+    if is_connected_to_wifi() is not None:
         # Register/reauthenticate the tube
         register_tube()
         time.sleep(1)
