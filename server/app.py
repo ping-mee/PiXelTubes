@@ -55,7 +55,7 @@ def register_tube(mac_address):
         pass
     else:
         # Tube is new, insert into the database
-        cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address, lamp_power) VALUES (%s, %s, %s, %s)",
+        cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address) VALUES (%s, %s, %s)",
                     (mac_address, 0, 1, 0))  # Universe 0, DMX Address 1, Lamp Power Off (False)
     cur.close()
 
