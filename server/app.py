@@ -127,7 +127,7 @@ def start_mqtt_publishers():
                     topic = {"PiXelTubes/"+str(artNetPacket.universe)}
                     
                     # Publish the DMX value to the MQTT topic
-                    mqtt_client.publish(topic, dmxPacket)         
+                    mqtt_client.publish(topic, str(dmxPacket))
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
