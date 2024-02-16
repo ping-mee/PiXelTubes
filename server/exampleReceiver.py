@@ -28,18 +28,12 @@ while True:
     try:
         # Gets whatever the last Art-Net packet we received is
         artNetPacket = artNet.readPacket()
-        # Make sure we actually *have* a packet
-        if artNetPacket is not None and artNetPacket.data is not None:
-            # Checks to see if the current packet is for the specified DMX Universe
-            if artNetPacket.universe == artnetUniverse:
-                print("Received specified universe: "+str(artNetPacket.universe))
-                
-                # Print a newline so things look nice :)
-            else:
-                print("Did not receive specified universe. The received universe was universe: "+str(artNetPacket.universe))
+        print(artNetPacket)
         
     except KeyboardInterrupt:
         break
+    except Exception as e:
+        print(e)
 
 # Close the various connections cleanly so nothing explodes :)
 artNet.close()
