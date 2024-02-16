@@ -50,6 +50,8 @@ def register_tube(mac_address):
     cur.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
     existing_tube = cur.fetchone()
 
+    print(existing_tube)
+
     if existing_tube:
         # Tube already exists, do nothing for now
         pass

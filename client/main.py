@@ -98,6 +98,7 @@ def loopCheckSettingUpdates():
             global universe
             global dmx_address
             universe, dmx_address = get_assigned_params()
+            print(universe, dmx_address)
         except Exception as e:
             print(f"Error: {e}")
         time.sleep(2)
