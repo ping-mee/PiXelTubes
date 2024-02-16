@@ -208,6 +208,8 @@ Then save and exit.
 Last step for the routing is to enable a firewall rule on the Pi
 
 ```
+sudo systemctl enable netfilter-persistent
+sudo systemctl start netfilter-persistent
 sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE
 sudo netfilter-persistent save
 ```
