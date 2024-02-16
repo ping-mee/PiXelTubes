@@ -85,7 +85,6 @@ For the professionals out there, most of you will already know how to pixel cont
 ```
 sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill mosquitto mosquitto-clients python3-mysqldb -y
 pip3 install Flask
-pip3 install adafruit_circuitpython_neopixel
 pip3 install Requests
 pip3 install python-artnet
 pip3 install wifi
@@ -274,7 +273,7 @@ Then just change directory into the server folder.
 
 * Plug the MicroSD card for your PXT into your computer.
 * Click "Choose model" > "No filtering".
-* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS (Legacy, 64-bit) Lite.
+* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS (Legacy, 32-bit) Lite.
 * Click "Select SD card" and select the SD card you want to install the OS to. **Be carefull** if you acidentially select the wrong drive (e.g. your important USB drive with goverment confidential document on) **all data on it will be earesed**** because it will be formated in order to install the OS.
 * Click "Next" > "Edit settings".
 * Input a hostname that is unique to this specific tube later in the process (e.g. "PiXelTube-1"), a username and password (pxm and a password that you can remember or that you've written down somewhere).
@@ -293,3 +292,24 @@ Then just change directory into the server folder.
   * Linux: Hey, I know that you as a linux user already know how to do this, so I don't need to explain how to do this ;)
 * Now in the terminal type the following command: `ssh <username you set for the pi>@<ip address of the pi>`
 * A promt should appear to enter a password. Just enter the password you set for the Pi.
+
+### Commands to install all the required packages:
+
+```
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git -y
+pip3 install adafruit_circuitpython_neopixel
+pip3 install Requests
+pip3 install wifi
+pip3 install paho-mqtt
+pip3 install get-mac
+```
+
+### Clone the project to your Pi
+
+You can just clone the project itself into your home directory.
+
+`cd ~ && git clone https://github.com/ping-mee/PiXelTubes`
+
+Then just change directory into the client folder.
+
+`cd PiXelTubes/client`

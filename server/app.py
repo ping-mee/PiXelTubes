@@ -141,7 +141,7 @@ def start_mqtt_publishers():
 
 if __name__ == "__main__":
     start_mqtt_publishers()
-    # flask_thread = threading.Thread(target=flask_api())
-    # flask_thread.start()
-    # flask_thread.join()
+    flask_thread = threading.Thread(target=flask_api())
+    flask_thread.start()
+    flask_thread.join()
     
