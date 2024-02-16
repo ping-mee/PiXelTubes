@@ -52,7 +52,7 @@ def register_tube(mac_address):
 
     print(existing_tube)
 
-    if existing_tube:
+    if existing_tube is not None:
         # Tube already exists, do nothing for now
         pass
     else:
