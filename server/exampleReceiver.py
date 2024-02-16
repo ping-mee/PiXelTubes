@@ -14,27 +14,32 @@ def get_eth0_ip():
 
 debug = False
 
-### ArtNet Config ###
-artnetBindIp = str(get_eth0_ip())
-# artnetBindIp = "10.0.0.4"
+# You can choose between setting your own IP or if you run this on a Pi getting a IP automatically form eth0
+# artnetBindIp = str(get_eth0_ip())
+artnetBindIp = "10.0.0.4"
+
 artnetUniverse = 0
 
 ### Art-Net Setup ###
-# Sets debug in Art-Net module.
 # Creates Artnet socket on the selected IP and Port
 artNet = Artnet.Artnet(artnetBindIp, DEBUG=debug)
 
 while True:
     try:
-        # Gets whatever the last Art-Net packet we received is
+        # Read latest ArtNet packet
         artNetPacket = artNet.readPacket()
-        print(artNetPacket.universe)
-        
+        # Print out the universe of said packet
+        print("My univ: "+str(artNetPacket.universe))
+    
+    # Big red stop button just in case
     except KeyboardInterrupt:
         break
+    # Give me that exceptions
     except Exception as e:
         print(e)
+    # Slow down there young fella
+    time.sleep(0.1)
 
-# Close the various connections cleanly so nothing explodes :)
+# Bro, close dat shit! It is over for today! No more Mario Kart 8 Deluxe
 artNet.close()
 sys.exit()

@@ -269,3 +269,29 @@ You can just clone the project itself into your home directory.
 Then just change directory into the server folder.
 
 `cd PiXelTubes/server`
+
+
+### Installation of the PiXelTube itself
+
+* Download the Raspberry Pi Imager [here](https://www.raspberrypi.com/software/).
+* Plug the MicroSD card for your PXM into your computer.
+* Click "Choose model" > "No filtering".
+* Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS (Legacy, 64-bit) Lite.
+* Click "Select SD card" and select the SD card you want to install the OS to. **Be carefull** if you acidentially select the wrong drive (e.g. your important USB drive with goverment confidential document on) **all data on it will be earesed**** because it will be formated in order to install the OS.
+* Click "Next" > "Edit settings".
+* Input a hostname that is unique to this specific tube later in the process (e.g. "PiXelTube-1"), a username and password (pxm and a password that you can remember or that you've written down somewhere).
+* Click "Setup wifi" and input the SSID and password you've set when you installed the wifi access point in the PXM installation. Also set the wifi country to the country you also set for your wifi ap.
+* Go to the tab "Services" > "Enable SSH".
+* Now click on "Save" > "Yes" > "Yes" and now you can sit back and wait while the imager is installing the operating system on the MicroSD card.
+* When the imager is done, plug in the MicroSD card into the Raspberry Pi via the MicroSD slot.
+* Before plugging in the powersupply connect the Pi via a Ethernet cable router.
+* Now plug in the power.
+* Wait around a minute and then log into your PiXelMaster via SSH.
+* Enter the following comment: `cat /var/lib/misc/dnsmasq.leases`.
+* If you have set up the wifi correctly, the Tube with it's unique hostname will show up. There should be an IP address. Copy it or write it down.
+* Now open a terminal on your computer.
+  * Windows: Press the windows key on your keyboard and type the word "cmd" and hit enter.
+  * MAC: Press "command"+"space" and type "terminal" and hit enter.
+  * Linux: Hey, I know that you as a linux user already know how to do this, so I don't need to explain how to do this ;)
+* Now in the terminal type the following command: `ssh <username you set for the pi>@<ip address of the pi>`
+* A promt should appear to enter a password. Just enter the password you set for the Pi.
