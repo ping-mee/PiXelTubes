@@ -83,13 +83,13 @@ For the professionals out there, most of you will already know how to pixel cont
 ### Commands to install all the required packages:
 
 ```
-sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill mosquitto mosquitto-clients python3-mysqldb netfilter-persistent-y
-pip3 install Flask
-pip3 install Requests
-pip3 install python-artnet
-pip3 install wifi
-pip3 install paho-mqtt
-pip3 install get-mac
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill mosquitto mosquitto-clients python3-mysqldb netfilter-persistent -y &&
+pip3 install Flask &&
+pip3 install Requests &&
+pip3 install python-artnet &&
+pip3 install wifi &&
+pip3 install paho-mqtt &&
+pip3 install get-mac &&
 pip3 install netifaces
 ```
 
@@ -208,18 +208,18 @@ Then save and exit.
 Last step for the routing is to enable a firewall rule on the Pi
 
 ```
-sudo systemctl enable netfilter-persistent
-sudo systemctl start netfilter-persistent
-sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE
+sudo systemctl enable netfilter-persistent &&
+sudo systemctl start netfilter-persistent &&
+sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE &&
 sudo netfilter-persistent save
 ```
 
 Now enable and start all required services and restart:
 
 ```
-sudo systemctl unmask hostapd
-sudo systemctl enable hostapd
-sudo systemctl start hostapd
+sudo systemctl unmask hostapd &&
+sudo systemctl enable hostapd &&
+sudo systemctl start hostapd &&
 ```
 
 ### Setup the MySQL database:
@@ -312,11 +312,11 @@ Then just change directory into the server folder.
 ### Commands to install all the required packages:
 
 ```
-sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git -y
-pip3 install adafruit_circuitpython_neopixel
-pip3 install Requests
-pip3 install wifi
-pip3 install paho-mqtt
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git -y &&
+pip3 install adafruit_circuitpython_neopixel &&
+pip3 install Requests &&
+pip3 install wifi &&
+pip3 install paho-mqtt &&
 pip3 install get-mac
 ```
 
