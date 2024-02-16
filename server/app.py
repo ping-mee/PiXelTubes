@@ -114,27 +114,22 @@ def start_mqtt_publishers():
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
-    try:
-        while True:
-            try:
-                # Gets whatever the last Art-Net packet we received is
-                artNetPacket = artNet.readPacket()
-                # Make sure we actually *have* a packet
-                if artNetPacket is not None:
-                    #Checks to see if the current packet is for the specified DMX Universe
-                    dmxPacket = artNetPacket.data
-                    # Create MQTT topic based on the universe and channel
-                    topic = {"PiXelTubes/"+str(artNetPacket.universe)}
-                    
-                    # Publish the DMX value to the MQTT topic
-                    mqtt_client.publish(topic, str(dmxPacket))
-            except Exception as e:
-                print(e)
-            except KeyboardInterrupt:
-                artNet.close()
-                sys.exit()
-    except Exception as e:
-        print(e)
+    while True:
+        try:
+            # Gets whatever the last Art-Net packet we received is
+            artNetPacket = artNet.readPacket()
+            # Make sure we actually *have* a packet
+            if artNetPacket is not None:
+                #Checks to see if the current packet is for the specified DMX Universe
+                dmxPacket = artNetPacket.data
+                # Create MQTT topic based on the universe and channel
+                topic = {"PiXelTubes/"+str(artNetPacket.universe)}
+                
+                # Publish the DMX value to the MQTT topic
+                mqtt_client.publish(topic, str(dmxPacket))
+        except KeyboardInterrupt:
+            artNet.close()
+            sys.exit()
 
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
