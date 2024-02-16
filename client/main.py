@@ -56,18 +56,16 @@ def is_connected_to_wifi():
     output = subprocess.check_output(['iwgetid'])
     return output.split('"')[1] is not None
     
-def update_led_strip(r, g, b, dmx_address, strip, LED_PER_PIXEL):
-    for i in range(LED_COUNT):
-        pixel_index = i // LEDS_PER_PIXEL
-        dmx_index = dmx_address + (pixel_index * 3)
-
-        strip[i] = Color(r, g, b)
+def update_led_strip(r, g, b, pixel, strip):
+        strip[int(pixel)] = Color(r, g, b)
 
 def mqtt_listner(universe, dmx_address, strip, LEDS_PER_PIXEL):
     try:
         while True:
-                
-                update_led_strip(values, dmx_address, strip, LEDS_PER_PIXEL)
+                for i in range(LED_COUNT):
+                    pixel_index = i // LEDS_PER_PIXEL
+                    dmx_index = dmx_address + (pixel_index * 3)
+                update_led_strip(r, g, b, pixel, strip)
     except Exception as e:
         print(f"Error: {e}")
 
@@ -81,6 +79,10 @@ def loopCheckSettingUpdates():
             print(f"Error: {e}")
         time.sleep(2)
 
+def on_message(mqttc, obj, msg):
+    output = [msg.topic, msg.payload, msg.qos]
+    return output
+
 if __name__ == "__main__":
     # Connect to Wi-Fi
     if is_connected_to_wifi() is not None:
@@ -90,6 +92,12 @@ if __name__ == "__main__":
         global universe
         global dmx_address
         universe, dmx_address = get_assigned_params()
+
+        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        mqttc.connect("192.168.0.1", 1883, 60)
+        mqttc.on_message = on_message
+        for address in range(dmx_address):
+            mqttc.subscribe(str(universe)+"/"+str(address), 0)
 
         settingsUpdateThread = Thread(target=loopCheckSettingUpdates, args=())
         pixelUpdateThread = Thread(target=mqtt_listner, args=(universe, dmx_address, strip, LEDS_PER_PIXEL))
