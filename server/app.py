@@ -63,7 +63,7 @@ def register_tube(mac_address):
 @app.route('/register_tube', methods=['POST'])
 def register_tube_route():
     mac_address = request.form.get('mac_address')
-    register_tube(mac_address)
+    register_tube(str(mac_address))
     return jsonify({'success': True, 'message': 'Tube registered successfully.'})
 
 
