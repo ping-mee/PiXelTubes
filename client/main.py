@@ -1,5 +1,5 @@
 import os
-import wifi
+import subprocess
 import neopixel
 import requests
 import json
@@ -53,11 +53,8 @@ def get_assigned_params():
         return None, None
     
 def is_connected_to_wifi():
-    try:
-        ssid = wifi.current()
-        return ssid is not None
-    except wifi.exceptions.InterfaceError:
-        return False
+    output = subprocess.check_output(['iwgetid'])
+    return output.split('"')[1] is not None
     
 def update_led_strip(r, g, b, dmx_address, strip, LED_PER_PIXEL):
     for i in range(LED_COUNT):
