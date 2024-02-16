@@ -22,6 +22,8 @@ global LED_COUNT
 LED_COUNT = 30
 global LEDS_PER_PIXEL
 LEDS_PER_PIXEL = 5
+global pixel_data
+pixel_data = None
 
 # Global variables for LED strip control
 global strip
@@ -56,16 +58,35 @@ def is_connected_to_wifi():
     output = subprocess.check_output(['iwgetid'])
     return output.split('"')[1] is not None
     
-def update_led_strip(r, g, b, pixel, strip):
-        strip[int(pixel)] = Color(r, g, b)
+def update_led_strip(rgb_values, pixel, strip):
+        for i in range(LEDS_PER_PIXEL):
+            strip[int(pixel)] = Color(rgb_values[i])
 
-def mqtt_listner(universe, dmx_address, strip, LEDS_PER_PIXEL):
+def mqtt_listner(msg, universe, dmx_address, strip, LEDS_PER_PIXEL):
     try:
-        while True:
-                for i in range(LED_COUNT):
-                    pixel_index = i // LEDS_PER_PIXEL
-                    dmx_index = dmx_address + (pixel_index * 3)
-                update_led_strip(r, g, b, pixel, strip)
+        # Parse the topic to get universe and channel
+        _, dmx_universe, channel_number = msg.topic.split("/")
+        channel_number = int(channel_number)
+
+        # Calculate the pixel index and channel within the pixel
+        pixel_index = (channel_number - dmx_address) // LEDS_PER_PIXEL
+        channel_in_pixel = (channel_number - dmx_address) % LEDS_PER_PIXEL
+
+        # Initialize a new pixel entry if not present
+        if pixel_index not in pixel_data:
+            pixel_data[pixel_index] = [0] * LEDS_PER_PIXEL
+
+        # Update the RGB value for the corresponding channel in the pixel
+        pixel_data[pixel_index][channel_in_pixel] = int(msg.payload)
+
+        # Check if all three channels for the pixel are received
+        if len(pixel_data[pixel_index]) == LEDS_PER_PIXEL:
+            # Set the RGB values for the pixel in the LED strip
+            update_led_strip(pixel_index, pixel_data[pixel_index], strip)
+
+            # Remove the pixel entry from the temporary storage
+            del pixel_data[pixel_index]
+
     except Exception as e:
         print(f"Error: {e}")
 
@@ -80,8 +101,7 @@ def loopCheckSettingUpdates():
         time.sleep(2)
 
 def on_message(mqttc, obj, msg):
-    output = [msg.topic, msg.payload, msg.qos]
-    return output
+    mqtt_listner(msg)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
@@ -96,7 +116,7 @@ if __name__ == "__main__":
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.connect("192.168.0.1", 1883, 60)
         mqttc.on_message = on_message
-        for address in range(dmx_address):
+        for address in range(dmx_address, dmx_address + 18):
             mqttc.subscribe(str(universe)+"/"+str(address), 0)
 
         settingsUpdateThread = Thread(target=loopCheckSettingUpdates, args=())

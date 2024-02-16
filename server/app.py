@@ -123,15 +123,11 @@ def start_mqtt_publishers():
                 if artNetPacket is not None:
                     #Checks to see if the current packet is for the specified DMX Universe
                     dmxPacket = artNetPacket.data
-                    for i in range(artNetPacket.length):
-                        try:
-                            # Create MQTT topic based on the universe and channel
-                            topic = f"{str(artNetPacket.universe)}/{str(i)}"
-                            
-                            # Publish the DMX value to the MQTT topic
-                            mqtt_client.publish(topic, str(dmxPacket[i-1]))
-                        except KeyboardInterrupt:
-                            break               
+                    # Create MQTT topic based on the universe and channel
+                    topic = {"PiXelTubes/"+str(artNetPacket.universe)}/"
+                    
+                    # Publish the DMX value to the MQTT topic
+                    mqtt_client.publish(topic, dmxPacket)         
             except Exception as e:
                 print(e)
             except KeyboardInterrupt:
