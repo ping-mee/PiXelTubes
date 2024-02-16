@@ -123,7 +123,7 @@ def start_mqtt_publishers():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                topic = {"PiXelTubes/"+str(artNetPacket.universe)}
+                topic = "PiXelTubes/"+str(artNetPacket.universe)
                 
                 # Publish the DMX value to the MQTT topic
                 print(str(dmxPacket))
