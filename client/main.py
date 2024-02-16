@@ -53,6 +53,7 @@ def get_assigned_params():
     
 def is_connected_to_wifi():
     output = subprocess.check_output(['iwgetid'])
+    print(output)
     return output.split('"')[1]
     
 # def update_led_strip(rgb_values, pixel, strip):
