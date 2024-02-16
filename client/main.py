@@ -30,6 +30,7 @@ def register_tube():
     # Register or reauthenticate the tube with the server
     try:
         response = requests.post(f'http://{SERVER_IP}:{SERVER_PORT}/register_tube', data={'mac_address': wlan_mac_address})
+        print(response)
         data = response.json()
         if data.get('success'):
             print('Tube registered successfully.')
@@ -53,7 +54,6 @@ def get_assigned_params():
     
 def is_connected_to_wifi():
     output = subprocess.check_output(['iwgetid']).decode()
-    print(output)
     return output.split('"')[1]
     
 # def update_led_strip(rgb_values, pixel, strip):
