@@ -25,8 +25,7 @@ LEDS_PER_PIXEL = 5
 
 # Global variables for LED strip control
 global strip
-strip = neopixel.NeoPixel(LED_STRIP_PIN, LED_COUNT)
-strip.begin()
+strip = neopixel.NeoPixel(pin = LED_STRIP_PIN, n = LED_COUNT, auto_write = True, pixel_order = neopixel.RGB)
 
 def register_tube():
     # Register or reauthenticate the tube with the server
@@ -65,10 +64,7 @@ def update_led_strip(r, g, b, dmx_address, strip, LED_PER_PIXEL):
         pixel_index = i // LEDS_PER_PIXEL
         dmx_index = dmx_address + (pixel_index * 3)
 
-        strip.setPixelColor(i, Color(r, g, b))
-
-    # Update the LED strip
-    strip.show()
+        strip[i] = Color(r, g, b)
 
 def mqtt_listner(universe, dmx_address, strip, LEDS_PER_PIXEL):
     try:
