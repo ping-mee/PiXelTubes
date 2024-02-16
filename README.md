@@ -83,7 +83,7 @@ For the professionals out there, most of you will already know how to pixel cont
 ### Commands to install all the required packages:
 
 ```
-sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill mosquitto mosquitto-clients python3-mysqldb -y
+sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git python3-flask apache2 php mariadb-server mariadb-client ola ola-python dnsmasq hostapd rfkill mosquitto mosquitto-clients python3-mysqldb netfilter-persistent-y
 pip3 install Flask
 pip3 install Requests
 pip3 install python-artnet
