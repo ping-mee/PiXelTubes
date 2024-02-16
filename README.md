@@ -198,6 +198,20 @@ Now set your Wifi country code for the interface:
 
 `sudo raspi-config` > "Localisation Options" > "WLAN Country" > Select your country code by pressing Enter > "Ok" > "Finish"
 
+
+Now route the wifi0 interface to the eth0 interface. This is needed for later.
+
+Edit the sysctl.conf file with `sudo nano /etc/sysctl.conf` and uncomment the line `net.ipv4.ip_forward=1`.
+
+Then save and exit.
+
+Last step for the routing is to enable a firewall rule on the Pi
+
+```
+sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE
+sudo netfilter-persistent save
+```
+
 Now enable and start all required services and restart:
 
 ```
