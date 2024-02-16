@@ -1,6 +1,6 @@
 import os
 import wifi
-from neopixel import *
+import neopixel
 import requests
 import json
 import time
@@ -24,7 +24,7 @@ LEDS_PER_PIXEL = 5
 
 # Global variables for LED strip control
 global strip
-strip = Adafruit_NeoPixel(LED_COUNT, LED_STRIP_PIN, 800000, 10, False)
+strip = neopixel.NeoPixel(LED_STRIP_PIN, LED_COUNT)
 strip.begin()
 
 def register_tube():
