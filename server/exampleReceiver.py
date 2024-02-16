@@ -28,7 +28,7 @@ while True:
     try:
         # Gets whatever the last Art-Net packet we received is
         artNetPacket = artNet.readPacket()
-        print(artNetPacket.opCode)
+        print(artNetPacket.physical)
         
     except KeyboardInterrupt:
         break
