@@ -116,8 +116,7 @@ if __name__ == "__main__":
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.connect("192.168.0.1", 1883, 60)
         mqttc.on_message = on_message
-        for address in range(dmx_address, dmx_address + 18):
-            mqttc.subscribe(str(universe)+"/"+str(address), 0)
+        mqttc.subscribe("PiXelTubes/"+str(universe), 0)
 
         settingsUpdateThread = Thread(target=loopCheckSettingUpdates, args=())
         pixelUpdateThread = Thread(target=mqtt_listner, args=(universe, dmx_address, strip, LEDS_PER_PIXEL))
