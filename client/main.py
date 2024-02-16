@@ -52,7 +52,7 @@ def get_assigned_params():
         return None, None
     
 def is_connected_to_wifi():
-    output = subprocess.check_output(['iwgetid'])
+    output = subprocess.check_output(['iwgetid']).decode()
     print(output)
     return output.split('"')[1]
     
