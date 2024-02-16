@@ -270,11 +270,9 @@ Then just change directory into the server folder.
 
 `cd PiXelTubes/server`
 
-
 ### Installation of the PiXelTube itself
 
-* Download the Raspberry Pi Imager [here](https://www.raspberrypi.com/software/).
-* Plug the MicroSD card for your PXM into your computer.
+* Plug the MicroSD card for your PXT into your computer.
 * Click "Choose model" > "No filtering".
 * Click "Choose OS" > "Raspberry Pi OS (other)" > Raspberry Pi OS (Legacy, 64-bit) Lite.
 * Click "Select SD card" and select the SD card you want to install the OS to. **Be carefull** if you acidentially select the wrong drive (e.g. your important USB drive with goverment confidential document on) **all data on it will be earesed**** because it will be formated in order to install the OS.
