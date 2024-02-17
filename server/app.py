@@ -128,6 +128,7 @@ def mqtt_publisher():
                 # Create MQTT topic based on the universe and channel
                 if TUBE_INDEX is not None:
                     for index_row in TUBE_INDEX:
+                        print(index_row)
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
