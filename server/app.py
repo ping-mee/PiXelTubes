@@ -43,11 +43,6 @@ db.autocommit(True)
 
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
-cur = db.cursor()
-cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-TUBE_INDEX = cur.fetchall()
-cur.close()
-
 # Function to register a tube in the database
 def register_tube(mac_address):
     cur = db.cursor()
@@ -120,7 +115,10 @@ def mqtt_publisher():
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        print(TUBE_INDEX)
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        TUBE_INDEX = cur.fetchall()
+        cur.close()
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
@@ -150,11 +148,3 @@ if __name__ == "__main__":
     flask_thread.start()
     publisher_thread = Process(target=mqtt_publisher)
     publisher_thread.start()
-    # Tube index updater
-    while True:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
-        print("Updated index: "+str(TUBE_INDEX))
-        time.sleep(1)
