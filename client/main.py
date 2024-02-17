@@ -107,4 +107,4 @@ if __name__ == "__main__":
                 update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
                 print(pixel)
             print("")
-            time.sleep(1)
+            # time.sleep(1)
