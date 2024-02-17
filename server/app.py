@@ -115,6 +115,9 @@ def start_mqtt_publishers():
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+    cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+    global result
+    result = cur.fetchall()
     while True:
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -124,61 +127,63 @@ def start_mqtt_publishers():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-                result = cur.fetchall()
                 for row in result:
-                    try:
-                        dmx_address = int(row[2])
-                        if artNetPacket.universe == int(row[1]):
-                            #Define RGB values per pixel
-                            p1_r = dmxPacket[dmx_address+0+0]
-                            p1_g = dmxPacket[dmx_address+0+1]
-                            p1_b = dmxPacket[dmx_address+0+2]
+                    dmx_address = int(row[2])
+                    if artNetPacket.universe == int(row[1]):
+                        #Define RGB values per pixel
+                        p1_r = dmxPacket[dmx_address+0+0]
+                        p1_g = dmxPacket[dmx_address+0+1]
+                        p1_b = dmxPacket[dmx_address+0+2]
 
-                            p2_r = dmxPacket[dmx_address+3+0]
-                            p2_g = dmxPacket[dmx_address+3+1]
-                            p2_b = dmxPacket[dmx_address+3+2]
+                        p2_r = dmxPacket[dmx_address+3+0]
+                        p2_g = dmxPacket[dmx_address+3+1]
+                        p2_b = dmxPacket[dmx_address+3+2]
 
-                            p3_r = dmxPacket[dmx_address+6+0]
-                            p3_g = dmxPacket[dmx_address+6+1]
-                            p3_b = dmxPacket[dmx_address+6+2]
+                        p3_r = dmxPacket[dmx_address+6+0]
+                        p3_g = dmxPacket[dmx_address+6+1]
+                        p3_b = dmxPacket[dmx_address+6+2]
 
-                            p4_r = dmxPacket[dmx_address+9+0]
-                            p4_g = dmxPacket[dmx_address+9+1]
-                            p4_b = dmxPacket[dmx_address+9+2]
+                        p4_r = dmxPacket[dmx_address+9+0]
+                        p4_g = dmxPacket[dmx_address+9+1]
+                        p4_b = dmxPacket[dmx_address+9+2]
 
-                            p5_r = dmxPacket[dmx_address+12+0]
-                            p5_g = dmxPacket[dmx_address+12+1]
-                            p5_b = dmxPacket[dmx_address+12+2]
+                        p5_r = dmxPacket[dmx_address+12+0]
+                        p5_g = dmxPacket[dmx_address+12+1]
+                        p5_b = dmxPacket[dmx_address+12+2]
 
-                            p6_r = dmxPacket[dmx_address+15+0]
-                            p6_g = dmxPacket[dmx_address+15+1]
-                            p6_b = dmxPacket[dmx_address+15+2]
+                        p6_r = dmxPacket[dmx_address+15+0]
+                        p6_g = dmxPacket[dmx_address+15+1]
+                        p6_b = dmxPacket[dmx_address+15+2]
 
-                            # Pixel topics
-                            p1_topic = "tube-"+str(row[0])+"/p1"
-                            p2_topic = "tube-"+str(row[0])+"/p2"
-                            p3_topic = "tube-"+str(row[0])+"/p3"
-                            p4_topic = "tube-"+str(row[0])+"/p4"
-                            p5_topic = "tube-"+str(row[0])+"/p5"
-                            p6_topic = "tube-"+str(row[0])+"/p6"
+                        # Pixel topics
+                        p1_topic = "tube-"+str(row[0])+"/p1"
+                        p2_topic = "tube-"+str(row[0])+"/p2"
+                        p3_topic = "tube-"+str(row[0])+"/p3"
+                        p4_topic = "tube-"+str(row[0])+"/p4"
+                        p5_topic = "tube-"+str(row[0])+"/p5"
+                        p6_topic = "tube-"+str(row[0])+"/p6"
 
-                            # Publish pixel topic
-                            mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
-                            mqtt_client.publish(p2_topic, str([p2_r, p2_g, p2_b]))
-                            mqtt_client.publish(p3_topic, str([p3_r, p3_g, p3_b]))
-                            mqtt_client.publish(p4_topic, str([p4_r, p4_g, p4_b]))
-                            mqtt_client.publish(p5_topic, str([p5_r, p5_g, p5_b]))
-                            mqtt_client.publish(p6_topic, str([p6_r, p6_g, p6_b]))
-                    except Exception as e:
-                        print(e)
+                        # Publish pixel topic
+                        mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
+                        mqtt_client.publish(p2_topic, str([p2_r, p2_g, p2_b]))
+                        mqtt_client.publish(p3_topic, str([p3_r, p3_g, p3_b]))
+                        mqtt_client.publish(p4_topic, str([p4_r, p4_g, p4_b]))
+                        mqtt_client.publish(p5_topic, str([p5_r, p5_g, p5_b]))
+                        mqtt_client.publish(p6_topic, str([p6_r, p6_g, p6_b]))
 
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
+
+def update_tube_index():
+    cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+    global result
+    result = cur.fetchall()
 
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
     flask_thread.start()
     publisher_thread = Process(target=start_mqtt_publishers)
     publisher_thread.start()
+    tube_index_updater_thread = Process(target=update_tube_index)
+    tube_index_updater_thread.start()
