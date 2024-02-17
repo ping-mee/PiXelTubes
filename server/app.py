@@ -155,12 +155,12 @@ def start_mqtt_publishers():
                         p6_b = dmxPacket[dmx_address+15+2]
 
                         # Pixel topics
-                        p1_topic = "tube-"+str(result[1])+"/p1"
-                        p2_topic = "tube-"+str(result[1])+"/p2"
-                        p3_topic = "tube-"+str(result[1])+"/p3"
-                        p4_topic = "tube-"+str(result[1])+"/p4"
-                        p5_topic = "tube-"+str(result[1])+"/p5"
-                        p6_topic = "tube-"+str(result[1])+"/p6"
+                        p1_topic = "tube-"+str(row[1])+"/p1"
+                        p2_topic = "tube-"+str(row[1])+"/p2"
+                        p3_topic = "tube-"+str(row[1])+"/p3"
+                        p4_topic = "tube-"+str(row[1])+"/p4"
+                        p5_topic = "tube-"+str(row[1])+"/p5"
+                        p6_topic = "tube-"+str(row[1])+"/p6"
 
                         # Publish pixel topic
                         mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
