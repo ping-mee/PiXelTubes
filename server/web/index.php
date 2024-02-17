@@ -88,7 +88,7 @@
     </div>
 
     <script>
-        // JavaScript to handle the modal and populate values when the button is clicked
+    $(document).ready(function () {
         $('#configureModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var macAddress = button.data('id');
@@ -101,13 +101,11 @@
             modal.find('#universe').val(universe);
         });
 
-        // JavaScript to handle form submission
-        $('#configureForm').submit(function(event) {
-            // Add your logic here to handle form submission using AJAX or other methods
-            // You can access values with $('#dmxAddress').val() and $('#universe').val()
+        $('#configureForm').submit(function (event) {
             event.preventDefault();
             $('#configureModal').modal('hide');
         });
+    });
     </script>
 
 </div>
