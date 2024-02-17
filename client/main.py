@@ -86,7 +86,6 @@ def on_message(mqttc, obj, msg):
         update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
 
     strip.show()
-    time.sleep(0.01)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
@@ -100,4 +99,4 @@ if __name__ == "__main__":
         mqttc.on_message = on_message
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/pixel_colors", 0)
 
-        mqttc.loop_forever()
+        mqttc.loop_forever(max_packets = 1)
