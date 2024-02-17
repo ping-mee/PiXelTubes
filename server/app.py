@@ -109,7 +109,6 @@ def connect_mqtt():
     return client
 
 def mqtt_publisher():
-    global TUBE_INDEX
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
