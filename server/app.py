@@ -176,10 +176,11 @@ def start_mqtt_publishers():
             sys.exit()
 
 def update_tube_index():
-    cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-    global result
-    result = cur.fetchall()
-    time.sleep(2)
+    while True:
+        time.sleep(2)
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        global result
+        result = cur.fetchall()
 
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
