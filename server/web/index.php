@@ -61,6 +61,56 @@
     </table>
     </div>
 
+    <!-- Configure Modal -->
+    <div class="modal" id="configureModal" tabindex="-1" role="dialog" aria-labelledby="configureModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configureModalLabel">Configure DMX Address and Universe</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="configureForm">
+                        <div class="form-group">
+                            <label for="dmxAddress">DMX Address:</label>
+                            <input type="text" class="form-control" id="dmxAddress" placeholder="Enter DMX Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="universe">Universe:</label>
+                            <input type="text" class="form-control" id="universe" placeholder="Enter Universe">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the modal and populate values when the button is clicked
+        $('#configureModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var macAddress = button.data('id');
+            var universe = button.data('universe');
+            var dmxAddress = button.data('dmx-address');
+
+            var modal = $(this);
+            modal.find('.modal-title').text('Configure DMX Address and Universe for Tube ID ' + macAddress);
+            modal.find('#dmxAddress').val(dmxAddress);
+            modal.find('#universe').val(universe);
+        });
+
+        // JavaScript to handle form submission
+        $('#configureForm').submit(function(event) {
+            // Add your logic here to handle form submission using AJAX or other methods
+            // You can access values with $('#dmxAddress').val() and $('#universe').val()
+            event.preventDefault();
+            $('#configureModal').modal('hide');
+        });
+    </script>
+
 </div>
 </body>
 </html>
