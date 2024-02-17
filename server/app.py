@@ -109,17 +109,17 @@ def connect_mqtt():
     return client
 
 def update_tube_index():
-    global result
+    global tube_index
     while True:
         cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        result = cur.fetchall()
+        tube_index = cur.fetchall()
         cur.close()
-        print("Updated index: "+str(result))
+        print("Updated index: "+str(tube_index))
         time.sleep(10)
 
 def mqtt_publisher():
-    global result
+    global tube_index
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
@@ -133,8 +133,8 @@ def mqtt_publisher():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                if result is not None:
-                    for row in result:
+                if tube_index is not None:
+                    for row in tube_index:
                         dmx_address = int(row[2])
                         if artNetPacket.universe == int(row[1]):
                             #Define RGB values per pixel
@@ -150,8 +150,8 @@ def mqtt_publisher():
             sys.exit()
 
 if __name__ == "__main__":
-    global result
-    result = None
+    global tube_index
+    tube_index = None
     tube_index_updater_thread = Process(target=update_tube_index)
     tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
