@@ -130,8 +130,7 @@ if __name__ == "__main__":
     flask_thread.start()
 
     index_updater = asyncio.get_event_loop() 
-    index_updater.run_until_complete(tube_index_updater()) 
-    index_updater.close() 
+    index_updater.run_forever(tube_index_updater()) 
 
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
