@@ -150,6 +150,8 @@ def mqtt_publisher():
             sys.exit()
 
 if __name__ == "__main__":
+    global result
+    result = None
     tube_index_updater_thread = Process(target=update_tube_index)
     tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
