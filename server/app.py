@@ -138,10 +138,11 @@ def mqtt_publisher():
 
                             # Publish pixel topic
                             mqtt_client.publish(p1_topic, str([str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b])]))
-            del TUBE_INDEX
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
+
+        del TUBE_INDEX
 
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
