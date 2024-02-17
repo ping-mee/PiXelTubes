@@ -85,6 +85,7 @@ def on_message(mqttc, obj, msg):
         update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
 
     strip.show()
+    time.sleep(0.01)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
