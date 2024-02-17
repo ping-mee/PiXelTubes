@@ -147,7 +147,7 @@ def start_mqtt_publishers():
                             p1_topic = "tube-"+str(row[0])+"/pixel_colors"
 
                             # Publish pixel topic
-                            mqtt_client.publish(p1_topic, list(str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b])))
+                            mqtt_client.publish(p1_topic, str(list(str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b]))))
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
