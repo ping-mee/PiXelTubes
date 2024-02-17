@@ -43,12 +43,6 @@ db.autocommit(True)
 
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
-# cur = db.cursor()
-# cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-# global TUBE_INDEX
-# TUBE_INDEX = cur.fetchall()
-# cur.close()
-
 # Function to register a tube in the database
 def register_tube(mac_address):
     cur = db.cursor()
@@ -161,7 +155,6 @@ if __name__ == "__main__":
     tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
+    print(globals())
     publisher_thread = Process(target=mqtt_publisher)
     publisher_thread.start()
-    tube_index_updater_thread = Process(target=update_tube_index)
-    tube_index_updater_thread.start()
