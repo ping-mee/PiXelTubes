@@ -7,10 +7,8 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process, Manager
-
-thread_manager = Manager()
-TUBE_INDEX = thread_manager.list()
+from multiprocessing import Process
+import asyncio
 
 app = Flask(__name__)
 
@@ -116,13 +114,29 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def mqtt_publisher():
+async def tube_index_updater():
+    while True:
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        global TUBE_INDEX
+        TUBE_INDEX = cur.fetchall()
+        cur.close()
+        print("Updated tube index: "+str(TUBE_INDEX))
+        time.sleep(1)
+
+if __name__ == "__main__":
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
+
+    index_updater = asyncio.get_event_loop() 
+    index_updater.run_until_complete(tube_index_updater()) 
+    index_updater.close() 
+
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        global TUBE_INDEX
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
@@ -147,20 +161,3 @@ def mqtt_publisher():
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
-
-def tube_index_updater():
-    while True:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
-        print("Updated tube index: "+str(TUBE_INDEX))
-        time.sleep(1)
-
-if __name__ == "__main__":
-    tube_index_updater_thread = Process(target=tube_index_updater)
-    tube_index_updater_thread.start()
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
-    publisher_thread = Process(target=mqtt_publisher)
-    publisher_thread.start()
