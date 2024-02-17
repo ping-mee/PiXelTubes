@@ -45,6 +45,7 @@ mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 cur = db.cursor()
 cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+global TUBE_INDEX
 TUBE_INDEX = cur.fetchall()
 cur.close()
 
@@ -156,6 +157,8 @@ def mqtt_publisher():
             sys.exit()
 
 if __name__ == "__main__":
+    tube_index_updater_thread = Process(target=update_tube_index)
+    tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
     publisher_thread = Process(target=mqtt_publisher)
