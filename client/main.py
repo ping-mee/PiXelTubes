@@ -57,41 +57,34 @@ def is_connected_to_wifi():
     output = subprocess.check_output(['iwgetid']).decode()
     return output.split('"')[1]
     
-# def update_led_strip(rgb_values, pixel, strip):
-#         for i in range(LEDS_PER_PIXEL):
-#             strip[int(pixel)] = Color(rgb_values[i])
+def update_led_strip(rgb_values, pixel, strip):
+    strip[int(pixel)] = Color(rgb_values)
 
-# def mqtt_listner(msg, universe, dmx_address, strip, LEDS_PER_PIXEL):
-#     try:
-#         # Parse the topic to get universe and channel
-#         _, dmx_universe, channel_number = msg.topic.split("/")
-#         channel_number = int(channel_number)
+def on_message(mqttc, obj, msg):
+    if msg.topic == "tube-"+wlan_mac_address+"/p1":
+        for pixel in range(LEDS_PER_PIXEL):
+            update_led_strip(list(msg.payload), pixel)
 
-#         # Calculate the pixel index and channel within the pixel
-#         pixel_index = (channel_number - dmx_address) // LEDS_PER_PIXEL
-#         channel_in_pixel = (channel_number - dmx_address) % LEDS_PER_PIXEL
+    elif msg.topic == "tube-"+wlan_mac_address+"/p2":
+        for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
+            update_led_strip(list(msg.payload), pixel)
 
-#         # Initialize a new pixel entry if not present
-#         if pixel_index not in pixel_data:
-#             pixel_data[pixel_index] = [0] * LEDS_PER_PIXEL
+    elif msg.topic == "tube-"+wlan_mac_address+"/p3":
+        for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
+            update_led_strip(list(msg.payload), pixel)
 
-#         # Update the RGB value for the corresponding channel in the pixel
-#         pixel_data[pixel_index][channel_in_pixel] = int(msg.payload)
+    elif msg.topic == "tube-"+wlan_mac_address+"/p4":
+        for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
+            update_led_strip(list(msg.payload), pixel)
 
-#         # Check if all three channels for the pixel are received
-#         if len(pixel_data[pixel_index]) == LEDS_PER_PIXEL:
-#             # Set the RGB values for the pixel in the LED strip
-#             update_led_strip(pixel_index, pixel_data[pixel_index], strip)
+    elif msg.topic == "tube-"+wlan_mac_address+"/p5":
+        for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
+            update_led_strip(list(msg.payload), pixel)
 
-#             # Remove the pixel entry from the temporary storage
-#             del pixel_data[pixel_index]
+    elif msg.topic == "tube-"+wlan_mac_address+"/p6":
+        for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
+            update_led_strip(list(msg.payload), pixel)
 
-#     except Exception as e:
-#         print(f"Error: {e}")
-
-
-# def on_message(mqttc, obj, msg):
-#     mqtt_listner(msg)
 
 def loopCheckSettingUpdates():
     while True:
@@ -103,7 +96,6 @@ def loopCheckSettingUpdates():
         except Exception as e:
             print(f"Error: {e}")
             exit()
-            sys.exit()
         time.sleep(2)
 
 if __name__ == "__main__":
@@ -116,13 +108,18 @@ if __name__ == "__main__":
         global dmx_address
         universe, dmx_address = get_assigned_params()
 
-        # mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-        # mqttc.connect("192.168.0.1", 1883, 60)
-        # mqttc.on_message = on_message
-        # mqttc.subscribe("PiXelTubes/"+str(universe), 0)
+        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        mqttc.connect("192.168.0.1", 1883, 60)
+        mqttc.on_message = on_message
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p1", 0)
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p2", 0)
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p3", 0)
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p4", 0)
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p5", 0)
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p6", 0)
 
         settingsUpdateThread = Thread(target=loopCheckSettingUpdates, args=())
-        # pixelUpdateThread = Thread(target=mqtt_listner, args=(universe, dmx_address, strip, LEDS_PER_PIXEL))
+        pixelUpdateThread = Thread(target=mqtt_listner, args=(universe, dmx_address, strip, LEDS_PER_PIXEL))
 
         settingsUpdateThread.start()
-        # pixelUpdateThread.start()
+        pixelUpdateThread.start()
