@@ -145,8 +145,12 @@ def mqtt_publisher():
             artNet.close()
             sys.exit()
 
-def update_tube_index():
-    global TUBE_INDEX
+if __name__ == "__main__":
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
+    publisher_thread = Process(target=mqtt_publisher)
+    publisher_thread.start()
+    # Tube index updater
     while True:
         cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
@@ -154,11 +158,3 @@ def update_tube_index():
         cur.close()
         print("Updated index: "+str(TUBE_INDEX))
         time.sleep(1)
-
-if __name__ == "__main__":
-    tube_index_updater_thread = Process(target=update_tube_index)
-    tube_index_updater_thread.start()
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
-    publisher_thread = Process(target=mqtt_publisher)
-    publisher_thread.start()
