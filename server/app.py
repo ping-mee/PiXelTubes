@@ -112,7 +112,7 @@ def connect_mqtt():
 def mqtt_publisher():
     def on_message(mqttc, obj, msg):
         global TUBE_INDEX
-        TUBE_INDEX = list(msg.payload.decode)
+        TUBE_INDEX = list(msg.payload.decode())
 
     # Set Connecting Client ID
     mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
