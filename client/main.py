@@ -63,9 +63,8 @@ def update_led_strip(rgb_values, pixel, strip):
 
 def on_message(mqttc, obj, msg):
     rgb_values_list = msg.payload.decode()
-    rgb_values_list = tuple(*ast.literal_eval(rgb_values_list))
 
-    print(rgb_values_list[0])
+    print(rgb_values_list)
 
 
     time.sleep(1)
