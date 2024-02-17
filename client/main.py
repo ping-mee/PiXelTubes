@@ -82,7 +82,6 @@ if __name__ == "__main__":
         global rgb_values_list
         rgb_values_list = eval("['[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]']")
 
-        mqttc.loop_forever()
         print("test")
         while True:
             for pixel in range(LEDS_PER_PIXEL):
