@@ -99,4 +99,4 @@ if __name__ == "__main__":
         mqttc.on_message = on_message
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/pixel_colors", 0)
 
-        mqttc.loop_forever(1, 1)
+        mqttc.loop_forever()
