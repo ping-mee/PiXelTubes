@@ -118,7 +118,7 @@ def update_tube_index():
         print("Updated index: "+str(result))
         time.sleep(10)
 
-def start_mqtt_publishers():
+def mqtt_publisher():
     global result
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
@@ -155,5 +155,5 @@ if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
     flask_thread.start()
     time.sleep(10)
-    publisher_thread = Process(target=start_mqtt_publishers, args=())
+    publisher_thread = Process(target=mqtt_publisher, args=())
     publisher_thread.start()
