@@ -44,12 +44,6 @@ db.autocommit(True)
 
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
-cur = db.cursor()
-cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-global TUBE_INDEX
-TUBE_INDEX = cur.fetchall()
-cur.close()
-
 # Function to register a tube in the database
 def register_tube(mac_address):
     cur1 = db.cursor()
@@ -115,29 +109,19 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-async def tube_index_updater():
-    while True:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        global TUBE_INDEX
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
-        print("Updated tube index: "+str(TUBE_INDEX))
-        time.sleep(1)
-
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
     flask_thread.start()
-
-    index_updater = asyncio.get_event_loop()
-    asyncio.ensure_future(tube_index_updater())
-    index_updater.run_forever()
 
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        TUBE_INDEX = cur.fetchall()
+        cur.close()
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
