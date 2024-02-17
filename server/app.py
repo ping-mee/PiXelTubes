@@ -116,6 +116,7 @@ def mqtt_publisher(data_queue):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         tube_index = data_queue.get()
+        print("Queue data received: "+str(tube_index))
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
