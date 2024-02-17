@@ -141,15 +141,17 @@ def mqtt_publisher(data_queue):
             sys.exit()
 
 def tube_index_updater(data_queue):
-    try:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        tube_index = cur.fetchall()
-        cur.close()
-        data_queue.put(tube_index)
+    while True:
+        try:
+            cur = db.cursor()
+            cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+            tube_index = cur.fetchall()
+            cur.close()
+            data_queue.put(tube_index)
 
-    except Exception as e:
-        print(e)
+        except Exception as e:
+            print(e)
+        time.sleep(5)
 
 if __name__ == "__main__":
     data_queue = Queue()
