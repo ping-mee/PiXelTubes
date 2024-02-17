@@ -313,11 +313,11 @@ Then just change directory into the server folder.
 
 ```
 sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git -y &&
-pip3 install adafruit_circuitpython_neopixel &&
-pip3 install Requests &&
-pip3 install wifi &&
-pip3 install paho-mqtt &&
-pip3 install get-mac
+sudo pip3 install adafruit_circuitpython_neopixel &&
+sudo pip3 install Requests &&
+sudo pip3 install wifi &&
+sudo pip3 install paho-mqtt &&
+sudo pip3 install get-mac
 ```
 
 ### Clone the project to your Pi
