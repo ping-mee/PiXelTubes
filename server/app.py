@@ -123,49 +123,50 @@ def start_mqtt_publishers():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                for row in result:
-                    dmx_address = int(row[2])
-                    if artNetPacket.universe == int(row[1]):
-                        #Define RGB values per pixel
-                        p1_r = dmxPacket[dmx_address]
-                        p1_g = dmxPacket[dmx_address+1]
-                        p1_b = dmxPacket[dmx_address+2]
+                if result is not None:
+                    for row in result:
+                        dmx_address = int(row[2])
+                        if artNetPacket.universe == int(row[1]):
+                            #Define RGB values per pixel
+                            p1_r = dmxPacket[dmx_address]
+                            p1_g = dmxPacket[dmx_address+1]
+                            p1_b = dmxPacket[dmx_address+2]
 
-                        p2_r = dmxPacket[dmx_address+3]
-                        p2_g = dmxPacket[dmx_address+4]
-                        p2_b = dmxPacket[dmx_address+5]
+                            p2_r = dmxPacket[dmx_address+3]
+                            p2_g = dmxPacket[dmx_address+4]
+                            p2_b = dmxPacket[dmx_address+5]
 
-                        p3_r = dmxPacket[dmx_address+6]
-                        p3_g = dmxPacket[dmx_address+7]
-                        p3_b = dmxPacket[dmx_address+8]
+                            p3_r = dmxPacket[dmx_address+6]
+                            p3_g = dmxPacket[dmx_address+7]
+                            p3_b = dmxPacket[dmx_address+8]
 
-                        p4_r = dmxPacket[dmx_address+9]
-                        p4_g = dmxPacket[dmx_address+10]
-                        p4_b = dmxPacket[dmx_address+11]
+                            p4_r = dmxPacket[dmx_address+9]
+                            p4_g = dmxPacket[dmx_address+10]
+                            p4_b = dmxPacket[dmx_address+11]
 
-                        p5_r = dmxPacket[dmx_address+12]
-                        p5_g = dmxPacket[dmx_address+13]
-                        p5_b = dmxPacket[dmx_address+14]
+                            p5_r = dmxPacket[dmx_address+12]
+                            p5_g = dmxPacket[dmx_address+13]
+                            p5_b = dmxPacket[dmx_address+14]
 
-                        p6_r = dmxPacket[dmx_address+15]
-                        p6_g = dmxPacket[dmx_address+16]
-                        p6_b = dmxPacket[dmx_address+17]
+                            p6_r = dmxPacket[dmx_address+15]
+                            p6_g = dmxPacket[dmx_address+16]
+                            p6_b = dmxPacket[dmx_address+17]
 
-                        # Pixel topics
-                        p1_topic = "tube-"+str(row[0])+"/p1"
-                        p2_topic = "tube-"+str(row[0])+"/p2"
-                        p3_topic = "tube-"+str(row[0])+"/p3"
-                        p4_topic = "tube-"+str(row[0])+"/p4"
-                        p5_topic = "tube-"+str(row[0])+"/p5"
-                        p6_topic = "tube-"+str(row[0])+"/p6"
+                            # Pixel topics
+                            p1_topic = "tube-"+str(row[0])+"/p1"
+                            p2_topic = "tube-"+str(row[0])+"/p2"
+                            p3_topic = "tube-"+str(row[0])+"/p3"
+                            p4_topic = "tube-"+str(row[0])+"/p4"
+                            p5_topic = "tube-"+str(row[0])+"/p5"
+                            p6_topic = "tube-"+str(row[0])+"/p6"
 
-                        # Publish pixel topic
-                        mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
-                        mqtt_client.publish(p2_topic, str([p2_r, p2_g, p2_b]))
-                        mqtt_client.publish(p3_topic, str([p3_r, p3_g, p3_b]))
-                        mqtt_client.publish(p4_topic, str([p4_r, p4_g, p4_b]))
-                        mqtt_client.publish(p5_topic, str([p5_r, p5_g, p5_b]))
-                        mqtt_client.publish(p6_topic, str([p6_r, p6_g, p6_b]))
+                            # Publish pixel topic
+                            mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
+                            mqtt_client.publish(p2_topic, str([p2_r, p2_g, p2_b]))
+                            mqtt_client.publish(p3_topic, str([p3_r, p3_g, p3_b]))
+                            mqtt_client.publish(p4_topic, str([p4_r, p4_g, p4_b]))
+                            mqtt_client.publish(p5_topic, str([p5_r, p5_g, p5_b]))
+                            mqtt_client.publish(p6_topic, str([p6_r, p6_g, p6_b]))
 
         except KeyboardInterrupt:
             artNet.close()
