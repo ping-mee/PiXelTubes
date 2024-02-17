@@ -85,19 +85,6 @@ def on_message(mqttc, obj, msg):
         for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
             update_led_strip(list(msg.payload), pixel)
 
-
-def loopCheckSettingUpdates():
-    while True:
-        try:
-            global universe
-            global dmx_address
-            universe, dmx_address = get_assigned_params()
-            print(universe, dmx_address)
-        except Exception as e:
-            print(f"Error: {e}")
-            exit()
-        time.sleep(2)
-
 if __name__ == "__main__":
     # Connect to Wi-Fi
     if is_connected_to_wifi() is not None:
@@ -117,9 +104,3 @@ if __name__ == "__main__":
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p4", 0)
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p5", 0)
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p6", 0)
-
-        settingsUpdateThread = Thread(target=loopCheckSettingUpdates, args=())
-        pixelUpdateThread = Thread(target=mqtt_listner, args=(universe, dmx_address, strip, LEDS_PER_PIXEL))
-
-        settingsUpdateThread.start()
-        pixelUpdateThread.start()
