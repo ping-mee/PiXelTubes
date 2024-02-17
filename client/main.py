@@ -59,8 +59,6 @@ def is_connected_to_wifi():
     return output.split('"')[1]
     
 def update_led_strip(rgb_values, pixel, strip):
-    print(pixel)
-    print(rgb_values)
     strip[int(pixel)] = rgb_values
 
 def on_message(mqttc, obj, msg):
