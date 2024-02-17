@@ -10,7 +10,7 @@ import sys
 from multiprocessing import Process, Manager
 
 thread_manager = Manager()
-TUBE_INDEX = thread_manager.Array()
+TUBE_INDEX = thread_manager.list()
 
 app = Flask(__name__)
 
