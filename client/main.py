@@ -65,27 +65,27 @@ def update_led_strip(rgb_values, pixel, strip):
 def on_message(mqttc, obj, msg):
     if msg.topic == "tube-"+wlan_mac_address+"/p1":
         for pixel in range(LEDS_PER_PIXEL):
-            update_led_strip(list(msg.payload), pixel, strip)
+            update_led_strip(msg.payload, pixel, strip)
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p2":
         for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-            update_led_strip(list(msg.payload), pixel, strip)
+            update_led_strip(msg.payload, pixel, strip)
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p3":
         for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
-            update_led_strip(list(msg.payload), pixel, strip)
+            update_led_strip(msg.payload, pixel, strip)
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p4":
         for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
-            update_led_strip(list(msg.payload), pixel, strip)
+            update_led_strip(msg.payload, pixel, strip)
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p5":
         for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
-            update_led_strip(list(msg.payload), pixel, strip)
+            update_led_strip(msg.payload, pixel, strip)
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p6":
         for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
-            update_led_strip(list(msg.payload), pixel, strip)
+            update_led_strip(msg.payload, pixel, strip)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
