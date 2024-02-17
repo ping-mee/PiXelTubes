@@ -66,7 +66,7 @@ def on_message(mqttc, obj, msg):
 
     print(tuple(eval(rgb_values_list[0])))
     for pixel in range(LEDS_PER_PIXEL):
-        print("Updating pixel "+str(pixel)+" with values: "+tuple(eval(rgb_values_list[0])))
+        print("Updating pixel "+str(pixel)+" with values: "+str(tuple(eval(rgb_values_list[0]))))
         update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
 
     for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
