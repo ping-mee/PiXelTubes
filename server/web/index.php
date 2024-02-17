@@ -25,16 +25,27 @@
                 $server = "localhost";
                 $username = "pxm";
                 $password = "pixel";
+                $db_name = "pixeltube_db"
                 
-                $conn = new mysqli($server, $username, $password)
+                $conn = new mysqli($server, $username, $password, $db_name)
 
                 if ($conn->connect_error) {
                     die("Connection failed: " . $conn->connect_error);
                   }
                   echo "Connected successfully";
 
-                
-            ?>
+                $sql_query = "SELECT id, mac_address, universe, dmx_address FROM tubes";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    // output data of each row
+                    while($row = $result->fetch_assoc()) {
+                        echo "id: " . $row["id"]. " - Mac: " . $row["mac_address"]. " " . $row["universe"]. " ". $row["dmx_address"]. "<br>";
+                    }
+                }
+                else {
+                    echo "0 results";
+                }
             ?>
         </tbody>
     </table>
