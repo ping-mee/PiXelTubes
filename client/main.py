@@ -83,6 +83,7 @@ def on_message(mqttc, obj, msg):
 
     for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
         update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
+    time.sleep(1)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
