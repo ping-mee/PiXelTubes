@@ -124,7 +124,10 @@ def start_mqtt_publishers():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
+                cur.execute("SELECT id, mac_address, universe, dmx_address FROM tubes")
+                result = cur.fetchall()
 
+                print(result)
 
                 # topic = "PiXelTubes/"+str(artNetPacket.universe)
                 
