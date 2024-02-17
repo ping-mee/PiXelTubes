@@ -8,6 +8,7 @@ from threading import Thread
 import paho.mqtt.client as mqtt
 from getmac import get_mac_address
 import board
+import sys
 
 SERVER_IP = '192.168.0.1'
 SERVER_PORT = 5000
@@ -101,6 +102,7 @@ def loopCheckSettingUpdates():
             print(universe, dmx_address)
         except Exception as e:
             print(f"Error: {e}")
+            sys.exit()
         time.sleep(2)
 
 if __name__ == "__main__":

@@ -52,13 +52,12 @@ def register_tube(mac_address):
 
     print(existing_tube)
 
-    if existing_tube is not None:
-        # Tube already exists, do nothing for now
-        pass
-    else:
-        # Tube is new, insert into the database
+    # Check if the tube exsist. If it doesn't create a new db row
+    if existing_tube is None:
         cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address) VALUES (%s, %s, %s)",
-                    (mac_address, 0, 1))  # Universe 0, DMX Address 1
+        (mac_address, 0, 1))
+    else:
+        pass
     cur.close()
 
 # Registration system route
