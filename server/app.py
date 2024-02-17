@@ -152,14 +152,15 @@ def mqtt_publisher():
             sys.exit()
 
 def tube_index_updater():
-    mqtt_client = connect_mqtt()
-    cur = db.cursor()
-    cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-    TUBE_INDEX = cur.fetchall()
-    cur.close()
-    mqtt_client.publish("pxm/tube_index", str(TUBE_INDEX))
-    print("Updated tube index")
-    time.sleep(1)
+    while True:
+        mqtt_client = connect_mqtt()
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        TUBE_INDEX = cur.fetchall()
+        cur.close()
+        mqtt_client.publish("pxm/tube_index", str(TUBE_INDEX))
+        print("Updated tube index")
+        time.sleep(5)
 
 
 if __name__ == "__main__":
