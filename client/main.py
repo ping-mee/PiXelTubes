@@ -26,8 +26,7 @@ LEDS_PER_PIXEL = 5
 
 # Global variables for LED strip control
 global strip
-strip = neopixel.NeoPixel(pin = board.D18, n = LED_COUNT, auto_write = True, pixel_order = neopixel.RGB)
-strip.auto_write = True
+strip = neopixel.NeoPixel(pin = board.D18, n = LED_COUNT, auto_write = False, pixel_order = neopixel.RGB)
 
 def register_tube():
     # Register or reauthenticate the tube with the server
@@ -84,6 +83,8 @@ def on_message(mqttc, obj, msg):
 
     for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
         update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
+
+    strip.show()
     time.sleep(1)
 
 if __name__ == "__main__":
