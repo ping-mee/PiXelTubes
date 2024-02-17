@@ -111,8 +111,8 @@ def connect_mqtt():
 
 def mqtt_publisher():
     def on_message(mqttc, obj, msg):
-        print(msg.payload)
-        print(type(msg.payload))
+        print(msg.payload.decode)
+        print(type(msg.payload.decode))
         global TUBE_INDEX
         TUBE_INDEX = msg.payload
 
