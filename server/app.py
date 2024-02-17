@@ -128,7 +128,7 @@ def start_mqtt_publishers():
                 result = cur.fetchall()
                 for row in result:
                     dmx_address = int(row[2])
-                    if artNetPacket.universe == int(row[1]):
+                    if artNetPacket.universe == int(row[2]):
                         #Define RGB values per pixel
                         p1_r = dmxPacket[dmx_address+0+0]
                         p1_g = dmxPacket[dmx_address+0+1]
@@ -155,12 +155,12 @@ def start_mqtt_publishers():
                         p6_b = dmxPacket[dmx_address+15+2]
 
                         # Pixel topics
-                        p1_topic = "tube-"+str(result[0])+"/p1"
-                        p2_topic = "tube-"+str(result[0])+"/p2"
-                        p3_topic = "tube-"+str(result[0])+"/p3"
-                        p4_topic = "tube-"+str(result[0])+"/p4"
-                        p5_topic = "tube-"+str(result[0])+"/p5"
-                        p6_topic = "tube-"+str(result[0])+"/p6"
+                        p1_topic = "tube-"+str(result[1])+"/p1"
+                        p2_topic = "tube-"+str(result[1])+"/p2"
+                        p3_topic = "tube-"+str(result[1])+"/p3"
+                        p4_topic = "tube-"+str(result[1])+"/p4"
+                        p5_topic = "tube-"+str(result[1])+"/p5"
+                        p6_topic = "tube-"+str(result[1])+"/p6"
 
                         # Publish pixel topic
                         mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
