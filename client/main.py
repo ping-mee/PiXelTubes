@@ -102,6 +102,7 @@ def loopCheckSettingUpdates():
             print(universe, dmx_address)
         except Exception as e:
             print(f"Error: {e}")
+            exit()
             sys.exit()
         time.sleep(2)
 
