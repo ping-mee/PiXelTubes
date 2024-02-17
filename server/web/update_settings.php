@@ -18,10 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $macAddress = $_POST['macAddress'];
     $dmxAddress = $_POST['dmxAddress'];
     $universe = $_POST['universe'];
-    
+
     $update_query = "UPDATE tubes SET dmx_address = '$dmxAddress', universe = '$universe' WHERE mac_address = '$macAddress'";
-    
-    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -35,13 +33,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
     <body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="container">
-            <h1 class="mb-4 text-center">Update Settings</h1>
             <?php
                 if ($conn->query($update_query) === TRUE) {
                     header("Location: ".$_SERVER['SERVER_NAME']."/");
+                    $conn->close();
                     exit();
                 } else {
                     echo '<p class="text-danger">Error updating settings: ' . $conn->error . '</p>';
+                    $conn->close();
                 }
             ?>
         </div>
