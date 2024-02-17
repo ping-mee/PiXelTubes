@@ -46,6 +46,7 @@ mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 cur = db.cursor()
 cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+global TUBE_INDEX
 TUBE_INDEX = cur.fetchall()
 cur.close()
 
