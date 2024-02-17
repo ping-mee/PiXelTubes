@@ -153,7 +153,7 @@ def tube_index_updater(data_queue):
 
 if __name__ == "__main__":
     data_queue = Queue()
-    ti_updater_thread = Process(target=tube_index_updater(), args=(data_queue, ))
+    ti_updater_thread = Process(target=tube_index_updater, args=(data_queue, ))
     ti_updater_thread.start()
     publisher_thread = Process(target=mqtt_publisher, args=(data_queue, ))
     publisher_thread.start()
