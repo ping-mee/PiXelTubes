@@ -117,6 +117,7 @@ def update_tube_index():
     while True:
         cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        global TUBE_INDEX
         TUBE_INDEX = cur.fetchall()
         cur.close()
         print("Updated index: "+str(TUBE_INDEX))
