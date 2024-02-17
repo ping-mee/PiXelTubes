@@ -114,6 +114,7 @@ def start_mqtt_publishers():
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+    result = None
     while True:
         try:
             # Gets whatever the last Art-Net packet we received is
