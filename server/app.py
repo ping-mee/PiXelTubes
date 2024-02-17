@@ -45,18 +45,18 @@ mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 # Function to register a tube in the database
 def register_tube(mac_address):
-    cur = db.cursor()
+    cur1 = db.cursor()
     # Check if the tube already exists in the database
-    cur.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
-    existing_tube = cur.fetchone()
+    cur1.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
+    existing_tube = cur1.fetchone()
 
     # Check if the tube exsist. If it doesn't create a new db row
     if not existing_tube:
-        cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address) VALUES (%s, %s, %s)",
+        cur1.execute("INSERT INTO tubes (mac_address, universe, dmx_address) VALUES (%s, %s, %s)",
         (mac_address, 0, 1))
     else:
         pass
-    cur.close()
+    cur1.close()
 
 # Registration system route
 @app.route('/register_tube', methods=['POST'])
