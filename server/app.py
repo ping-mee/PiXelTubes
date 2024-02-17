@@ -163,12 +163,12 @@ def start_mqtt_publishers():
                         p6_topic = "tube-"+str(result[0])+"/p6"
 
                         # Publish pixel topic
-                        mqtt_client.publish(p1_topic, list(p1_r, p1_g, p1_b))
-                        mqtt_client.publish(p2_topic, list(p2_r, p2_g, p2_b))
-                        mqtt_client.publish(p3_topic, list(p3_r, p3_g, p3_b))
-                        mqtt_client.publish(p4_topic, list(p4_r, p4_g, p4_b))
-                        mqtt_client.publish(p5_topic, list(p5_r, p5_g, p5_b))
-                        mqtt_client.publish(p6_topic, list(p6_r, p6_g, p6_b))
+                        mqtt_client.publish(p1_topic, [p1_r, p1_g, p1_b])
+                        mqtt_client.publish(p2_topic, [p2_r, p2_g, p2_b])
+                        mqtt_client.publish(p3_topic, [p3_r, p3_g, p3_b])
+                        mqtt_client.publish(p4_topic, [p4_r, p4_g, p4_b])
+                        mqtt_client.publish(p5_topic, [p5_r, p5_g, p5_b])
+                        mqtt_client.publish(p6_topic, [p6_r, p6_g, p6_b])
 
         except KeyboardInterrupt:
             artNet.close()
