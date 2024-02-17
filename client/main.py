@@ -1,6 +1,6 @@
 import os
 import subprocess
-import neopixel
+from rpi_ws281x import Adafruit_NeoPixel
 import requests
 import json
 import time
@@ -26,7 +26,8 @@ LEDS_PER_PIXEL = 5
 
 # Global variables for LED strip control
 global strip
-strip = neopixel.NeoPixel(pin = LED_STRIP_PIN, n = LED_COUNT, auto_write = True, pixel_order = neopixel.RGB)
+strip = Adafruit_NeoPixel(LED_COUNT, 18, 800000, 5, False, 255)
+strip.begin()
 
 def register_tube():
     # Register or reauthenticate the tube with the server
@@ -59,8 +60,8 @@ def is_connected_to_wifi():
     return output.split('"')[1]
     
 def update_led_strip(rgb_values, pixel, strip):
-    strip[int(pixel)] = rgb_values
-    
+    strip.setPixelColorRGB(int(pixel), *rgb_values)
+
 def on_message(mqttc, obj, msg):
     rgb_values = (*ast.literal_eval(msg.payload.decode()), )
     if msg.topic == "tube-"+wlan_mac_address+"/p1":
