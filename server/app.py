@@ -153,6 +153,6 @@ if __name__ == "__main__":
     tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
-    time.sleep(1)
+    time.sleep(10)
     publisher_thread = Process(target=start_mqtt_publishers, args=())
     publisher_thread.start()
