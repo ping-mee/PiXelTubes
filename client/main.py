@@ -63,25 +63,24 @@ def update_led_strip(rgb_values, pixel, strip):
 
 def on_message(mqttc, obj, msg):
     rgb_values_list = msg.payload.decode()
-    print(rgb_values_list)
 
-    # for pixel in range(LEDS_PER_PIXEL):
-    #     update_led_strip(rgb_values, pixel, strip)
+    for pixel in range(LEDS_PER_PIXEL):
+        update_led_strip(rgb_values_list[0], pixel, strip)
 
-    # for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-    #     update_led_strip(rgb_values, pixel, strip)
+    for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
+        update_led_strip(rgb_values_list[1], pixel, strip)
 
-    # for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
-    #     update_led_strip(rgb_values, pixel, strip)
+    for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
+        update_led_strip(rgb_values_list[2], pixel, strip)
 
-    # for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
-    #     update_led_strip(rgb_values, pixel, strip)
+    for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
+        update_led_strip(rgb_values_list[3], pixel, strip)
 
-    # for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
-    #     update_led_strip(rgb_values, pixel, strip)
+    for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
+        update_led_strip(rgb_values_list[4], pixel, strip)
 
-    # for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
-    #     update_led_strip(rgb_values, pixel, strip)
+    for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
+        update_led_strip(rgb_values_list[5], pixel, strip)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
