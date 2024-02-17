@@ -158,6 +158,8 @@ def tube_index_updater():
     TUBE_INDEX = cur.fetchall()
     cur.close()
     mqtt_client.publish("pxm/tube_index", str(TUBE_INDEX))
+    print("Updated tube index")
+    time.sleep(1)
 
 
 if __name__ == "__main__":
