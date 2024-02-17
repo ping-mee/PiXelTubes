@@ -94,10 +94,6 @@ def get_eth0_ip():
     except (KeyError, IndexError, OSError) as e:
         print(f"Error getting eth0 IP: {e}")
         exit
-
-def on_message(mqttc, obj, msg):
-        global TUBE_INDEX
-        TUBE_INDEX = list(msg.payload.decode())
     
 def on_connect(client, userdata, flags, reason_code, properties):
         if reason_code == 0:
@@ -113,11 +109,19 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def mqtt_publisher():
+if __name__ == "__main__":
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
+
     # Create and start a thread for each universe
+    mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        TUBE_INDEX = cur.fetchall()
+        cur.close()
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
@@ -141,25 +145,3 @@ def mqtt_publisher():
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
-
-def tube_index_updater():
-    while True:
-        mqtt_client = connect_mqtt()
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
-        mqtt_client.publish("pxm/tube_index", str(TUBE_INDEX))
-        print("Updated tube index")
-        time.sleep(5)
-
-
-if __name__ == "__main__":
-    update_tube_index_thread = Process(target=tube_index_updater)
-    update_tube_index_thread.start()
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
-    mqtt_client = connect_mqtt()
-    mqtt_client.subscribe("pxm/tube_index")
-    mqtt_client.loop_start()
-    mqtt_publisher()
