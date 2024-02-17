@@ -40,18 +40,7 @@
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while($row = $result->fetch_assoc()) {
-                        echo '''
-                        <tr>
-                            <th>'.$row["id"].'</th>
-                            <th>'.$row["universe"].'</th>
-                            <th>'.$row["dmx_address"].'</th>
-                            <th>
-                                <form action="./settings.php?id='.$row["mac_address"]'">
-                                    <button type="submit" class="btn btn-secondary">Configure</button>
-                                </form>                            
-                            </th>
-                        </tr>
-                        ''';
+                        echo '<tr><th>'.$row["id"].'</th><th>'.$row["universe"].'</th><th>'.$row["dmx_address"].'</th><th><form action="./settings.php?id='.$row["mac_address"]'"><button type="submit" class="btn btn-secondary">Configure</button></form></th></tr>';
                     }
                 }
                 else {
