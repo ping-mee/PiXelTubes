@@ -114,11 +114,6 @@ def start_mqtt_publishers():
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
-    cur = db.cursor()
-    cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-    global result
-    result = cur.fetchall()
-    cur.close()
     while True:
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -178,17 +173,17 @@ def start_mqtt_publishers():
 
 def update_tube_index():
     while True:
-        time.sleep(2)
         cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
         global result
         result = cur.fetchall()
         cur.close()
+        time.sleep(10)
 
 if __name__ == "__main__":
+    tube_index_updater_thread = Process(target=update_tube_index)
+    tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
     publisher_thread = Process(target=start_mqtt_publishers)
     publisher_thread.start()
-    tube_index_updater_thread = Process(target=update_tube_index)
-    tube_index_updater_thread.start()
