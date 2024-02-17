@@ -118,14 +118,13 @@ def update_tube_index():
         print("Updated index: "+str(result))
         time.sleep(10)
 
-def start_mqtt_publishers():
+def start_mqtt_publishers(result):
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     cur = db.cursor()
     cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-    global result
     result = cur.fetchall()
     cur.close()
     while True:
@@ -158,5 +157,5 @@ if __name__ == "__main__":
     tube_index_updater_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
-    publisher_thread = Process(target=start_mqtt_publishers)
+    publisher_thread = Process(target=start_mqtt_publishers, args=(result, ))
     publisher_thread.start()
