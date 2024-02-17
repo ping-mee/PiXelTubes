@@ -116,7 +116,7 @@ def mqtt_publisher():
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        cur.execute("SELECT universe, dmx_address FROM tubes")
         TUBE_INDEX = cur.fetchall()
         cur.close()
         try:
@@ -129,8 +129,8 @@ def mqtt_publisher():
                 # Create MQTT topic based on the universe and channel
                 if TUBE_INDEX is not None:
                     for row in TUBE_INDEX:
-                        dmx_address = int(row[2])
-                        if artNetPacket.universe == int(row[1]):
+                        dmx_address = int(row[1])
+                        if artNetPacket.universe == int(row[0]):
                             #Define RGB values per pixel
                             p1_g, p1_b, p1_r, p2_g, p2_b, p2_r, p3_g, p3_b, p3_r, p4_g, p4_b, p4_r, p5_g, p5_b, p5_r, p6_g, p6_b, p6_r = dmxPacket[dmx_address], dmxPacket[dmx_address+1], dmxPacket[dmx_address+2], dmxPacket[dmx_address+3], dmxPacket[dmx_address+4], dmxPacket[dmx_address+5], dmxPacket[dmx_address+6], dmxPacket[dmx_address+7], dmxPacket[dmx_address+8], dmxPacket[dmx_address+9], dmxPacket[dmx_address+10], dmxPacket[dmx_address+11], dmxPacket[dmx_address+12], dmxPacket[dmx_address+13], dmxPacket[dmx_address+14], dmxPacket[dmx_address+15], dmxPacket[dmx_address+16], dmxPacket[dmx_address+17]
 
