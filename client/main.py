@@ -79,8 +79,11 @@ if __name__ == "__main__":
         mqttc.on_message = on_message
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/pixel_colors", 0)
 
-        mqttc.loop_forever()
+        global rgb_values_list
+        rgb_values_list = eval("['[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]']")
 
+        mqttc.loop_forever()
+        print("test")
         while True:
             for pixel in range(LEDS_PER_PIXEL):
                 update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
