@@ -118,7 +118,7 @@ def update_tube_index():
         print("Updated index: "+str(result))
         time.sleep(10)
 
-def start_mqtt_publishers(result):
+def start_mqtt_publishers():
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
