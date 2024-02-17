@@ -1,15 +1,10 @@
-import os
 import subprocess
 import neopixel
 import requests
-import json
 import time
-from threading import Thread
 import paho.mqtt.client as mqtt
 from getmac import get_mac_address
 import board
-import sys
-import ast
 
 SERVER_IP = '192.168.0.1'
 SERVER_PORT = 5000
@@ -85,26 +80,20 @@ if __name__ == "__main__":
         while True:
             for pixel in range(LEDS_PER_PIXEL):
                 update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
-                print(pixel)
-            print("")
+
             for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
                 update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
-                print(pixel)
-            print("")
+
             for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
                 update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
-                print(pixel)
-            print("")
+
             for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
                 update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
-                print(pixel)
-            print("")
+
             for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
                 update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
-                print(pixel)
-            print("")
+
             for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
                 update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
-                print(pixel)
-            print("")
-            # time.sleep(1)
+
+            time.sleep(0.5)
