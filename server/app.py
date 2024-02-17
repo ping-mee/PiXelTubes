@@ -7,7 +7,7 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 import asyncio
 
 app = Flask(__name__)
@@ -109,19 +109,13 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-if __name__ == "__main__":
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
-
+def mqtt_publisher(data_queue):
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
+        tube_index = data_queue.get()
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
@@ -130,8 +124,8 @@ if __name__ == "__main__":
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                if TUBE_INDEX is not None:
-                    for index_row in TUBE_INDEX:
+                if tube_index is not None:
+                    for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
@@ -145,3 +139,23 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
+
+def tube_index_updater(data_queue):
+    try:
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        tube_index = cur.fetchall()
+        cur.close()
+        data_queue.put(tube_index)
+
+    except Exception as e:
+        print(e)
+
+if __name__ == "__main__":
+    data_queue = Queue()
+    ti_updater_thread = Process(target=tube_index_updater(), args=(data_queue, ))
+    ti_updater_thread.start()
+    publisher_thread = Process(target=mqtt_publisher, args=(data_queue, ))
+    publisher_thread.start()
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
