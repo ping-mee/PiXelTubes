@@ -158,5 +158,6 @@ if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
     flask_thread.start()
     time.sleep(1)
+    global result
     publisher_thread = Process(target=start_mqtt_publishers, args=(result, ))
     publisher_thread.start()
