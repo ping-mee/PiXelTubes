@@ -45,9 +45,7 @@
                             <th>'.$row["universe"].'</th>
                             <th>'.$row["dmx_address"].'</th>
                             <th>
-                                <form action="./settings.php?id='.$row["mac_address"].'">
-                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#configureModal" data-id="'.$row["mac_address"].'" data-universe="'.$row["universe"].'" data-dmx-address="'.$row["dmx_address"].'">Configure</button>
-                                </form>                            
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#configureModal" data-id="'.$row["mac_address"].'" data-universe="'.$row["universe"].'" data-dmx-address="'.$row["dmx_address"].'">Configure</button>                          
                             </th>
                         </tr>
                         ';
