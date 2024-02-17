@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 import json
-import MySQLdb
+from MySQLdb import connect
 import paho.mqtt.client as mqtt
-import threading
 import python_artnet as Artnet
 import os
 from getmac import get_mac_address
@@ -33,7 +32,7 @@ except FileNotFoundError:
 
 database = config['mysql']['database']
 
-db = MySQLdb.connect(
+db = connect(
     host=config['mysql']['host'],
     user=config['mysql']['user'],
     password=config['mysql']['password'],
@@ -142,37 +141,11 @@ def start_mqtt_publishers():
                         dmx_address = int(row[2])
                         if artNetPacket.universe == int(row[1]):
                             #Define RGB values per pixel
-                            p1_r = dmxPacket[dmx_address]
-                            p1_g = dmxPacket[dmx_address+1]
-                            p1_b = dmxPacket[dmx_address+2]
-
-                            p2_r = dmxPacket[dmx_address+3]
-                            p2_g = dmxPacket[dmx_address+4]
-                            p2_b = dmxPacket[dmx_address+5]
-
-                            p3_r = dmxPacket[dmx_address+6]
-                            p3_g = dmxPacket[dmx_address+7]
-                            p3_b = dmxPacket[dmx_address+8]
-
-                            p4_r = dmxPacket[dmx_address+9]
-                            p4_g = dmxPacket[dmx_address+10]
-                            p4_b = dmxPacket[dmx_address+11]
-
-                            p5_r = dmxPacket[dmx_address+12]
-                            p5_g = dmxPacket[dmx_address+13]
-                            p5_b = dmxPacket[dmx_address+14]
-
-                            p6_r = dmxPacket[dmx_address+15]
-                            p6_g = dmxPacket[dmx_address+16]
-                            p6_b = dmxPacket[dmx_address+17]
+                            p1_r, p1_g, p1_b, p2_r, p2_g, p2_b, p3_r, p3_g, p3_b, p4_r, p4_g, p4_b, p5_r, p5_g, p5_b, p6_r, p6_g, p6_b = dmxPacket[dmx_address], dmxPacket[dmx_address+1], dmxPacket[dmx_address+2], dmxPacket[dmx_address+3], dmxPacket[dmx_address+4], dmxPacket[dmx_address+5], dmxPacket[dmx_address+6], dmxPacket[dmx_address+7], dmxPacket[dmx_address+8], dmxPacket[dmx_address+9], dmxPacket[dmx_address+10], dmxPacket[dmx_address+11], dmxPacket[dmx_address+12], dmxPacket[dmx_address+13], dmxPacket[dmx_address+14], dmxPacket[dmx_address+15], dmxPacket[dmx_address+16], dmxPacket[dmx_address+17]
 
                             # Pixel topics
-                            p1_topic = "tube-"+str(row[0])+"/p1"
-                            p2_topic = "tube-"+str(row[0])+"/p2"
-                            p3_topic = "tube-"+str(row[0])+"/p3"
-                            p4_topic = "tube-"+str(row[0])+"/p4"
-                            p5_topic = "tube-"+str(row[0])+"/p5"
-                            p6_topic = "tube-"+str(row[0])+"/p6"
+
+                            p1_topic, p2_topic, p3_topic, p4_topic, p5_topic, p6_topic = "tube-"+str(row[0])+"/p1", "tube-"+str(row[0])+"/p2", "tube-"+str(row[0])+"/p3", "tube-"+str(row[0])+"/p4", "tube-"+str(row[0])+"/p5", "tube-"+str(row[0])+"/p6"
 
                             # Publish pixel topic
                             mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
