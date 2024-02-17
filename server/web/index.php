@@ -25,7 +25,7 @@
                 $server = "localhost";
                 $username = "pxm";
                 $password = "pixel";
-                $db_name = "pixeltube_db"
+                $db_name = "pixeltube_db";
                 
                 $conn = new mysqli($server, $username, $password, $db_name)
 
