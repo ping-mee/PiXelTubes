@@ -52,15 +52,11 @@ def register_tube(mac_address):
     cur.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
     existing_tube = cur.fetchone()
 
-    print(existing_tube)
-
     # Check if the tube exsist. If it doesn't create a new db row
     if not existing_tube:
         cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address) VALUES (%s, %s, %s)",
         (mac_address, 0, 1))
-        print("executed")
     else:
-        print("already exists")
         pass
     cur.close()
 
