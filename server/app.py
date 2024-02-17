@@ -118,6 +118,7 @@ def start_mqtt_publishers():
     cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
     global result
     result = cur.fetchall()
+    cur.close()
     while True:
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -181,6 +182,7 @@ def update_tube_index():
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
         global result
         result = cur.fetchall()
+        cur.close()
 
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
