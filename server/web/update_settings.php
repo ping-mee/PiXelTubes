@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container">
             <?php
                 if ($conn->query($update_query) === TRUE) {
-                    header("Location: ".$_SERVER['SERVER_NAME']."/");
+                    header("Location: /");
                     $conn->close();
                     exit();
                 } else {
