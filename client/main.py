@@ -69,7 +69,6 @@ def on_message(mqttc, obj, msg):
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p2":
         for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-            print(pixel)
             update_led_strip(rgb_values, pixel, strip)
 
     elif msg.topic == "tube-"+wlan_mac_address+"/p3":

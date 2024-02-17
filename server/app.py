@@ -144,17 +144,10 @@ def start_mqtt_publishers():
                             p1_r, p1_g, p1_b, p2_r, p2_g, p2_b, p3_r, p3_g, p3_b, p4_r, p4_g, p4_b, p5_r, p5_g, p5_b, p6_r, p6_g, p6_b = dmxPacket[dmx_address], dmxPacket[dmx_address+1], dmxPacket[dmx_address+2], dmxPacket[dmx_address+3], dmxPacket[dmx_address+4], dmxPacket[dmx_address+5], dmxPacket[dmx_address+6], dmxPacket[dmx_address+7], dmxPacket[dmx_address+8], dmxPacket[dmx_address+9], dmxPacket[dmx_address+10], dmxPacket[dmx_address+11], dmxPacket[dmx_address+12], dmxPacket[dmx_address+13], dmxPacket[dmx_address+14], dmxPacket[dmx_address+15], dmxPacket[dmx_address+16], dmxPacket[dmx_address+17]
 
                             # Pixel topics
-
-                            p1_topic, p2_topic, p3_topic, p4_topic, p5_topic, p6_topic = "tube-"+str(row[0])+"/p1", "tube-"+str(row[0])+"/p2", "tube-"+str(row[0])+"/p3", "tube-"+str(row[0])+"/p4", "tube-"+str(row[0])+"/p5", "tube-"+str(row[0])+"/p6"
+                            p1_topic = "tube-"+str(row[0])+"/pixel_colors"
 
                             # Publish pixel topic
-                            mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b]))
-                            mqtt_client.publish(p2_topic, str([p2_r, p2_g, p2_b]))
-                            mqtt_client.publish(p3_topic, str([p3_r, p3_g, p3_b]))
-                            mqtt_client.publish(p4_topic, str([p4_r, p4_g, p4_b]))
-                            mqtt_client.publish(p5_topic, str([p5_r, p5_g, p5_b]))
-                            mqtt_client.publish(p6_topic, str([p6_r, p6_g, p6_b]))
-
+                            mqtt_client.publish(p1_topic, list(str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b])))
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
