@@ -32,7 +32,6 @@
                 if ($conn->connect_error) {
                     die("Connection failed: " . $conn->connect_error);
                   }
-                  echo "Connected successfully";
 
                 $sql_query = "SELECT id, mac_address, universe, dmx_address FROM tubes";
                 $result = $conn->query($sql_query);
