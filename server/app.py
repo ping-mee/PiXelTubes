@@ -139,8 +139,6 @@ def mqtt_publisher():
             artNet.close()
             sys.exit()
 
-        del TUBE_INDEX
-
 if __name__ == "__main__":
     flask_thread = Process(target=flask_api)
     flask_thread.start()
