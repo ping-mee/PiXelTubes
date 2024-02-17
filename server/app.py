@@ -7,7 +7,10 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process, Value, Array, set_start_method
+from multiprocessing import Process, Manager
+
+thread_manager = Manager()
+TUBE_INDEX = thread_manager.Array()
 
 app = Flask(__name__)
 
@@ -145,14 +148,7 @@ def mqtt_publisher():
             artNet.close()
             sys.exit()
 
-        
-
-if __name__ == "__main__":
-    set_start_method("spawn")
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
-    publisher_thread = Process(target=mqtt_publisher)
-    publisher_thread.start()
+def tube_index_updater():
     while True:
         cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
@@ -160,3 +156,11 @@ if __name__ == "__main__":
         cur.close()
         print("Updated tube index: "+str(TUBE_INDEX))
         time.sleep(1)
+
+if __name__ == "__main__":
+    tube_index_updater_thread = Process(target=tube_index_updater)
+    tube_index_updater_thread.start()
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
+    publisher_thread = Process(target=mqtt_publisher)
+    publisher_thread.start()
