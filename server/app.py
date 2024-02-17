@@ -119,6 +119,7 @@ def mqtt_publisher():
         cur.execute("SELECT universe, dmx_address FROM tubes")
         TUBE_INDEX = cur.fetchall()
         cur.close()
+        print(TUBE_INDEX)
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
