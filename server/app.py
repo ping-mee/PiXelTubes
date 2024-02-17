@@ -115,8 +115,8 @@ def update_tube_index():
         global result
         result = cur.fetchall()
         cur.close()
-        time.sleep(10)
         print("Updated index: "+str(result))
+        time.sleep(10)
 
 def start_mqtt_publishers():
     # Create and start a thread for each universe
