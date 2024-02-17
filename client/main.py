@@ -9,6 +9,7 @@ import paho.mqtt.client as mqtt
 from getmac import get_mac_address
 import board
 import sys
+import ast
 
 SERVER_IP = '192.168.0.1'
 SERVER_PORT = 5000
@@ -63,7 +64,7 @@ def update_led_strip(rgb_values, pixel, strip):
     print("Updated pixel "+str(pixel)+" with "+str(rgb_values))
 
 def on_message(mqttc, obj, msg):
-    rgb_values = (*msg.payload.decode(), )
+    rgb_values = (*ast.literal_eval(msg.payload.decode()), )
     if msg.topic == "tube-"+wlan_mac_address+"/p1":
         for pixel in range(LEDS_PER_PIXEL):
             update_led_strip(rgb_values, pixel, strip)
