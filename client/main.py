@@ -62,30 +62,26 @@ def update_led_strip(rgb_values, pixel, strip):
     strip[int(pixel)] = rgb_values
 
 def on_message(mqttc, obj, msg):
-    rgb_values = (*ast.literal_eval(msg.payload.decode()), )
-    if msg.topic == "tube-"+wlan_mac_address+"/p1":
-        for pixel in range(LEDS_PER_PIXEL):
-            update_led_strip(rgb_values, pixel, strip)
+    rgb_values_list = msg.payload.decode()
+    print(rgb_values_list)
 
-    elif msg.topic == "tube-"+wlan_mac_address+"/p2":
-        for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-            update_led_strip(rgb_values, pixel, strip)
+    # for pixel in range(LEDS_PER_PIXEL):
+    #     update_led_strip(rgb_values, pixel, strip)
 
-    elif msg.topic == "tube-"+wlan_mac_address+"/p3":
-        for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
-            update_led_strip(rgb_values, pixel, strip)
+    # for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
+    #     update_led_strip(rgb_values, pixel, strip)
 
-    elif msg.topic == "tube-"+wlan_mac_address+"/p4":
-        for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
-            update_led_strip(rgb_values, pixel, strip)
+    # for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
+    #     update_led_strip(rgb_values, pixel, strip)
 
-    elif msg.topic == "tube-"+wlan_mac_address+"/p5":
-        for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
-            update_led_strip(rgb_values, pixel, strip)
+    # for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
+    #     update_led_strip(rgb_values, pixel, strip)
 
-    elif msg.topic == "tube-"+wlan_mac_address+"/p6":
-        for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
-            update_led_strip(rgb_values, pixel, strip)
+    # for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
+    #     update_led_strip(rgb_values, pixel, strip)
+
+    # for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
+    #     update_led_strip(rgb_values, pixel, strip)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
