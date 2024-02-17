@@ -104,4 +104,4 @@ if __name__ == "__main__":
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p5", 0)
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p6", 0)
 
-        mqttc.loop_forever()
+        mqttc.loop_start()
