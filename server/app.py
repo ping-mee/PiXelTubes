@@ -41,13 +41,12 @@ db = MySQLdb.connect(
 )
 
 db.autocommit(True)
-cur = db.cursor()
 
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 # Function to register a tube in the database
 def register_tube(mac_address):
-    
+    cur = db.cursor()
     # Check if the tube already exists in the database
     cur.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
     existing_tube = cur.fetchone()
@@ -115,6 +114,7 @@ def start_mqtt_publishers():
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+    cur = db.cursor()
     cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
     global result
     result = cur.fetchall()
