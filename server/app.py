@@ -116,19 +116,18 @@ def mqtt_publisher(data_queue):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         tube_index = data_queue.get()
-        print("Queue data received: "+str(tube_index))
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
             if artNetPacket is not None:
-                print(1)
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
                 if tube_index is not None:
-                    print(2)
+                    print(1)
                     for index_row in tube_index:
+                        print(2)
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
