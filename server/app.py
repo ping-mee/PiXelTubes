@@ -114,16 +114,6 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def update_tube_index():
-    while True:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        global TUBE_INDEX
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
-        print("Updated index: "+str(TUBE_INDEX))
-        time.sleep(1)
-
 def mqtt_publisher():
     global TUBE_INDEX
     # Create and start a thread for each universe
@@ -155,6 +145,16 @@ def mqtt_publisher():
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
+
+def update_tube_index():
+    while True:
+        cur = db.cursor()
+        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+        global TUBE_INDEX
+        TUBE_INDEX = cur.fetchall()
+        cur.close()
+        print("Updated index: "+str(TUBE_INDEX))
+        time.sleep(1)
 
 if __name__ == "__main__":
     tube_index_updater_thread = Process(target=update_tube_index)
