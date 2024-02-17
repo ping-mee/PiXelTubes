@@ -26,7 +26,7 @@ LEDS_PER_PIXEL = 5
 
 # Global variables for LED strip control
 global strip
-strip = Adafruit_NeoPixel(LED_COUNT, 18, 800000, 5, False, 255, 0, ws.2812b)
+strip = Adafruit_NeoPixel(LED_COUNT, 18, 800000, 5, False, 255, 0, ws.2812B_STRIP_RGB)
 strip.begin()
 
 def register_tube():
