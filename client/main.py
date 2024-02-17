@@ -65,22 +65,22 @@ def on_message(mqttc, obj, msg):
     rgb_values_list = msg.payload.decode()
 
     for pixel in range(LEDS_PER_PIXEL):
-        update_led_strip(*ast.literal_eval(rgb_values_list[0]), pixel, strip)
+        update_led_strip(list(*rgb_values_list[0]), pixel, strip)
 
     for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-        update_led_strip(*ast.literal_eval(rgb_values_list[1]), pixel, strip)
+        update_led_strip(list(*rgb_values_list[1]), pixel, strip)
 
     for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
-        update_led_strip(*ast.literal_eval(rgb_values_list[2]), pixel, strip)
+        update_led_strip(list(*rgb_values_list[2]), pixel, strip)
 
     for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
-        update_led_strip(*ast.literal_eval(rgb_values_list[3]), pixel, strip)
+        update_led_strip(list(*rgb_values_list[3]), pixel, strip)
 
     for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
-        update_led_strip(*ast.literal_eval(rgb_values_list[4]), pixel, strip)
+        update_led_strip(list(*rgb_values_list[4]), pixel, strip)
 
     for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
-        update_led_strip(*ast.literal_eval(rgb_values_list[5]), pixel, strip)
+        update_led_strip(list(*rgb_values_list[5]), pixel, strip)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
