@@ -41,12 +41,12 @@ db = MySQLdb.connect(
 )
 
 db.autocommit(True)
+cur = db.cursor()
 
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 # Function to register a tube in the database
 def register_tube(mac_address):
-    cur = db.cursor()
     
     # Check if the tube already exists in the database
     cur.execute("SELECT * FROM tubes WHERE mac_address = %s", (mac_address,))
@@ -124,10 +124,12 @@ def start_mqtt_publishers():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                topic = "PiXelTubes/"+str(artNetPacket.universe)
+
+
+                # topic = "PiXelTubes/"+str(artNetPacket.universe)
                 
-                # Publish the DMX value to the MQTT topic
-                mqtt_client.publish(topic, str(dmxPacket))
+                # # Publish the DMX value to the MQTT topic
+                # mqtt_client.publish(topic, str(dmxPacket))
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
