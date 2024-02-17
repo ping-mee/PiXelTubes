@@ -35,7 +35,7 @@
                   echo "Connected successfully";
 
                 $sql_query = "SELECT id, mac_address, universe, dmx_address FROM tubes";
-                $result = $conn->query($sql);
+                $result = $conn->query($sql_query);
 
                 if ($result->num_rows > 0) {
                     // output data of each row
