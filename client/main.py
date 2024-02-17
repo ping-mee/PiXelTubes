@@ -91,9 +91,6 @@ if __name__ == "__main__":
         # Register/reauthenticate the tube
         register_tube()
         time.sleep(1)
-        global universe
-        global dmx_address
-        universe, dmx_address = get_assigned_params()
 
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.connect("192.168.0.1", 1883, 60)
