@@ -26,7 +26,7 @@ LEDS_PER_PIXEL = 5
 
 # Global variables for LED strip control
 global strip
-strip = neopixel.NeoPixel(pin = board.D18, n = LED_COUNT, auto_write = True, pixel_order = neopixel.RGBW)
+strip = neopixel.NeoPixel(pin = board.D18, n = LED_COUNT, auto_write = True, pixel_order = neopixel.RGB)
 strip.auto_write = True
 
 def register_tube():
