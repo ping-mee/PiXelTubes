@@ -6,6 +6,7 @@
     <title>PiXelTube Web Interface</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="jquery/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
