@@ -59,10 +59,8 @@ def is_connected_to_wifi():
     return output.split('"')[1]
     
 def update_led_strip(rgb_values, pixel, strip):
-    print(rgb_values)
     strip[int(pixel)] = rgb_values
-    print("Updated pixel "+str(pixel)+" with "+str(rgb_values))
-
+    
 def on_message(mqttc, obj, msg):
     rgb_values = (*ast.literal_eval(msg.payload.decode()), )
     if msg.topic == "tube-"+wlan_mac_address+"/p1":
