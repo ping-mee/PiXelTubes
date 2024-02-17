@@ -313,7 +313,7 @@ Then just change directory into the server folder.
 
 ```
 sudo apt update -y && sudo apt upgrade -y && sudo apt install python3 python3-pip git -y &&
-sudo pip3 install adafruit_circuitpython_neopixel &&
+sudo pip3 install rpi_ws281x &&
 sudo pip3 install Requests &&
 sudo pip3 install wifi &&
 sudo pip3 install paho-mqtt &&
