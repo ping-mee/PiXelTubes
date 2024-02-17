@@ -62,25 +62,8 @@ def update_led_strip(rgb_values, pixel, strip):
     strip[int(pixel)] = rgb_values
 
 def on_message(mqttc, obj, msg):
+    global rgb_values_list
     rgb_values_list = eval(msg.payload.decode())
-
-    for pixel in range(LEDS_PER_PIXEL):
-        update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
-
-    for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-        update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
-
-    for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
-        update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
-
-    for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
-        update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
-
-    for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
-        update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
-
-    for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
-        update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
 
     # strip.show()
 
@@ -97,3 +80,22 @@ if __name__ == "__main__":
         mqttc.subscribe("tube-"+str(wlan_mac_address)+"/pixel_colors", 0)
 
         mqttc.loop_forever()
+
+        while True:
+            for pixel in range(LEDS_PER_PIXEL):
+                update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
+
+            for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
+                update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
+
+            for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
+                update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
+
+            for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
+                update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
+
+            for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
+                update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
+
+            for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
+                update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
