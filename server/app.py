@@ -114,16 +114,9 @@ def connect_mqtt():
     return client
 
 def mqtt_publisher():
-    # Set Connecting Client ID
-    mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-    # client.username_pw_set(username, password)
-    mqtt_client.on_message = on_message
-    mqtt_client.connect("localhost", 1883)
     # Create and start a thread for each universe
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
-    mqtt_client.subscribe("pxm/tube_index")
-    mqtt_client.loop_start()
     while True:
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -166,4 +159,7 @@ if __name__ == "__main__":
     update_tube_index_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
+    mqtt_client = connect_mqtt()
+    mqtt_client.subscribe("pxm/tube_index")
+    mqtt_client.loop_start()
     mqtt_publisher()
