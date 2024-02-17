@@ -148,7 +148,7 @@ def tube_index_updater(data_queue):
             tube_index = cur.fetchall()
             cur.close()
             data_queue.put(tube_index)
-
+            print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
         time.sleep(5)
