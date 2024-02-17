@@ -40,6 +40,8 @@ db = MySQLdb.connect(
     database=config['mysql']['database'],
 )
 
+db.autocommit(True)
+
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
 # Function to register a tube in the database
