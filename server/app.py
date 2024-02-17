@@ -43,6 +43,11 @@ db.autocommit(True)
 
 mqtt_client_id = "PiXelTubeMaster-"+wlan_mac_address
 
+cur = db.cursor()
+cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+TUBE_INDEX = cur.fetchall()
+cur.close()
+
 # Function to register a tube in the database
 def register_tube(mac_address):
     cur1 = db.cursor()
