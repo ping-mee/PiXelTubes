@@ -179,6 +179,7 @@ def start_mqtt_publishers():
 def update_tube_index():
     while True:
         time.sleep(2)
+        cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
         global result
         result = cur.fetchall()
