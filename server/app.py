@@ -127,7 +127,10 @@ def start_mqtt_publishers():
                 cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
                 result = cur.fetchall()
                 for row in result:
-                    print(row)
+                    print(row[0])
+                    print(row[1])
+                    print(row[2])
+                    
                     dmx_address = int(row[2])
                     if artNetPacket.universe == int(row[2]):
                         #Define RGB values per pixel
