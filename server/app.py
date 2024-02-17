@@ -125,12 +125,12 @@ def update_tube_index():
 
 def mqtt_publisher():
     global TUBE_INDEX
-    print(TUBE_INDEX)
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
+        print(TUBE_INDEX)
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
