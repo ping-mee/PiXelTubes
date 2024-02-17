@@ -94,6 +94,10 @@ def get_eth0_ip():
     except (KeyError, IndexError, OSError) as e:
         print(f"Error getting eth0 IP: {e}")
         exit
+
+def on_message(mqttc, obj, msg):
+        global TUBE_INDEX
+        TUBE_INDEX = list(msg.payload.decode())
     
 def on_connect(client, userdata, flags, reason_code, properties):
         if reason_code == 0:
@@ -110,10 +114,6 @@ def connect_mqtt():
     return client
 
 def mqtt_publisher():
-    def on_message(mqttc, obj, msg):
-        global TUBE_INDEX
-        TUBE_INDEX = list(msg.payload.decode())
-
     # Set Connecting Client ID
     mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     # client.username_pw_set(username, password)
@@ -166,5 +166,4 @@ if __name__ == "__main__":
     update_tube_index_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
-    publisher_thread = Process(target=mqtt_publisher)
-    publisher_thread.start()
+    mqtt_publisher()
