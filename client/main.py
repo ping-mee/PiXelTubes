@@ -105,4 +105,6 @@ if __name__ == "__main__":
             print("")
             for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
                 update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
+                print(pixel)
+            print("")
             time.sleep(1)
