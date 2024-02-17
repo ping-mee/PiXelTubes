@@ -45,7 +45,7 @@
                                 <th>'.$row["universe"].'</th>
                                 <th>'.$row["dmx_address"].'</th>
                                 <th>
-                                    <a href="./settings.php?mac='.$row["mac_address"].'">
+                                    <a href="settings.php?mac='.$row["mac_address"].'">
                                         <button type="button" class="btn btn-secondary">Configure</button>
                                     </a>
                                 </th>
