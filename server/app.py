@@ -56,7 +56,9 @@ def register_tube(mac_address):
     if not existing_tube:
         cur.execute("INSERT INTO tubes (mac_address, universe, dmx_address) VALUES (%s, %s, %s)",
         (mac_address, 0, 1))
+        print("executed")
     else:
+        print("already exists")
         pass
     cur.close()
 
