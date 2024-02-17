@@ -114,7 +114,7 @@ def mqtt_publisher():
         print(msg.payload.decode)
         print(type(msg.payload.decode))
         global TUBE_INDEX
-        TUBE_INDEX = msg.payload
+        TUBE_INDEX = list(msg.payload.decode)
 
     # Set Connecting Client ID
     mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
