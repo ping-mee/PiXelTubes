@@ -122,7 +122,7 @@ def update_tube_index():
         TUBE_INDEX = cur.fetchall()
         cur.close()
         print("Updated index: "+str(TUBE_INDEX))
-        time.sleep(10)
+        time.sleep(1)
 
 def mqtt_publisher():
     global TUBE_INDEX
