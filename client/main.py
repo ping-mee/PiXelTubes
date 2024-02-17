@@ -64,7 +64,6 @@ def update_led_strip(rgb_values, pixel, strip):
 def on_message(mqttc, obj, msg):
     global rgb_values_list
     rgb_values_list = eval(msg.payload.decode())
-    print(rgb_values_list)
 
 
 if __name__ == "__main__":
@@ -83,7 +82,6 @@ if __name__ == "__main__":
         rgb_values_list = eval("['[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]']")
 
         mqttc.loop_start()
-        print("test")
         while True:
             for pixel in range(LEDS_PER_PIXEL):
                 update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
