@@ -21,34 +21,21 @@
         </tr>
         </thead>
         <tbody id="tubeList">
+            <?php
+                $server = "localhost";
+                $username = "pxm";
+                $password = "pixel";
+                
+                $conn = new mysqli($server, $username, $password)
+
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                  }
+                  echo "Connected successfully";
+                  ?>
+            ?>
         </tbody>
     </table>
-
-    <div class="modal fade" id="tubeSettingsModal" tabindex="-1" role="dialog" aria-labelledby="tubeSettingsModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tubeSettingsModalLabel">Tube Settings</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="tubeSettingsForm">
-                        <div class="form-group">
-                            <label for="universeInput">Universe:</label>
-                            <input type="number" class="form-control" id="universeInput" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dmxAddressInput">DMX Address:</label>
-                            <input type="number" class="form-control" id="dmxAddressInput" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
 </div>
