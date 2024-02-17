@@ -93,11 +93,6 @@ if __name__ == "__main__":
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         mqttc.connect("192.168.0.1", 1883, 60)
         mqttc.on_message = on_message
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p1", 0)
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p2", 0)
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p3", 0)
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p4", 0)
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p5", 0)
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/p6", 0)
+        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/pixel_colors", 0)
 
         mqttc.loop_forever()
