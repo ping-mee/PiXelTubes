@@ -169,7 +169,7 @@ def tube_index_updater(ti_sender):
             tube_index = cur.fetchall()
             cur.close()
             ti_sender.send(str(tube_index))
-            print("Updated tube index with values: "+str(tube_index))
+            # print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
         time.sleep(2)
