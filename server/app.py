@@ -7,8 +7,7 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process, Pipe
-from ast import literal_eval
+from multiprocessing import Process
 
 app = Flask(__name__)
 
@@ -109,23 +108,18 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def mqtt_publisher():
-    # Create and start a thread for each universe
-    db = connect(
-        host=config['mysql']['host'],
-        user=config['mysql']['user'],
-        password=config['mysql']['password'],
-        database=config['mysql']['database'],
-    )
+if __name__ == "__main__":
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
 
-    db.autocommit(True)
+    # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         cur = db.cursor()
         cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        tube_index = cur.fetchall()
+        TUBE_INDEX = cur.fetchall()
         cur.close()
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -135,8 +129,10 @@ def mqtt_publisher():
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                if tube_index is not None:
-                    for index_row in tube_index:
+                if TUBE_INDEX is not None:
+                    print(TUBE_INDEX)
+                    for index_row in TUBE_INDEX:
+                        print(index_row)
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
@@ -150,10 +146,3 @@ def mqtt_publisher():
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
-
-
-if __name__ == "__main__":
-    publisher_thread = Process(target=mqtt_publisher)
-    publisher_thread.start()
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
