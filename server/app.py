@@ -176,7 +176,7 @@ if __name__ == "__main__":
     (ti_receiver,ti_sender) = Pipe(True)
     ti_updater_thread = Process(target=tube_index_updater, args=(ti_sender, ))
     ti_updater_thread.start()
-    time.sleep(1)
+    time.sleep(5)
     publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
     publisher_thread.start()
     flask_thread = Process(target=flask_api)
