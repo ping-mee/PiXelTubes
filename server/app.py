@@ -8,6 +8,7 @@ from getmac import get_mac_address
 import time
 import sys
 from multiprocessing import Process, Pipe
+from ast import literal_eval
 
 app = Flask(__name__)
 
@@ -116,7 +117,7 @@ def mqtt_publisher(ti_receiver):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         try:
-            tube_index = list(ti_receiver.recv())
+            tube_index = literal_eval(ti_receiver.recv())
         except:
             tube_index = tube_index_old
 
