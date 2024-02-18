@@ -7,8 +7,7 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process, shared_memory
-import asyncio
+from multiprocessing import Process, Value
 
 app = Flask(__name__)
 
@@ -115,7 +114,7 @@ def mqtt_publisher(shared_mem):
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        tube_index = bytes(shared_mem.buf[:24], encoding='utf8').decode()
+        tube_index = shared_mem.value
         # print(tube_index)
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -148,17 +147,17 @@ def tube_index_updater(shared_mem):
             cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
             tube_index = cur.fetchall()
             cur.close()
-            shared_mem.buf[:24] = bytes(str(tube_index), encoding='utf8')
+            shared_mem.value = tube_index
             print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
         time.sleep(5)
 
 if __name__ == "__main__":
-    shared_mem = shared_memory.SharedMemory(name='tube_index', size=1024, create=True)
-    ti_updater_thread = Process(target=tube_index_updater, args=(shared_mem, ))
+    tube_index_smem = Value("tube_index", None)
+    ti_updater_thread = Process(target=tube_index_updater, args=(tube_index_smem))
     ti_updater_thread.start()
-    publisher_thread = Process(target=mqtt_publisher, args=(shared_mem, ))
+    publisher_thread = Process(target=mqtt_publisher, args=(tube_index_smem))
     publisher_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
