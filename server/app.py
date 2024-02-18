@@ -109,36 +109,42 @@ def connect_mqtt():
     return client
 
 def mqtt_publisher(ti_receiver):
+    tube_index_old = None
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        tube_index = ti_receiver.recv()
+        try:
+            tube_index = ti_receiver.recv()
+        except:
+            tube_index = tube_index_old
+
+        tube_index_old = None
         print(tube_index)
-        # try:
-        #     # Gets whatever the last Art-Net packet we received is
-        #     artNetPacket = artNet.readPacket()
-        #     # Make sure we actually *have* a packet
-        #     if artNetPacket is not None:
-        #         #Checks to see if the current packet is for the specified DMX Universe
-        #         dmxPacket = artNetPacket.data
-        #         # Create MQTT topic based on the universe and channel
-        #         if tube_index is not None:
-        #             for index_row in tube_index:
-        #                 if artNetPacket.universe == int(index_row[1]):
-        #                     dmx_address = int(index_row[2])
-        #                     #Define RGB values per pixel
-        #                     p1_g, p1_b, p1_r, p2_g, p2_b, p2_r, p3_g, p3_b, p3_r, p4_g, p4_b, p4_r, p5_g, p5_b, p5_r, p6_g, p6_b, p6_r = dmxPacket[dmx_address], dmxPacket[dmx_address+1], dmxPacket[dmx_address+2], dmxPacket[dmx_address+3], dmxPacket[dmx_address+4], dmxPacket[dmx_address+5], dmxPacket[dmx_address+6], dmxPacket[dmx_address+7], dmxPacket[dmx_address+8], dmxPacket[dmx_address+9], dmxPacket[dmx_address+10], dmxPacket[dmx_address+11], dmxPacket[dmx_address+12], dmxPacket[dmx_address+13], dmxPacket[dmx_address+14], dmxPacket[dmx_address+15], dmxPacket[dmx_address+16], dmxPacket[dmx_address+17]
+        try:
+            # Gets whatever the last Art-Net packet we received is
+            artNetPacket = artNet.readPacket()
+            # Make sure we actually *have* a packet
+            if artNetPacket is not None:
+                #Checks to see if the current packet is for the specified DMX Universe
+                dmxPacket = artNetPacket.data
+                # Create MQTT topic based on the universe and channel
+                if tube_index is not None:
+                    for index_row in tube_index:
+                        if artNetPacket.universe == int(index_row[1]):
+                            dmx_address = int(index_row[2])
+                            #Define RGB values per pixel
+                            p1_g, p1_b, p1_r, p2_g, p2_b, p2_r, p3_g, p3_b, p3_r, p4_g, p4_b, p4_r, p5_g, p5_b, p5_r, p6_g, p6_b, p6_r = dmxPacket[dmx_address], dmxPacket[dmx_address+1], dmxPacket[dmx_address+2], dmxPacket[dmx_address+3], dmxPacket[dmx_address+4], dmxPacket[dmx_address+5], dmxPacket[dmx_address+6], dmxPacket[dmx_address+7], dmxPacket[dmx_address+8], dmxPacket[dmx_address+9], dmxPacket[dmx_address+10], dmxPacket[dmx_address+11], dmxPacket[dmx_address+12], dmxPacket[dmx_address+13], dmxPacket[dmx_address+14], dmxPacket[dmx_address+15], dmxPacket[dmx_address+16], dmxPacket[dmx_address+17]
 
-        #                     # Pixel topics
-        #                     p1_topic = "tube-"+str(index_row[0])+"/pixel_colors"
+                            # Pixel topics
+                            p1_topic = "tube-"+str(index_row[0])+"/pixel_colors"
 
-        #                     # Publish pixel topic
-        #                     mqtt_client.publish(p1_topic, str([str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b])]))
-        # except KeyboardInterrupt:
-        #     artNet.close()
-        #     sys.exit()
+                            # Publish pixel topic
+                            mqtt_client.publish(p1_topic, str([str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b])]))
+        except KeyboardInterrupt:
+            artNet.close()
+            sys.exit()
 
 def tube_index_updater(ti_sender):
     while True:
