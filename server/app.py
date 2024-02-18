@@ -148,7 +148,7 @@ def tube_index_updater(shared_mem):
             cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
             tube_index = cur.fetchall()
             cur.close()
-            shared_mem.buf[:24] = bytes(str(tube_index)).encode()
+            shared_mem.buf[:24] = bytes(str(tube_index))
             print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
