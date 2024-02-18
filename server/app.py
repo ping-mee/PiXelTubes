@@ -7,7 +7,7 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process, Value
+from multiprocessing import Process, Manager
 
 app = Flask(__name__)
 
@@ -108,13 +108,13 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def mqtt_publisher(shared_mem):
+def mqtt_publisher(shared_dict):
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        tube_index = shared_mem.value
+        tube_index = shared_dict["tube_index"]
         # print(tube_index)
         try:
             # Gets whatever the last Art-Net packet we received is
@@ -140,25 +140,26 @@ def mqtt_publisher(shared_mem):
             artNet.close()
             sys.exit()
 
-def tube_index_updater(shared_mem):
+def tube_index_updater(shared_dict):
     while True:
         try:
             cur = db.cursor()
             cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
             tube_index = cur.fetchall()
             cur.close()
-            shared_mem.value = tube_index
+            shared_dict["tube_index"] = tube_index
             print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
         time.sleep(5)
 
 if __name__ == "__main__":
-    tube_index_smem = Value(str, "placeholder")
-    ti_updater_thread = Process(target=tube_index_updater, args=(tube_index_smem))
+    shared_dict = Manager.dict()
+    shared_dict["tube_index"] = None
+    ti_updater_thread = Process(target=tube_index_updater, args=(shared_dict))
     ti_updater_thread.start()
     time.sleep(1)
-    publisher_thread = Process(target=mqtt_publisher, args=(tube_index_smem))
+    publisher_thread = Process(target=mqtt_publisher, args=(shared_dict))
     publisher_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
