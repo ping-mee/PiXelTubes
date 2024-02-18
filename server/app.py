@@ -147,7 +147,7 @@ def tube_index_updater(tube_index):
             cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
             result = cur.fetchall()
             cur.close()
-            tube_index = [str(result)]
+            tube_index = str(result)
             print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
