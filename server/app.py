@@ -154,7 +154,7 @@ def tube_index_updater(shared_mem):
         time.sleep(5)
 
 if __name__ == "__main__":
-    tube_index_smem = Value("tube_index", 0.0)
+    tube_index_smem = Value("str", "placeholder")
     ti_updater_thread = Process(target=tube_index_updater, args=(tube_index_smem))
     ti_updater_thread.start()
     time.sleep(1)
