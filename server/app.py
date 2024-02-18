@@ -155,7 +155,7 @@ def tube_index_updater(ti_sender):
         time.sleep(5)
 
 if __name__ == "__main__":
-    (ti_receiver,ti_sender) = Pipe(False)
+    (ti_receiver,ti_sender) = Pipe(True)
     ti_updater_thread = Process(target=tube_index_updater, args=(ti_sender, ))
     ti_updater_thread.start()
     time.sleep(1)
