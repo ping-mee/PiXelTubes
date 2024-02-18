@@ -116,6 +116,7 @@ def mqtt_publisher(shared_mem):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         tube_index = list(bytes(shared_mem.buf[:24]).decode())
+        print(tube_index)
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
