@@ -156,10 +156,10 @@ def tube_index_updater(ti_sender):
 
 if __name__ == "__main__":
     (ti_receiver,ti_sender) = Pipe(False)
-    ti_updater_thread = Process(target=tube_index_updater, args=(ti_sender))
+    ti_updater_thread = Process(target=tube_index_updater, args=(ti_sender, ))
     ti_updater_thread.start()
     time.sleep(1)
-    publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver))
+    publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
     publisher_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
