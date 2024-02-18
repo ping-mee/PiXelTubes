@@ -121,7 +121,7 @@ def mqtt_publisher(ti_receiver):
         except:
             tube_index = tube_index_old
 
-        tube_index_old = None
+        tube_index_old = tube_index
         try:
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
