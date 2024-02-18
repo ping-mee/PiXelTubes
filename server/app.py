@@ -174,7 +174,7 @@ def tube_index_updater(ti_sender):
             print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
-        time.sleep(5)
+        time.sleep(2)
 
 if __name__ == "__main__":
     (ti_receiver,ti_sender) = Pipe(True)
