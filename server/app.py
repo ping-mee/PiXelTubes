@@ -131,6 +131,7 @@ def mqtt_publisher(ti_receiver):
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
                 if tube_index is not None:
+                    print(tube_index)
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
