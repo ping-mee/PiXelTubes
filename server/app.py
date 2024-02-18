@@ -154,7 +154,8 @@ def tube_index_updater(shared_dict):
         time.sleep(5)
 
 if __name__ == "__main__":
-    shared_dict = Manager.dict()
+    manager = Manager()
+    shared_dict = manager.dict()
     shared_dict["tube_index"] = None
     ti_updater_thread = Process(target=tube_index_updater, args=(shared_dict))
     ti_updater_thread.start()
