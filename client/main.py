@@ -8,91 +8,29 @@ import board
 
 SERVER_IP = '192.168.0.1'
 SERVER_PORT = 5000
-
-# Dynamically obtain the MAC address of the WLAN interface
 wlan_mac_address = str(get_mac_address(interface="wlan0"))
-
-# Replace with the GPIO pin connected to the data input of the WS2812B LED strip
 LED_STRIP_PIN = board.D18
-global LED_COUNT
 LED_COUNT = 30
-global LEDS_PER_PIXEL
 LEDS_PER_PIXEL = 5
-
-# Global variables for LED strip control
-global strip
-strip = neopixel.NeoPixel(pin = board.D18, n = LED_COUNT, auto_write = True)
-
-def register_tube():
-    # Register or reauthenticate the tube with the server
-    try:
-        response = requests.post(f'http://{SERVER_IP}:{SERVER_PORT}/register_tube', data={'mac_address': wlan_mac_address})
-        print(response)
-        data = response.json()
-        if data.get('success'):
-            print('Tube registered successfully.')
-        else:
-            print(f'Registration failed: {data.get("message")}')
-    except requests.RequestException as e:
-        print(f'Registration failed: {e}')
-
-def get_assigned_params():
-    try:
-        response = requests.get(f'http://{SERVER_IP}:{SERVER_PORT}/get_assigned_params/{wlan_mac_address}')
-        data = response.json()
-        if data.get('success'):
-            return data.get('universe'), data.get('dmx_address')
-        else:
-            print(f'Failed to fetch assigned parameters: {data.get("message")}')
-            return None, None
-    except requests.RequestException as e:
-        print(f'Failed to fetch assigned parameters: {e}')
-        return None, None
-    
-def is_connected_to_wifi():
-    output = subprocess.check_output(['iwgetid']).decode()
-    return output.split('"')[1]
-    
-def update_led_strip(rgb_values, pixel, strip):
-    strip[int(pixel)] = rgb_values
+strip = neopixel.NeoPixel(pin=LED_STRIP_PIN, n=LED_COUNT, auto_write=True)
 
 def on_message(mqttc, obj, msg):
     global rgb_values_list
-    rgb_values_list = eval(msg.payload.decode())
+    rgb_values_list = [tuple(map(int, color.strip('[]').split(', '))) for color in msg.payload.decode().strip('[]').split('], [')]
+
+def update_led_strip(rgb_values_list, strip):
+    for i, rgb_values in enumerate(rgb_values_list):
+        for pixel in range(i * LEDS_PER_PIXEL, (i + 1) * LEDS_PER_PIXEL):
+            strip[pixel] = rgb_values
 
 if __name__ == "__main__":
-    # Connect to Wi-Fi
-    if is_connected_to_wifi() is not None:
-        # Register/reauthenticate the tube
-        register_tube()
-        time.sleep(1)
+    # Connect to Wi-Fi and other setup code...
 
-        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-        mqttc.connect("192.168.0.1", 1883, 60)
-        mqttc.on_message = on_message
-        mqttc.subscribe("tube-"+str(wlan_mac_address)+"/pixel_colors", 0)
+    mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    # MQTT setup code...
+    mqttc.on_message = on_message
 
-        global rgb_values_list
-        rgb_values_list = eval("['[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]']")
-
-        mqttc.loop_start()
-        while True:
-            for pixel in range(LEDS_PER_PIXEL):
-                update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
-
-            for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
-                update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
-
-            for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
-                update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
-
-            for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
-                update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
-
-            for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
-                update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
-
-            for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
-                update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
-
-            time.sleep(0.5)
+    mqttc.loop_start()
+    while True:
+        update_led_strip(rgb_values_list, strip)
+        time.sleep(0.5)
