@@ -31,6 +31,8 @@ if __name__ == "__main__":
     mqttc.on_message = on_message
 
     mqttc.loop_start()
+    global rgb_values_list
+    rgb_values_list = eval("['[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]']")
     while True:
         update_led_strip(rgb_values_list, strip)
         time.sleep(0.5)
