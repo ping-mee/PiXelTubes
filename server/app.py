@@ -157,6 +157,7 @@ if __name__ == "__main__":
     tube_index_smem = Value("tube_index", None)
     ti_updater_thread = Process(target=tube_index_updater, args=(tube_index_smem))
     ti_updater_thread.start()
+    time.sleep(1)
     publisher_thread = Process(target=mqtt_publisher, args=(tube_index_smem))
     publisher_thread.start()
     flask_thread = Process(target=flask_api)
