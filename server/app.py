@@ -111,6 +111,14 @@ def connect_mqtt():
 
 def mqtt_publisher():
     # Create and start a thread for each universe
+    db = connect(
+        host=config['mysql']['host'],
+        user=config['mysql']['user'],
+        password=config['mysql']['password'],
+        database=config['mysql']['database'],
+    )
+
+    db.autocommit(True)
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
