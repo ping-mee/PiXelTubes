@@ -8,7 +8,6 @@ from getmac import get_mac_address
 import time
 import sys
 from multiprocessing import Process, Value
-import multiprocessing
 
 app = Flask(__name__)
 
@@ -155,8 +154,7 @@ def tube_index_updater(shared_mem):
         time.sleep(5)
 
 if __name__ == "__main__":
-    multiprocessing.set_start_method("fork")
-    tube_index_smem = Value("tube_index", "placeholder")
+    tube_index_smem = Value("tube_index", 0.0)
     ti_updater_thread = Process(target=tube_index_updater, args=(tube_index_smem))
     ti_updater_thread.start()
     time.sleep(1)
