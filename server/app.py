@@ -117,6 +117,7 @@ def mqtt_publisher(ti_receiver):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         try:
+            print(1)
             tube_index = ti_receiver.recv()
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
@@ -127,7 +128,6 @@ def mqtt_publisher(ti_receiver):
                 # Create MQTT topic based on the universe and channel
                 if tube_index is not None:
                     tube_index = literal_eval(tube_index)
-                    print(tube_index)
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
@@ -138,7 +138,10 @@ def mqtt_publisher(ti_receiver):
                             p1_topic = "tube-"+str(index_row[0])+"/pixel_colors"
 
                             # Publish pixel topic
-                            mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b], [p2_r, p2_g, p2_b], [p3_r, p3_g, p3_b], [p4_r, p4_g, p4_b], [p5_r, p5_g, p5_b], [p6_r, p6_g, p6_b]))
+                            colors = [[p1_r, p1_g, p1_b], [p2_r, p2_g, p2_b], [p3_r, p3_g, p3_b], [p4_r, p4_g, p4_b], [p5_r, p5_g, p5_b], [p6_r, p6_g, p6_b]]
+                            result_str = [str(color) for color in colors]
+                            result = str(result_str)
+                            mqtt_client.publish(p1_topic, result)
 
         except KeyboardInterrupt:
             artNet.close()
