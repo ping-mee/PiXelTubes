@@ -8,6 +8,7 @@ from getmac import get_mac_address
 import time
 import sys
 from multiprocessing import Process, Pipe, Queue
+from queue import Empty
 from ast import literal_eval
 
 app = Flask(__name__)
@@ -161,7 +162,7 @@ def tube_index_collector(ti_queue, ti_sender):
             ti_sender.send(item)
             item_old = item
             print("new item")
-        except queue.Empty:
+        except Empty:
             print("emtpy")
             if item_old is not None:
                 ti_sender.send(item_old)
