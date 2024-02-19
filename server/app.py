@@ -150,7 +150,7 @@ def tube_index_updater(ti_queue):
             tube_index = cur.fetchall()
             cur.close()
             ti_queue.put(str(tube_index))
-            # print("Updated tube index with values: "+str(tube_index))
+            print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
         time.sleep(5)
@@ -164,7 +164,6 @@ def tube_index_collector(ti_queue, ti_sender):
             item_old = item
             print("new item")
         except Empty:
-            print("emtpy")
             if item_old is not None:
                 ti_sender.send(item_old)
             else:
