@@ -6,10 +6,11 @@ import python_artnet as Artnet
 import os
 from getmac import get_mac_address
 import time
-import sys
 from multiprocessing import Process, Pipe, Queue
 from queue import Empty
 from ast import literal_eval
+import cProfile
+import pstats
 
 app = Flask(__name__)
 
@@ -144,7 +145,6 @@ def mqtt_publisher(ti_receiver):
 
         except KeyboardInterrupt:
             artNet.close()
-            sys.exit()
 
 def tube_index_updater(ti_queue):
     while True:
@@ -172,13 +172,19 @@ def tube_index_collector(ti_queue, ti_sender):
                 ti_sender.send(None)
 
 if __name__ == "__main__":
-    (ti_receiver,ti_sender) = Pipe(True)
-    ti_queue = Queue()
-    collector_thread = Process(target=tube_index_collector, args=(ti_queue, ti_sender, ))
-    collector_thread.start()
-    ti_updater_thread = Process(target=tube_index_updater, args=(ti_queue, ))
-    ti_updater_thread.start()
-    publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
-    publisher_thread.start()
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
+    with cProfile.Profile as profile:
+        try:
+            (ti_receiver,ti_sender) = Pipe(True)
+            ti_queue = Queue()
+            collector_thread = Process(target=tube_index_collector, args=(ti_queue, ti_sender, ))
+            collector_thread.start()
+            ti_updater_thread = Process(target=tube_index_updater, args=(ti_queue, ))
+            ti_updater_thread.start()
+            publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
+            publisher_thread.start()
+            flask_thread = Process(target=flask_api)
+            flask_thread.start()
+        except KeyboardInterrupt:
+            result = pstats.Stats(profile)
+            result.sort_stats(pstats.SortKey.TIME)
+            result.print_stats()
