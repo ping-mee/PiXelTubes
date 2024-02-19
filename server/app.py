@@ -110,23 +110,37 @@ def connect_mqtt():
     return client
 
 def mqtt_publisher(ti_receiver):
+    start = time.time()
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
+    end = time.time()
+    print("1 "+str(end-start))
     while True:
         try:
+            start = time.time()
             tube_index = ti_receiver.recv()
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
+            end = time.time()
+            print("2 "+str(end-start))
             if artNetPacket is not None:
+                start = time.time()
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
+                end = time.time()
+                print("3 "+str(end-start))
                 if tube_index is not None:
+                    start = time.time()
                     tube_index = literal_eval(tube_index)
+                    end = time.time()
+                    print("4 "+str(end-start))
+                    start = time.time()
                     for index_row in tube_index:
+                        start = time.time()
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
@@ -140,6 +154,10 @@ def mqtt_publisher(ti_receiver):
                             result_str = [str(color) for color in colors]
                             result = str(result_str)
                             mqtt_client.publish(p1_topic, result)
+                            end = time.time()
+                            print("5 "+str(end-start))
+                    end = time.time()
+                    print("6 "+str(end-start))
 
         except KeyboardInterrupt:
             artNet.close()
@@ -178,5 +196,5 @@ if __name__ == "__main__":
     ti_updater_thread.start()
     publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
     publisher_thread.start()
-    # flask_thread = Process(target=flask_api)
-    # flask_thread.start()
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
