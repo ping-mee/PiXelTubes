@@ -117,7 +117,7 @@ def mqtt_publisher(ti_receiver):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         try:
-            tube_index = literal_eval(ti_receiver.recv())
+            tube_index = ti_receiver.recv()
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
@@ -126,6 +126,7 @@ def mqtt_publisher(ti_receiver):
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
                 if tube_index is not None:
+                    tube_index = literal_eval(tube_index)
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
