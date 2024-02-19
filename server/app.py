@@ -178,5 +178,5 @@ if __name__ == "__main__":
     ti_updater_thread.start()
     publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
     publisher_thread.start()
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
+    # flask_thread = Process(target=flask_api)
+    # flask_thread.start()
