@@ -138,6 +138,7 @@ def mqtt_publisher(ti_receiver):
 
                             # Publish pixel topic
                             mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b], [p2_r, p2_g, p2_b], [p3_r, p3_g, p3_b], [p4_r, p4_g, p4_b], [p5_r, p5_g, p5_b], [p6_r, p6_g, p6_b]))
+
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
@@ -150,7 +151,6 @@ def tube_index_updater(ti_queue):
             tube_index = cur.fetchall()
             cur.close()
             ti_queue.put(str(tube_index))
-            print("Updated tube index with values: "+str(tube_index))
         except Exception as e:
             print(e)
         time.sleep(5)
@@ -162,7 +162,6 @@ def tube_index_collector(ti_queue, ti_sender):
             item = ti_queue.get(block=False)
             ti_sender.send(item)
             item_old = item
-            print("new item")
         except Empty:
             if item_old is not None:
                 ti_sender.send(item_old)
