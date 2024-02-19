@@ -7,7 +7,8 @@ import os
 from getmac import get_mac_address
 import time
 import sys
-from multiprocessing import Process
+from multiprocessing import Process, Pipe, Queue
+from ast import literal_eval
 
 app = Flask(__name__)
 
@@ -108,20 +109,14 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-if __name__ == "__main__":
-    flask_thread = Process(target=flask_api)
-    flask_thread.start()
-
+def mqtt_publisher(ti_receiver):
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        cur = db.cursor()
-        cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
-        TUBE_INDEX = cur.fetchall()
-        cur.close()
         try:
+            tube_index = literal_eval(ti_receiver.recv())
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
@@ -129,10 +124,8 @@ if __name__ == "__main__":
                 #Checks to see if the current packet is for the specified DMX Universe
                 dmxPacket = artNetPacket.data
                 # Create MQTT topic based on the universe and channel
-                if TUBE_INDEX is not None:
-                    print(TUBE_INDEX)
-                    for index_row in TUBE_INDEX:
-                        print(index_row)
+                if tube_index is not None:
+                    for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
@@ -142,7 +135,44 @@ if __name__ == "__main__":
                             p1_topic = "tube-"+str(index_row[0])+"/pixel_colors"
 
                             # Publish pixel topic
-                            mqtt_client.publish(p1_topic, str([str([p1_r, p1_g, p1_b]), str([p2_r, p2_g, p2_b]), str([p3_r, p3_g, p3_b]), str([p4_r, p4_g, p4_b]), str([p5_r, p5_g, p5_b]), str([p6_r, p6_g, p6_b])]))
+                            mqtt_client.publish(p1_topic, str([p1_r, p1_g, p1_b], [p2_r, p2_g, p2_b], [p3_r, p3_g, p3_b], [p4_r, p4_g, p4_b], [p5_r, p5_g, p5_b], [p6_r, p6_g, p6_b]))
         except KeyboardInterrupt:
             artNet.close()
             sys.exit()
+
+def tube_index_updater(ti_queue):
+    while True:
+        try:
+            cur = db.cursor()
+            cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
+            tube_index = cur.fetchall()
+            cur.close()
+            ti_queue.put(str(tube_index))
+            # print("Updated tube index with values: "+str(tube_index))
+        except Exception as e:
+            print(e)
+        time.sleep(5)
+
+def tube_index_collector(ti_queue, ti_sender):
+    item_old = None
+    while True:
+        try:
+            item = ti_queue.get(block=False)
+            ti_sender.send(item)
+        except ti_queue.Empty:
+            if item_old is not None:
+                ti_sender.send(item_old)
+            else:
+                ti_sender.send(None)
+
+if __name__ == "__main__":
+    (ti_receiver,ti_sender) = Pipe(True)
+    ti_queue = Queue()
+    collector_thread = Process(target=tube_index_collector, args=(ti_queue, ti_sender, ))
+    collector_thread.start()
+    ti_updater_thread = Process(target=tube_index_updater, args=(ti_queue, ))
+    ti_updater_thread.start()
+    publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
+    publisher_thread.start()
+    flask_thread = Process(target=flask_api)
+    flask_thread.start()
