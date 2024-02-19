@@ -161,7 +161,7 @@ def tube_index_collector(ti_queue, ti_sender):
             ti_sender.send(item)
             item_old = item
             print("new item")
-        except ti_queue.Empty:
+        except Queue.Empty:
             print("emtpy")
             if item_old is not None:
                 ti_sender.send(item_old)
