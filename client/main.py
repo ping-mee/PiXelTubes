@@ -74,25 +74,26 @@ if __name__ == "__main__":
         rgb_values_list = eval("['[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]', '[0, 0, 0]']")
 
         mqttc.loop_start()
-        while True:
-            try:
-                for pixel in range(5):
-                    update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
+        # while True:
+        #     try:
+        #         for pixel in range(5):
+        #             update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
 
-                for pixel in range(5, 10):
-                    update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
+        #         for pixel in range(5, 10):
+        #             update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
 
-                for pixel in range(10, 15):
-                    update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
+        #         for pixel in range(10, 15):
+        #             update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
 
-                for pixel in range(15, 20):
-                    update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
+        #         for pixel in range(15, 20):
+        #             update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
 
-                for pixel in range(20, 25):
-                    update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
+        #         for pixel in range(20, 25):
+        #             update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
 
-                for pixel in range(25, 30):
-                    update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
-            except KeyboardInterrupt:
-                for led in range(LED_COUNT):
-                    update_led_strip((0, 0, 0), led, strip)
+        #         for pixel in range(25, 30):
+        #             update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
+        #     except KeyboardInterrupt:
+        #         for led in range(LED_COUNT):
+        #             update_led_strip((0, 0, 0), led, strip)
+        update_led_strip((0, 0, 0), 0, strip)
