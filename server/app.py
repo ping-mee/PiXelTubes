@@ -111,6 +111,7 @@ def connect_mqtt():
 
 def mqtt_publisher(ti_queue):
     tube_index = None
+    tube_index_old = None
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
