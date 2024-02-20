@@ -135,6 +135,7 @@ def mqtt_publisher(ti_receiver):
                     tube_index = json.loads(tube_index)
                     end = time.time()
                     print("Converting tube index back to list wtih leval took: "+str(end-start))
+                    start = time.time()
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
@@ -149,7 +150,8 @@ def mqtt_publisher(ti_receiver):
                             result_str = [str(color) for color in colors]
                             result = str(result_str)
                             mqtt_client.publish(p1_topic, result)
-
+                    end = time.time()
+                    print("Sending out to all tubes took: "+str(end-start))
         except KeyboardInterrupt:
             artNet.close()
 def tube_index_updater(ti_queue):
