@@ -77,22 +77,33 @@ if __name__ == "__main__":
 
         mqttc.loop_start()
         while True:
+            start = time.time()
             for pixel in range(LEDS_PER_PIXEL):
                 update_led_strip(tuple(eval(rgb_values_list[0])), pixel, strip)
-
+            end = time.time()
+            print("Pixel 1 took: "+str(end-start))
+            start = time.time()
             for pixel in range(LEDS_PER_PIXEL, LEDS_PER_PIXEL*2):
                 update_led_strip(tuple(eval(rgb_values_list[1])), pixel, strip)
-
+            end = time.time()
+            print("Pixel 2 took: "+str(end-start))
+            start = time.time()
             for pixel in range(LEDS_PER_PIXEL*2, LEDS_PER_PIXEL*3):
                 update_led_strip(tuple(eval(rgb_values_list[2])), pixel, strip)
-
+            end = time.time()
+            print("Pixel 3 took: "+str(end-start))
+            start = time.time()
             for pixel in range(LEDS_PER_PIXEL*3, LEDS_PER_PIXEL*4):
                 update_led_strip(tuple(eval(rgb_values_list[3])), pixel, strip)
-
+            end = time.time()
+            print("Pixel 4 took: "+str(end-start))
+            start = time.time()
             for pixel in range(LEDS_PER_PIXEL*4, LEDS_PER_PIXEL*5):
                 update_led_strip(tuple(eval(rgb_values_list[4])), pixel, strip)
-
+            end = time.time()
+            print("Pixel 5 took: "+str(end-start))
+            start = time.time()
             for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
                 update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
-
-            time.sleep(0.5)
+            end = time.time()
+            print("Pixel 6 took: "+str(end-start))
