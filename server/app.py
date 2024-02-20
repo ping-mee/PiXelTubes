@@ -118,23 +118,16 @@ def mqtt_publisher(ti_receiver):
         try:
             start = time.time()
             tube_index = ti_receiver.recv()
+            end = time.time()
+            print("Receiving of tube index took: "+str(end-start))
             # Gets whatever the last Art-Net packet we received is
+            start = time.time()
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
             end = time.time()
-            print("Receiving of tube index and artnet packet took: "+str(end-start))
+            print("Receiving of artnet packet took: "+str(end-start))
             if artNetPacket is not None:
-                # start = time.time()
-                # #Checks to see if the current packet is for the specified DMX Universe
-                # artNetPacket.data = artNetPacket.data
-                # # Create MQTT topic based on the universe and channel
-                # end = time.time()
-                # print("setting artNetPacket.data var from artnet data took: "+str(end-start))
                 if tube_index is not None:
-                    # start = time.time()
-                    # tube_index = json.loads(tube_index)
-                    # end = time.time()
-                    # print("Converting tube index back to list wtih leval took: "+str(end-start))
                     start = time.time()
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
