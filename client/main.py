@@ -16,8 +16,6 @@ wlan_mac_address = str(get_mac_address(interface="wlan0"))
 LED_STRIP_PIN = board.D18
 global LED_COUNT
 LED_COUNT = 30
-global LEDS_PER_PIXEL
-LEDS_PER_PIXEL = 1
 
 # Global variables for LED strip control
 global strip
