@@ -124,12 +124,12 @@ def mqtt_publisher(ti_receiver):
             end = time.time()
             print("Receiving of tube index and artnet packet took: "+str(end-start))
             if artNetPacket is not None:
-                start = time.time()
-                #Checks to see if the current packet is for the specified DMX Universe
-                dmxPacket = artNetPacket.data
-                # Create MQTT topic based on the universe and channel
-                end = time.time()
-                print("setting dmxPacket var from artnet data took: "+str(end-start))
+                # start = time.time()
+                # #Checks to see if the current packet is for the specified DMX Universe
+                # artNetPacket.data = artNetPacket.data
+                # # Create MQTT topic based on the universe and channel
+                # end = time.time()
+                # print("setting artNetPacket.data var from artnet data took: "+str(end-start))
                 if tube_index is not None:
                     start = time.time()
                     tube_index = json.loads(tube_index)
@@ -139,7 +139,7 @@ def mqtt_publisher(ti_receiver):
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
-                            p1_g, p1_b, p1_r, p2_g, p2_b, p2_r, p3_g, p3_b, p3_r, p4_g, p4_b, p4_r, p5_g, p5_b, p5_r, p6_g, p6_b, p6_r = dmxPacket[dmx_address], dmxPacket[dmx_address+1], dmxPacket[dmx_address+2], dmxPacket[dmx_address+3], dmxPacket[dmx_address+4], dmxPacket[dmx_address+5], dmxPacket[dmx_address+6], dmxPacket[dmx_address+7], dmxPacket[dmx_address+8], dmxPacket[dmx_address+9], dmxPacket[dmx_address+10], dmxPacket[dmx_address+11], dmxPacket[dmx_address+12], dmxPacket[dmx_address+13], dmxPacket[dmx_address+14], dmxPacket[dmx_address+15], dmxPacket[dmx_address+16], dmxPacket[dmx_address+17]
+                            p1_g, p1_b, p1_r, p2_g, p2_b, p2_r, p3_g, p3_b, p3_r, p4_g, p4_b, p4_r, p5_g, p5_b, p5_r, p6_g, p6_b, p6_r = artNetPacket.data[dmx_address], artNetPacket.data[dmx_address+1], artNetPacket.data[dmx_address+2], artNetPacket.data[dmx_address+3], artNetPacket.data[dmx_address+4], artNetPacket.data[dmx_address+5], artNetPacket.data[dmx_address+6], artNetPacket.data[dmx_address+7], artNetPacket.data[dmx_address+8], artNetPacket.data[dmx_address+9], artNetPacket.data[dmx_address+10], artNetPacket.data[dmx_address+11], artNetPacket.data[dmx_address+12], artNetPacket.data[dmx_address+13], artNetPacket.data[dmx_address+14], artNetPacket.data[dmx_address+15], artNetPacket.data[dmx_address+16], artNetPacket.data[dmx_address+17]
 
                             # Pixel topics
                             p1_topic = "tube-"+str(index_row[0])+"/pixel_colors"
