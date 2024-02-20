@@ -96,5 +96,5 @@ if __name__ == "__main__":
                 for pixel in range(LEDS_PER_PIXEL*5, LEDS_PER_PIXEL*6):
                     update_led_strip(tuple(eval(rgb_values_list[5])), pixel, strip)
             except KeyboardInterrupt:
-                for led in LED_COUNT:
+                for led in range(LED_COUNT):
                     update_led_strip((0, 0, 0), led, strip)
