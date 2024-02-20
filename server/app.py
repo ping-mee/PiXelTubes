@@ -117,17 +117,17 @@ def mqtt_publisher(ti_queue):
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         try:
-            # try:
-            start = time.time()
-            tube_index = ti_queue.get(block=False)
-            end = time.time()
-            print("Receiving of tube index took: "+str(end-start))
-            tube_index_old = tube_index
-            # except:
-            #     if tube_index_old is not None:
-            #         tube_index = tube_index_old
-            #     else:
-            #         tube_index = None
+            try:
+                start = time.time()
+                tube_index = ti_queue.get(block=False)
+                end = time.time()
+                print("Receiving of tube index took: "+str(end-start))
+                tube_index_old = tube_index
+            except Empty:
+                if tube_index_old is not None:
+                    tube_index = tube_index_old
+                else:
+                    tube_index = None
             # Gets whatever the last Art-Net packet we received is
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
