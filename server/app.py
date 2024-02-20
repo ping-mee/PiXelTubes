@@ -118,9 +118,11 @@ def mqtt_publisher(ti_queue):
     while True:
         try:
             try:
+                print("new")
                 tube_index = ti_queue.get(block=False)
                 tube_index_old = tube_index
             except Empty:
+                print("empty")
                 if tube_index_old is not None:
                     tube_index = tube_index_old
                 else:
@@ -143,7 +145,6 @@ def mqtt_publisher(ti_queue):
                             colors = [[p1_r, p1_g, p1_b], [p2_r, p2_g, p2_b], [p3_r, p3_g, p3_b], [p4_r, p4_g, p4_b], [p5_r, p5_g, p5_b], [p6_r, p6_g, p6_b]]
                             result_str = [str(color) for color in colors]
                             result = str(result_str)
-                            print(result)
                             mqtt_client.publish(p1_topic, result)
         except KeyboardInterrupt:
             artNet.close()
