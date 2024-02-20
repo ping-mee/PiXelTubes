@@ -130,7 +130,6 @@ def mqtt_publisher(ti_queue):
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
             if artNetPacket is not None:
-                print(artNetPacket.data)
                 if tube_index is not None:
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
