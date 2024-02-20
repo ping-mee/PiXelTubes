@@ -8,7 +8,7 @@ from getmac import get_mac_address
 import time
 from multiprocessing import Process, Pipe, Queue
 from queue import Empty
-from ast import literal_eval
+import json
 
 app = Flask(__name__)
 
@@ -132,7 +132,7 @@ def mqtt_publisher(ti_receiver):
                 print("setting dmxPacket var from artnet data took: "+str(end-start))
                 if tube_index is not None:
                     start = time.time()
-                    tube_index = eval(tube_index)
+                    tube_index = json.loads(tube_index)
                     end = time.time()
                     print("Converting tube index back to list wtih leval took: "+str(end-start))
                     for index_row in tube_index:
@@ -159,7 +159,7 @@ def tube_index_updater(ti_queue):
             cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
             tube_index = cur.fetchall()
             cur.close()
-            ti_queue.put(str(tube_index))
+            ti_queue.put(json.dumps(tube_index))
         except Exception as e:
             print(e)
         time.sleep(5)
