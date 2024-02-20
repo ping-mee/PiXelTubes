@@ -119,11 +119,9 @@ def mqtt_publisher(ti_queue):
     while True:
         try:
             try:
-                print("new")
                 tube_index = ti_queue.get(block=False)
                 tube_index_old = tube_index
             except Empty:
-                print("empty")
                 if tube_index_old is not None:
                     tube_index = tube_index_old
                 else:
