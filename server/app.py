@@ -115,7 +115,6 @@ def mqtt_publisher(ti_receiver):
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
-        start_alltimer = time.time()
         try:
             start = time.time()
             tube_index = ti_receiver.recv()
@@ -133,11 +132,10 @@ def mqtt_publisher(ti_receiver):
                 print("setting dmxPacket var from artnet data took: "+str(end-start))
                 if tube_index is not None:
                     start = time.time()
-                    tube_index = literal_eval(tube_index)
+                    tube_index = eval(tube_index)
                     end = time.time()
                     print("Converting tube index back to list wtih leval took: "+str(end-start))
                     for index_row in tube_index:
-                        start = time.time()
                         if artNetPacket.universe == int(index_row[1]):
                             dmx_address = int(index_row[2])
                             #Define RGB values per pixel
@@ -151,14 +149,9 @@ def mqtt_publisher(ti_receiver):
                             result_str = [str(color) for color in colors]
                             result = str(result_str)
                             mqtt_client.publish(p1_topic, result)
-                            end = time.time()
-                            print("checking correct universe, converting list to specific pixel and publishing them took: "+str(end-start))
 
         except KeyboardInterrupt:
             artNet.close()
-
-            end_alltimer = time.time()
-            print("6 "+str(end_alltimer-start_alltimer))
 def tube_index_updater(ti_queue):
     while True:
         try:
