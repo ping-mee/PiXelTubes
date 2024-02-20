@@ -123,17 +123,15 @@ def mqtt_publisher(ti_queue):
                 end = time.time()
                 print("Receiving of tube index took: "+str(end-start))
                 tube_index_old = tube_index
-            except:
+            except Exception as e:
+                print(e)
                 if tube_index_old is not None:
                     tube_index = tube_index_old
                 else:
                     tube_index = None
             # Gets whatever the last Art-Net packet we received is
-            start = time.time()
             artNetPacket = artNet.readPacket()
             # Make sure we actually *have* a packet
-            end = time.time()
-            print("Receiving of artnet packet took: "+str(end-start))
             if artNetPacket is not None:
                 if tube_index is not None:
                     for index_row in tube_index:
