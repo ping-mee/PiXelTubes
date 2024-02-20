@@ -96,4 +96,4 @@ if __name__ == "__main__":
         #     except KeyboardInterrupt:
         #         for led in range(LED_COUNT):
         #             update_led_strip((0, 0, 0), led, strip)
-        update_led_strip((0, 0, 0), 0, strip)
+        update_led_strip((255, 255, 255), 0, strip)
