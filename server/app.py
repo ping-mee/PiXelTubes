@@ -131,10 +131,10 @@ def mqtt_publisher(ti_receiver):
                 # end = time.time()
                 # print("setting artNetPacket.data var from artnet data took: "+str(end-start))
                 if tube_index is not None:
-                    start = time.time()
-                    tube_index = json.loads(tube_index)
-                    end = time.time()
-                    print("Converting tube index back to list wtih leval took: "+str(end-start))
+                    # start = time.time()
+                    # tube_index = json.loads(tube_index)
+                    # end = time.time()
+                    # print("Converting tube index back to list wtih leval took: "+str(end-start))
                     start = time.time()
                     for index_row in tube_index:
                         if artNetPacket.universe == int(index_row[1]):
@@ -161,7 +161,7 @@ def tube_index_updater(ti_queue):
             cur.execute("SELECT mac_address, universe, dmx_address FROM tubes")
             tube_index = cur.fetchall()
             cur.close()
-            ti_queue.put(json.dumps(tube_index))
+            ti_queue.put(tube_index)
         except Exception as e:
             print(e)
         time.sleep(5)
