@@ -59,7 +59,6 @@ def update_led_strip(rgb_values, pixel, strip):
 def on_message(mqttc, obj, msg):
     global rgb_values_list
     rgb_values_list = eval(msg.payload.decode())
-    print(rgb_values_list)
 
 if __name__ == "__main__":
     # Connect to Wi-Fi
