@@ -118,10 +118,7 @@ def mqtt_publisher(ti_queue):
     while True:
         try:
             try:
-                start = time.time()
                 tube_index = ti_queue.get(block=False)
-                end = time.time()
-                print("Receiving of tube index took: "+str(end-start))
                 tube_index_old = tube_index
             except Empty:
                 if tube_index_old is not None:
