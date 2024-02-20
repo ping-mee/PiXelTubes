@@ -109,17 +109,25 @@ def connect_mqtt():
     client.connect("localhost", 1883)
     return client
 
-def mqtt_publisher(ti_receiver):
+def mqtt_publisher(ti_queue):
+    tube_index = None
     # Create and start a thread for each universe
     mqtt_client = connect_mqtt()
     artnetBindIp = get_eth0_ip()
     artNet = Artnet.Artnet(BINDIP = artnetBindIp, DEBUG = True, SHORTNAME = "PiXelTubeMaster", LONGNAME = "PiXelTubeMaster", PORT = 6454)
     while True:
         try:
-            start = time.time()
-            tube_index = ti_receiver.recv()
-            end = time.time()
-            print("Receiving of tube index took: "+str(end-start))
+            try:
+                start = time.time()
+                tube_index = ti_queue.get(block=False)
+                end = time.time()
+                print("Receiving of tube index took: "+str(end-start))
+                tube_index_old = tube_index
+            except:
+                if tube_index_old is not None:
+                    tube_index = tube_index_old
+                else:
+                    tube_index = None
             # Gets whatever the last Art-Net packet we received is
             start = time.time()
             artNetPacket = artNet.readPacket()
@@ -144,6 +152,7 @@ def mqtt_publisher(ti_receiver):
                             mqtt_client.publish(p1_topic, result)
         except KeyboardInterrupt:
             artNet.close()
+
 def tube_index_updater(ti_queue):
     while True:
         try:
@@ -156,27 +165,12 @@ def tube_index_updater(ti_queue):
             print(e)
         time.sleep(5)
 
-def tube_index_collector(ti_queue, ti_sender):
-    item_old = None
-    while True:
-        try:
-            item = ti_queue.get(block=False)
-            ti_sender.send(item)
-            item_old = item
-        except Empty:
-            if item_old is not None:
-                ti_sender.send(item_old)
-            else:
-                ti_sender.send(None)
-
 if __name__ == "__main__":
     (ti_receiver,ti_sender) = Pipe(True)
     ti_queue = Queue()
-    collector_thread = Process(target=tube_index_collector, args=(ti_queue, ti_sender, ))
-    collector_thread.start()
     ti_updater_thread = Process(target=tube_index_updater, args=(ti_queue, ))
     ti_updater_thread.start()
-    publisher_thread = Process(target=mqtt_publisher, args=(ti_receiver, ))
+    publisher_thread = Process(target=mqtt_publisher, args=(ti_queue, ))
     publisher_thread.start()
     flask_thread = Process(target=flask_api)
     flask_thread.start()
