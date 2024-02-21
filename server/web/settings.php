@@ -21,6 +21,7 @@
                     <label for="universe">Universe:</label>
                     <input type="text" class="form-control" id="universe" name="universe" placeholder="Enter Universe" required>
                 </div>
+                <br>
                 <div class="form-group">
                     <label for="dmxAddress">DMX Address:</label>
                     <input type="text" class="form-control" id="dmxAddress" name="dmxAddress" placeholder="Enter DMX Address" required>
