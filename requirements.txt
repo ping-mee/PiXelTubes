@@ -1,6 +1,8 @@
+Adafruit_Blinka==8.32.0
 adafruit_circuitpython_neopixel==6.3.11
 Flask==2.3.2
+get_mac==0.9.2
 MySQL-python==1.2.5
+paho_mqtt==1.6.1
+python_artnet==1.1.0
 Requests==2.31.0
-stupidArtnet==1.4.0
-wifi==0.3.8
