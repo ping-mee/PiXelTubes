@@ -27,9 +27,9 @@ artNet = Artnet.Artnet(artnetBindIp, DEBUG=debug)
 while True:
     try:
         # Read latest ArtNet packet
-        artNetPacket = artNet.readPacket()
+        artNetPacket = artNet.readBuffer()[artnetUniverse]
         # Print out the universe of said packet
-        print("My univ: "+str(artNetPacket.universe))
+        print("My univ: "+str(artNetPacket.data))
     
     # Big red stop button just in case
     except KeyboardInterrupt:
